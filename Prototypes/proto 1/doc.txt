@@ -1,0 +1,11 @@
+IDEE : 
+
+on condidère que les WALL ont une coordonnée d'origine + une direction (longueur de 2 donc)
+* LES DEUX DIRECTIONS POSSIBLES SONT UP et RIGHT :
+	--> ont considère que la barrière a une origine "collée" à un case. 
+	Si on veut place une barrière, elle se place en réalité à partir du haut d'une case et va vers la droite (direction)
+		OU sur la droite d'une case et elle va vers le haut (direction)
+	--> donc elle possèce comme ORIGINE la coordonée de la case et comme direction UP/RIGHT
+CF IdeaWall pour un exemple
+
+---------------------------------------------------------------------------------------------------
