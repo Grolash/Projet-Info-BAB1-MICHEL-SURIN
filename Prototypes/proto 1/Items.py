@@ -53,7 +53,8 @@ class Pawn(MOAI):
 class Wall(MOAI):
     """
     This is a Wall child class of items.
-
+    #WIP : origin --> tuple
+           direction --> Board.UP/DOWN/...
     """
     def __init__(self):
         self.name = "Wall"

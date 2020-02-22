@@ -1,4 +1,4 @@
-17 février 2020:
+﻿17 février 2020:
 
 Bases du projet. Le groupe est fixé et le processus de réflexion commence.
 
@@ -11,3 +11,7 @@ Mise en place d'un schéma de développement, analyse top-down.
 22 février 2020:
 
 Premières lignes de code (prototype python): séparation primaire pour le prototypage, établissement d'un fichier d'Items et d'un fichier gérant le monde (World).
+Prototype 1 mis en dévbeloppement :
+objectifs : - avoir un plateau de jeu
+	    - avoir un pion déplacable
+	    - pouvoir poser des murs

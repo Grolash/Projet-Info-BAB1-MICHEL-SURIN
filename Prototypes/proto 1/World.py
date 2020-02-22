@@ -26,21 +26,36 @@ class PlayerCell :
 
 
     def __str__(self) :
-        
-        if self.hasWallDOWN :
-            return "-"
-        elif self.hasWallLEFT :
-            return "["
-        elif self.hasWallRIGHT :
-            return "]"
-        elif self.hasWallUP :
-            return "^"
-        elif self.hasPawn :
-            return "!" #will be MOAI.__str__ (<item>.__str__)
+        res = ""
+        if not self.hasWall() :
+            if self.hasPawn :
+                return "! "
+            else :
+                return " O"
+        if self.hasWallLEFT :
+            res += "["
+        if self.hasWallUP :
+            res += "/"
+        if self.hasPawn :
+            res += "!" #will be MOAI.__str__ (<item>.__str__)
         else :
-            return "O"
+            res += "O"
+        if self.hasWallDOWN :
+            res += "\\"
+        if self.hasWallRIGHT :
+            res += "]" 
+        return res
 
-    def hasWall(self, direction) :
+    def hasWall(self) :
+        """
+        return True if the PlayerCell has at least 1 wall (or Board border)
+        """
+        if self.hasWallDOWN or self.hasWallLEFT or self.hasWallRIGHT or self.hasWallUP :
+            return True
+        else :
+            return False
+
+    def wallTo(self, direction) :
         """
         return True if there is a wall on the /Direction/ side of the PlayerCell 
         """
