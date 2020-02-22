@@ -1,5 +1,5 @@
 import World
-import Controller
+#import Controller
 
 
 class MOAI():
@@ -31,7 +31,7 @@ class MOAI():
         return self.representation
     
     def typeOfObject(self):
-        string = "This is an item of type %s currently under the control of %s" % (self.name, controller)
+        string = "This is an item of type %s currently under the control of %s" % (self.name, self.controller)
         return string
 
 class Pawn(MOAI):
@@ -42,6 +42,6 @@ class Pawn(MOAI):
     ----------
     """
 
-    def __init__():
+    def __init__(self):
         self.name = "Pawn"
         self.representation = "!"
