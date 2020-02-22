@@ -34,6 +34,8 @@ class PlayerCell :
             return "]"
         elif self.hasWallUP :
             return "^"
+        elif self.hasPawn :
+            return "!" #will be MOAI.__str__ (<item>.__str__)
         else :
             return "O"
 
