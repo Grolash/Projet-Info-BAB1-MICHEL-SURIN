@@ -48,3 +48,14 @@ class Pawn(MOAI):
     def __init__(self):
         self.name = "Pawn"
         self.representation = "!"
+
+
+class Wall(MOAI):
+    """
+    This is a Wall child class of items.
+
+    """
+    def __init__(self):
+        self.name = "Wall"
+        self.representation = None #TODO
+        self.controller = None
