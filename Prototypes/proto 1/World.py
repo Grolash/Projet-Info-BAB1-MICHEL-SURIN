@@ -14,7 +14,7 @@ class PlayerCell :
         self.hasWallDOWN = False
         self.hasWallLEFT = False
         self.hasWallRIGHT = False
-        #the followong lines create a "Wall" if the PlayerCell is at a border of the Board
+        #the following lines create a "Wall" if the PlayerCell is at a border of the Board
         if self.coord[1] == 0 : 
             self.hasWallLEFT = True
         elif self.coord[1] == 8 : #8 should be Board.size but it doesn't work
