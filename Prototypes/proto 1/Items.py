@@ -55,12 +55,17 @@ class Wall(MOAI):
     """
     def __init__(self):
         self.name = "Wall"
-        if self.coord[0] == 0 :
-            self.representation = "["
-        if self.coord[0] == 8 :
-            self.representation = "]"
-        if self.coord[1] == 8 :
-            self.representation = "\\"
         if self.coord[1] == 0 :
+            self.representation = "["
+        if self.coord[1] == 8 :
+            self.representation = "]"
+        if self.coord[0] == 8 :
+            self.representation = "\\"
+        if self.coord[0] == 0 :
             self.representation = "/"
         self.controller = None
+        SecondPart()
+
+    def SecondPart(self):
+        new_coordinates = (self.coordinates + self.direction)
+        SecondPartOfWAll = Wall(self.game, self.controller, new_coordinates, direction = None)
