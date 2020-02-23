@@ -17,11 +17,11 @@ class PlayerCell :
         #the following lines create a "Wall" if the PlayerCell is at a border of the Board
         if self.coord[1] == 0 : 
             self.hasWallLEFT = True
-        elif self.coord[1] == 8 : #8 should be Board.size but it doesn't work
+        if self.coord[1] == 8 : #8 should be Board.size but it doesn't work
             self.hasWallRIGHT = True
         if self.coord[0] == 8 : #8 should be Board.size but it doesn't work
             self.hasWallDOWN = True
-        elif self.coord[0] == 0 : 
+        if self.coord[0] == 0 : 
             self.hasWallUP = True
 
 
@@ -29,21 +29,19 @@ class PlayerCell :
         res = ""
         if not self.hasWall() :
             if self.hasPawn :
-                return "! "
+                return "! " #will be MOAI.__str__ (<item>.__str__)
             else :
                 return " O"
         if self.hasWallLEFT :
             res += "["
         if self.hasWallUP :
             res += "/"
-        if self.hasPawn :
-            res += "!" #will be MOAI.__str__ (<item>.__str__)
-        else :
-            res += "O"
         if self.hasWallDOWN :
             res += "\\"
         if self.hasWallRIGHT :
             res += "]" 
+        else :
+            res += "O"
         return res
 
     def hasWall(self) :

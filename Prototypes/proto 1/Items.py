@@ -5,9 +5,6 @@ import World
 class MOAI():
     """ 
     This class is the mother of all items (M.O.A.I.).
-    (In fact walls do not depend from this class as they are not "played" by a controller of any type.)
-
-    It exist for adaptability purpose, so we can add playable items other than pawns.
     
     Attributes:
     -----------    -----------    -----------
@@ -58,5 +55,12 @@ class Wall(MOAI):
     """
     def __init__(self):
         self.name = "Wall"
-        self.representation = None #TODO
+        if self.coord[0] == 0 :
+            self.representation = "["
+        if self.coord[0] == 8 :
+            self.representation = "]"
+        if self.coord[1] == 8 :
+            self.representation = "\\"
+        if self.coord[1] == 0 :
+            self.representation = "/"
         self.controller = None

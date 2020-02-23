@@ -1,6 +1,6 @@
 TODO list :
 
--Wall : origin, representation(actually represented trough the PlayerCell), direction
+-Wall : origin, representation(actually represented through the PlayerCell), direction
 -Controller ?
 
 
