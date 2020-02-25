@@ -13,14 +13,10 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, game, controller, coordinates, direction = None):
+    def __init__(self, board, controller, coordinates, direction = None):
         self.coord = coordinates #is a tuple
         self.direction = direction
-        super().__init__(game, controller)
-    
-    def move(self):
-        if self.direction is not None:
-            self.coord = self.coord + self.direction
+        super().__init__(board, controller)
     
     def __str__(self):
         return self.representation #is dependent from child class
@@ -68,4 +64,4 @@ class Wall(MOAI):
 
     def SecondPart(self):
         new_coordinates = (self.coordinates + self.direction)
-        SecondPartOfWAll = Wall(self.game, self.controller, new_coordinates, direction = None)
+        SecondPartOfWAll = Wall(self.board, self.controller, new_coordinates, direction = None)
