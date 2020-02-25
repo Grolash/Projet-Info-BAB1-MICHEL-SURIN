@@ -7,7 +7,8 @@ class PlayerCell :
     - hasPawn = True if a Pawn is on the PlayerCell
     - hasWall(UP/DOWN/LEFT/RIGHT) = True if there is a wall on that side of the PlayerCell
     """
-    def __init__(self, coord) :
+    def __init__(self, coord, board) :
+        self.board = board
         self.coord = coord #is a tuple (y,x)
         self.hasPawn = False
         self.hasWallUP = False
@@ -17,9 +18,9 @@ class PlayerCell :
         #the following lines create a "Wall" if the PlayerCell is at a border of the Board
         if self.coord[1] == 0 : 
             self.hasWallLEFT = True
-        if self.coord[1] == 8 : #8 should be Board.size but it doesn't work
+        if self.coord[1] == board.size-1 :
             self.hasWallRIGHT = True
-        if self.coord[0] == 8 : #8 should be Board.size but it doesn't work
+        if self.coord[0] == board.size-1 :
             self.hasWallDOWN = True
         if self.coord[0] == 0 : 
             self.hasWallUP = True
@@ -87,7 +88,7 @@ class Board :
             self.PlayerCellList.append([])
             for j in range(size) :
                 coord = i, j
-                Cell = PlayerCell(coord)
+                Cell = PlayerCell(coord, self)
                 self.PlayerCellList[i].append(Cell)
     
     def __str__(self):

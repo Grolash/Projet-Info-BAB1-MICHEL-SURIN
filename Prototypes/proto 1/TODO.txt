@@ -6,4 +6,3 @@ TODO list :
 
 
 FIX list :
--fix bug where PlayerCell can't access to Board.size --> error output = type object 'Board' has no attribute 'size' 
