@@ -38,9 +38,10 @@ class Pawn(MOAI):
     -----------    -----------    -----------
     """
 
-    def __init__(self):
-        self.name = "Pawn"
+    def __init__(self, name, coord=(0,4)): #coord is hardcoded to be default 9 sized board spawn
+        self.name = name
         self.representation = "!"
+        self.coord = coord
 
 
 class Wall(MOAI):

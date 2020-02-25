@@ -17,20 +17,21 @@ class Controller() :
         self.controller = controllerType
         self.dependency = dependency
 
-    class PawnController(Controller) :
+    class PawnController() :
         """
         A controller designed to controll a Pawn
         dependency should ba a Pawn object.
         """
 
-        def __init__(self, playerName) :
+        def __init__(self, controllerType, dependency, playerName, numbWall) :
+            super().__init__()
             self.playerName = playerName
-
+            self.stock = numbWall
 
         def move(self, direction) :
             if direction is not None :
                 if not Board.PlayerCellList[dependency.coord[0],dependency.coord[1]].wallto(direction) :
                     self.dependency.coord += direction
-		
-		def placeWall(self, coord) :
-			pass
+
+        def placeWall(self, coord) :
+            pass

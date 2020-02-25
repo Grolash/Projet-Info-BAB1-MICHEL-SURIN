@@ -1,0 +1,28 @@
+from World import *
+from Items import *
+from engine import *
+
+class Game() :
+
+    def __init__(self, playerNumber, boardSize) :
+        self.board = Board(boardSize)
+        self.pawnList = []
+        self.playerList = []
+        for i in range(1,playerNumber+1) : # 1, 2, 3, etc...
+            # create a Pawn named "Pawn + i"
+            pawnName = "Pawn" + str(i)
+            self.pawnList.append(Pawn(pawnName))
+            # create a Controller named "Player + i" and bind the Controller to the Pawn
+            pawnIndex = self.pawnList[i-1]
+            playerName = "Player" + str(i)
+            newController = Controller.PawnController("Human", pawnIndex, playerName, 10)
+            self.playerList.append(newController)
+    
+    def __str__(self) :
+        return self.board.__str__()
+
+
+if __name__ == '__main__':
+    newGame = Game(1,9)
+    print(newGame, end="")
+    print(newGame.pawnList[0].coord)

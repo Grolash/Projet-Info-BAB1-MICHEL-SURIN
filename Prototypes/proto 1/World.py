@@ -28,21 +28,18 @@ class PlayerCell :
 
     def __str__(self) :
         res = ""
-        if not self.hasWall() :
-            if self.hasPawn :
-                return "! " #will be MOAI.__str__ (<item>.__str__)
-            else :
-                return " O"
         if self.hasWallLEFT :
-            res += "["
+            res += "[ "
         if self.hasWallUP :
-            res += "/"
+            res += "/ "
+        if self.hasPawn :
+                res += "! " #will be MOAI.__str__ (<item>.__str__)
         if self.hasWallDOWN :
             res += "\\"
         if self.hasWallRIGHT :
-            res += "]" 
+            res += "] " 
         else :
-            res += "O"
+            res += "O "
         return res
 
     def hasWall(self) :
