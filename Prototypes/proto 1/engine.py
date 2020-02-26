@@ -30,7 +30,7 @@ class Controller() :
 
         def move(self, direction) :
             if direction is not None :
-                if not Board.PlayerCellList[dependency.coord[0],dependency.coord[1]].wallto(direction) :
+                if not Board.playerCellList[dependency.coord[0],dependency.coord[1]].wallto(direction) :
                     self.dependency.coord += direction
 
         def placeWall(self, coord) :

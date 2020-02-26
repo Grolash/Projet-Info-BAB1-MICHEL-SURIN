@@ -28,18 +28,19 @@ class PlayerCell :
 
     def __str__(self) :
         res = ""
-        if self.hasWallLEFT :
-            res += "[ "
-        if self.hasWallUP :
-            res += "/ "
         if self.hasPawn :
-                res += "! " #will be MOAI.__str__ (<item>.__str__)
+            res += "!" #will be MOAI.__str__ (<item>.__str__)
+        if self.hasWallLEFT :
+            res += "["
+        if self.hasWallUP :
+            res += "/"
+
         if self.hasWallDOWN :
             res += "\\"
         if self.hasWallRIGHT :
-            res += "] " 
+            res += "]" 
         else :
-            res += "O "
+            res += "O"
         return res
 
     def hasWall(self) :
@@ -76,26 +77,31 @@ class Board :
     def __init__(self, size) :
         #self.pawnList = controllerList
         self.size = size
-        self.PlayerCellList = []
+        self.playerCellList = []
         self.UP = (0,1)
         self.DOWN = (0,-1)
         self.LEFT = (-1,0)
         self.RIGHT = (1,0)
         for i in range(size) :
-            self.PlayerCellList.append([])
+            self.playerCellList.append([])
             for j in range(size) :
                 coord = i, j
                 Cell = PlayerCell(coord, self)
-                self.PlayerCellList[i].append(Cell)
+                self.playerCellList[i].append(Cell)
     
     def __str__(self):
         res = ""
         for i in range(self.size) :
             for j in range(self.size) :
-                res += str(self.PlayerCellList[i][j]) + " "
+                res += str(self.playerCellList[i][j]) + " "
             res += "\n"
         return res
 
-if __name__ == '__main__':
-    board = Board(9)
-    print(board)
+    def reset(self) :
+        """
+        reset every PlayerCell.hasPawn to False
+        --> will be called by refresh function
+        """
+        for i in range(len(self.playerCellList)) :
+            for j in range(len(self.playerCellList[i])) :
+                self.playerCellList[i][j].hasPawn = False

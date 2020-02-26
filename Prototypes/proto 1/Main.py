@@ -17,12 +17,24 @@ class Game() :
             playerName = "Player" + str(i)
             newController = Controller.PawnController("Human", pawnIndex, playerName, 10)
             self.playerList.append(newController)
+            self.refresh()
     
     def __str__(self) :
         return self.board.__str__()
 
+    def refresh(self) :
+        """
+        takes a game as argument and refresh all pawns positions
+        """
+        self.board.reset()
+        for pawn in self.pawnList :
+            x = pawn.coord[1]
+            y = pawn.coord[0]
+            self.board.playerCellList[y][x].hasPawn = True
+        
 
 if __name__ == '__main__':
     newGame = Game(1,9)
-    print(newGame, end="")
+    print(newGame, end="") 
+    print("pawn coord ", end="")
     print(newGame.pawnList[0].coord)
