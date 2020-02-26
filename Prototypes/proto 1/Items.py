@@ -1,5 +1,4 @@
-import World
-#import Controller
+from World import Board
 
 
 class MOAI():
@@ -13,17 +12,12 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, board, controller, coordinates, direction = None):
+    def __init__(self, board, coordinates, direction = None):
         self.coord = coordinates #is a tuple
         self.direction = direction
-        super().__init__(board, controller)
     
     def __str__(self):
         return self.representation #is dependent from child class
-    
-    def typeOfItem(self):
-        string = "This is an item of type %s currently under the control of %s" % (self.name, self.controller) #self.name depend from child class
-        return string
 
 class Pawn(MOAI):
     """ 
@@ -39,6 +33,7 @@ class Pawn(MOAI):
     """
 
     def __init__(self, name, coord=(0,4)): #coord is hardcoded to be default 9 sized board spawn
+        super().__init__()
         self.name = name
         self.representation = "!"
         self.coord = coord
@@ -51,6 +46,7 @@ class Wall(MOAI):
            direction --> Board.UP/DOWN/...
     """
     def __init__(self):
+        super().__init__()
         self.name = "Wall"
         if self.coord[1] == 0 :
             self.representation = "["
@@ -60,9 +56,8 @@ class Wall(MOAI):
             self.representation = "\\"
         if self.coord[0] == 0 :
             self.representation = "/"
-        self.controller = None
         SecondPart()
 
     def SecondPart(self):
         new_coordinates = (self.coordinates + self.direction)
-        SecondPartOfWAll = Wall(self.board, self.controller, new_coordinates, direction = None)
+        SecondPartOfWAll = Wall(self.board, new_coordinates, direction = None)

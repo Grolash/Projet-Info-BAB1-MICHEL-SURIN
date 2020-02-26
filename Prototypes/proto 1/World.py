@@ -45,7 +45,7 @@ class PlayerCell :
 
     def hasWall(self) :
         """
-        return True if the PlayerCell has at least 1 wall (or Board border)
+        Returns "True" if the PlayerCell has at least 1 wall (or Board border).
         """
         if self.hasWallDOWN or self.hasWallLEFT or self.hasWallRIGHT or self.hasWallUP :
             return True
@@ -54,7 +54,7 @@ class PlayerCell :
 
     def wallTo(self, direction) :
         """
-        return True if there is a wall on the /Direction/ side of the PlayerCell 
+        Returns "True" if there is a wall on the /Direction/ side of the PlayerCell.
         """
         if direction == Board.UP :
             return self.hasWallUP

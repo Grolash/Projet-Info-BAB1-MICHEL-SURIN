@@ -24,7 +24,7 @@ class Game() :
 
     def refresh(self) :
         """
-        takes a game as argument and refresh all pawns positions
+        Takes a game as argument and refresh all pawns positions
         """
         self.board.reset()
         for pawn in self.pawnList :
