@@ -33,7 +33,6 @@ class Pawn(MOAI):
         super().__init__()
         self.name = name
         self.representation = "!"
-        self.coord = coord
 
 
 class Wall(MOAI):
