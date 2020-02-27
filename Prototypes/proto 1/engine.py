@@ -15,12 +15,15 @@ class Controller() :
          refers to what is controlling the controller (ex : Human, AI, ...).
     dependency :
          refers to what is the controller actually controlling (typically a MOAI subclass).
+    game :
+         refers to the game where the controller is playing.
     -----------    -----------    -----------
     """
 
     def __init__(self, controllerType, dependency) :
         self.controller = controllerType
         self.dependency = dependency
+        #self.game = game
 
     def whatItem(self):
         string = "This controller has for dependency an item of type: %s" % (self.dependency.name)
@@ -45,4 +48,4 @@ class PawnController(Controller) :
     def placeWall(self, coord) :
         if self.stock >= 0:
             self.stock -=1
-            Wall(Board, coord, direction = None) #Board will be a specific board instead of a class.
+            Wall(Board, coord, direction = None)

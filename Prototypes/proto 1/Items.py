@@ -12,8 +12,8 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, board, coordinates, direction = None):
-        self.coord = coordinates #is a tuple
+    def __init__(self, board, coord=(0,4), direction = None):
+        self.coord = coord #is a tuple. Default is 0,4 (default player 1 pawn spawnpoint)
         self.direction = direction
     
     def __str__(self):
@@ -32,7 +32,7 @@ class Pawn(MOAI):
     -----------    -----------    -----------
     """
 
-    def __init__(self, name, coord=(0,4)): #coord is hardcoded to be default 9 sized board spawn
+    def __init__(self, name): 
         super().__init__()
         self.name = name
         self.representation = "!"
