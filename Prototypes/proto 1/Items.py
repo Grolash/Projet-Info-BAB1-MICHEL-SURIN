@@ -1,6 +1,3 @@
-from World import Board
-
-
 class MOAI():
     """ 
     This class is the mother of all items (M.O.A.I.).
@@ -12,7 +9,7 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, board, coord=(0,4), direction = None):
+    def __init__(self, coord=(0,4), direction = None):
         self.coord = coord #is a tuple. Default is 0,4 (default player 1 pawn spawnpoint)
         self.direction = direction
     
@@ -60,4 +57,4 @@ class Wall(MOAI):
 
     def SecondPart(self):
         new_coordinates = (self.coordinates + self.direction)
-        SecondPartOfWAll = Wall(self.board, new_coordinates, direction = None)
+        SecondPartOfWAll = Wall(new_coordinates, direction = None)

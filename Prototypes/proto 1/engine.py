@@ -48,4 +48,4 @@ class PawnController(Controller) :
     def placeWall(self, coord) :
         if self.stock >= 0:
             self.stock -=1
-            Wall(Board, coord, direction = None)
+            Wall(coord, direction = None)
