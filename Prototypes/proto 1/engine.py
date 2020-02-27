@@ -15,15 +15,15 @@ class Controller() :
          refers to what is controlling the controller (ex : Human, AI, ...).
     dependency :
          refers to what is the controller actually controlling (typically a MOAI subclass).
-    game :
-         refers to the game where the controller is playing.
+    board :
+         refers to the board to controller is interacting to
     -----------    -----------    -----------
     """
 
-    def __init__(self, controllerType, dependency) :
+    def __init__(self, controllerType, dependency, board) :
         self.controller = controllerType
         self.dependency = dependency
-        #self.game = game
+        self.board = board
 
     def whatItem(self):
         string = "This controller has for dependency an item of type: %s" % (self.dependency.name)
@@ -42,10 +42,10 @@ class PawnController(Controller) :
 
     def move(self, direction) :
         if direction is not None :
-            if not Board.playerCellList[self.dependency.coord[0], self.dependency.coord[1]].wallto(direction) :
+            if not self.board.playerCellList[self.dependency.coord[0], self.dependency.coord[1]].wallto(direction) :
                 self.dependency.coord += direction
 
     def placeWall(self, coord) :
         if self.stock >= 0:
             self.stock -=1
-            Wall(Board, coord, direction = None)
+            Wall(coord, direction = None)
