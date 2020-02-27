@@ -15,7 +15,7 @@ class Game() :
             # create a Controller named "Player + i" and bind the Controller to the Pawn
             pawnIndex = self.pawnList[i-1]
             playerName = "Player" + str(i)
-            newController = Controller.PawnController("Human", pawnIndex, playerName, 10)
+            newController = PawnController("Human", pawnIndex, playerName, 10)
             self.playerList.append(newController)
             self.refresh()
     

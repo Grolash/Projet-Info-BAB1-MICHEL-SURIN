@@ -9,7 +9,7 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, coord=(0,4), direction = None):
+    def __init__(self, coord = (0,4), direction = None):
         self.coord = coord #is a tuple. Default is 0,4 (default player 1 pawn spawnpoint)
         self.direction = direction
     
@@ -29,11 +29,10 @@ class Pawn(MOAI):
     -----------    -----------    -----------
     """
 
-    def __init__(self, name): 
-        super().__init__()
+    def __init__(self, name, coord = (0,4), direction = None): 
+        super().__init__(coord, direction)
         self.name = name
         self.representation = "!"
-        self.coord = coord
 
 
 class Wall(MOAI):
@@ -42,8 +41,8 @@ class Wall(MOAI):
     #WIP : origin --> tuple
            direction --> Board.UP/DOWN/...
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, coord, direction = None):
+        super().__init__(coord, direction)
         self.name = "Wall"
         if self.coord[1] == 0 :
             self.representation = "["
