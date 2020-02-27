@@ -35,8 +35,8 @@ class PawnController(Controller) :
     
     "dependency" should be a Pawn object.
     """
-    def __init__(self, playerName, numbWall) :
-        super().__init__()
+    def __init__(self, controllerType, dependency, board, playerName, numbWall) :
+        super().__init__(controllerType, dependency, board)
         self.playerName = playerName
         self.stock = numbWall
 
