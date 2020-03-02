@@ -32,16 +32,21 @@ class Game() :
             y = player.depedency.coord[0]
             self.board.playerCellList[y][x].hasPawn = True
 
-    def checkWin(self) :
+    def checkWin(self, player) :
         """
-        check if a pawn has reached the opposite of the board
+        check if the player has reached the opposite of the board
         """
-        for player in self.playerList :
-            return player.hasWon()
+        return player.hasWon()
         
     def gameLoop(self) :
+        """
+        create the turn-per-turn system.
+        Allow each player to take choose an action while no-one has won
+        i is reseted to 0 if i >= 2 so there is no out of bounds error
+        after each player's turn, the game loop checks if the player has won or not
+        """
         i = 0
-        while not checkWin() :
+        while not checkWin(self.playerList[i]) :
             if i >= 2 :
                 i = 0
             print("player " + str(i+1) + " pick-up an action :")
@@ -74,3 +79,30 @@ if __name__ == '__main__':
     print(newGame, end="") 
     print("pawn coord ", end="")
     print(newGame.pawnList[0].coord)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
