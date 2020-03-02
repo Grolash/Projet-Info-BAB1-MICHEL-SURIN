@@ -27,10 +27,46 @@ class Game() :
         Takes a game as argument and refresh all pawns positions
         """
         self.board.reset()
-        for pawn in self.pawnList :
-            x = pawn.coord[1]
-            y = pawn.coord[0]
+        for player in self.playerList :
+            x = player.depedency.coord[1]
+            y = player.depedency.coord[0]
             self.board.playerCellList[y][x].hasPawn = True
+
+    def checkWin(self) :
+        """
+        check if a pawn has reached the opposite of the board
+        """
+        for player in self.playerList :
+            return player.hasWon()
+        
+    def gameLoop(self) :
+        i = 0
+        while not checkWin() :
+            if i >= 2 :
+                i = 0
+            print("player " + str(i+1) + " pick-up an action :")
+            print("1) move")
+            print("2) place a Wall")
+            choice = int(input("your choice : "))
+            if choice == 1 :
+                print("choose a direction :")
+                print("1) UP")
+                print("2) RIGHT")
+                print("3) DOWN")
+                print("4) LEFT")
+                direction = int(input("direction : "))
+                if direction == 1 :
+                    self.playerList[i].move(self.board.UP)
+                elif direction == 2 :
+                    self.playerList[i].move(self.board.RIGHT)
+                elif direction == 3 :
+                    self.playerList[i].move(self.board.DOWN)
+                else :
+                    self.playerList[i].move(self.board.LEFT)
+            elif choice == 2 :
+                pass
+            i += 1
+        return True
         
 
 if __name__ == '__main__':

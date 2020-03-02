@@ -31,6 +31,7 @@ class Pawn(MOAI):
 
     def __init__(self, name, coord = (0,4), direction = None): 
         super().__init__(coord, direction)
+        self.start = coord
         self.name = name
         self.representation = "!"
 
