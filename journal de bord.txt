@@ -15,3 +15,7 @@ Prototype 1 mis en dévbeloppement :
 objectifs : - avoir un plateau de jeu
 	    - avoir un pion déplacable
 	    - pouvoir poser des murs
+
+    -----------    -----------    -----------
+02 mars 2020:
+installation de Gradle et mise en place du projet Gradle
