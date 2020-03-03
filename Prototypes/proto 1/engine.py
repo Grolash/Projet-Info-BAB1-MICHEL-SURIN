@@ -1,5 +1,6 @@
 from Items import *
 from World import *
+from Rules import *
 
 """
 This file will contain objects related to the game mechanics and the playable-side of the game.
@@ -44,7 +45,7 @@ class PawnController(Controller) :
         if direction is not None :
             y = self.dependency.coord[0]
             x = self.dependency.coord[1]
-            if not self.board.playerCellList[y][x].wallTo(direction) :
+            if canMove(self, direction):
                 self.dependency.coord += direction
 
     def placeWall(self, coord, direction) :
