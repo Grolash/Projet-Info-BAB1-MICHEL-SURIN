@@ -1,5 +1,3 @@
-import World
-#import Controller
 
 
 class MOAI():
