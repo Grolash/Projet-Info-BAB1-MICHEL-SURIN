@@ -27,9 +27,9 @@ class Game() :
         Takes a game as argument and refresh all pawns positions
         """
         self.board.reset()
-        for player in self.playerList :
-            x = player.depedency.coord[1]
-            y = player.depedency.coord[0]
+        for j in range(len(self.playerList)) :
+            x = self.playerList[j].depedency.coord[1]
+            y = self.playerList[j].depedency.coord[0]
             self.board.playerCellList[y][x].hasPawn = True
 
     def checkWin(self, player) :
