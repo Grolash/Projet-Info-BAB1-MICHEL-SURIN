@@ -42,13 +42,15 @@ class PawnController(Controller) :
 
     def move(self, direction) :
         if direction is not None :
-            if not self.board.playerCellList[self.dependency.coord[0], self.dependency.coord[1]].wallto(direction) :
+            y = self.dependency.coord[0]
+            x = self.dependency.coord[1]
+            if not self.board.playerCellList[y][x].wallTo(direction) :
                 self.dependency.coord += direction
 
-    def placeWall(self, coord) :
+    def placeWall(self, coord, direction) :
         if self.stock >= 0:
             self.stock -= 1
-            Wall(coord, direction = None)
+            Wall(coord, direction)
 
     def hasWon(self) :
         """

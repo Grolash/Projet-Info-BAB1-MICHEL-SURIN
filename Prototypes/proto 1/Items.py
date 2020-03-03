@@ -1,3 +1,7 @@
+import World
+#import Controller
+
+
 class MOAI():
     """ 
     This class is the mother of all items (M.O.A.I.).
@@ -9,12 +13,12 @@ class MOAI():
     -----------    -----------    -----------
     """
 
-    def __init__(self, coord = (0,4), direction = None):
-        self.coord = coord #is a tuple. Default is 0,4 (default player 1 pawn spawnpoint)
-        self.direction = direction
-    
-    def __str__(self):
-        return self.representation #is dependent from child class
+    def __init__(self, coordinates):
+        self.coord = coordinates #is a tuple
+
+    def typeOfItem(self):
+        string = "This is an item of type %s currently under the control of %s" % (self.name, self.controller) #self.name depend from child class
+        return string
 
 class Pawn(MOAI):
     """ 
@@ -29,10 +33,10 @@ class Pawn(MOAI):
     -----------    -----------    -----------
     """
 
-    def __init__(self, name, coord = (0,4), direction = None): 
-        super().__init__(coord, direction)
-        self.start = coord
+    def __init__(self, name, coord=(0,4), start=(0,4)):
         self.name = name
+        super().__init__(coord)
+        self.start = start
         self.representation = "!"
 
 
@@ -42,8 +46,9 @@ class Wall(MOAI):
     #WIP : origin --> tuple
            direction --> Board.UP/DOWN/...
     """
-    def __init__(self, coord, direction = None):
-        super().__init__(coord, direction)
+    def __init__(self, coord, direction=None):
+        super().__init__(coord)
+        self.direction = direction
         self.name = "Wall"
         if self.coord[1] == 0 :
             self.representation = "["
@@ -53,8 +58,8 @@ class Wall(MOAI):
             self.representation = "\\"
         if self.coord[0] == 0 :
             self.representation = "/"
-        SecondPart()
+        self.secondPart()
 
-    def SecondPart(self):
-        new_coordinates = (self.coordinates + self.direction)
-        SecondPartOfWAll = Wall(new_coordinates, direction = None)
+    def secondPart(self):
+        new_coordinates = (self.coord + self.direction)
+        SecondPartOfWAll = Wall(new_coordinates)

@@ -1,69 +1,7 @@
 
 
 
-class PlayerCell :
-    """
-    represent a cell on the board.
-    - hasPawn = True if a Pawn is on the PlayerCell
-    - hasWall(UP/DOWN/LEFT/RIGHT) = True if there is a wall on that side of the PlayerCell
-    """
-    def __init__(self, coord, board) :
-        self.board = board
-        self.coord = coord #is a tuple (y,x)
-        self.hasPawn = False
-        self.hasWallUP = False
-        self.hasWallDOWN = False
-        self.hasWallLEFT = False
-        self.hasWallRIGHT = False
-        #the following lines create a "Wall" if the PlayerCell is at a border of the Board
-        if self.coord[1] == 0 : 
-            self.hasWallLEFT = True
-        if self.coord[1] == board.size-1 :
-            self.hasWallRIGHT = True
-        if self.coord[0] == board.size-1 :
-            self.hasWallDOWN = True
-        if self.coord[0] == 0 : 
-            self.hasWallUP = True
 
-
-    def __str__(self) :
-        res = ""
-        if self.hasPawn :
-            res += "!" #will be MOAI.__str__ (<item>.__str__)
-        if self.hasWallLEFT :
-            res += "["
-        if self.hasWallUP :
-            res += "/"
-
-        if self.hasWallDOWN :
-            res += "\\"
-        if self.hasWallRIGHT :
-            res += "]" 
-        else :
-            res += "O"
-        return res
-
-    def hasWall(self) :
-        """
-        Returns "True" if the PlayerCell has at least 1 wall (or Board border).
-        """
-        if self.hasWallDOWN or self.hasWallLEFT or self.hasWallRIGHT or self.hasWallUP :
-            return True
-        else :
-            return False
-
-    def wallTo(self, direction) :
-        """
-        Returns "True" if there is a wall on the /Direction/ side of the PlayerCell.
-        """
-        if direction == Board.UP :
-            return self.hasWallUP
-        elif direction == Board.DOWN :
-            return self.hasWallDOWN
-        elif direction == Board.LEFT :
-            return self.hasWallLEFT
-        elif direction == Board.RIGHT :
-            return self.hasWallRIGHT
 
 
 class Board :
@@ -105,3 +43,71 @@ class Board :
         for i in range(len(self.playerCellList)) :
             for j in range(len(self.playerCellList[i])) :
                 self.playerCellList[i][j].hasPawn = False
+
+class PlayerCell(Board) :
+    """
+    represent a cell on the board.
+    - hasPawn = True if a Pawn is on the PlayerCell
+    - hasWall(UP/DOWN/LEFT/RIGHT) = True if there is a wall on that side of the PlayerCell
+    """
+    def __init__(self, coord, board) :
+        self.board = board
+        self.coord = coord #is a tuple (y,x)
+        self.hasPawn = False
+        self.hasWallUP = False
+        self.hasWallDOWN = False
+        self.hasWallLEFT = False
+        self.hasWallRIGHT = False
+        self.UP = (0,1)
+        self.DOWN = (0,-1)
+        self.LEFT = (-1,0)
+        self.RIGHT = (1,0)
+        #the following lines create a "Wall" if the PlayerCell is at a border of the Board
+        if self.coord[1] == 0 : 
+            self.hasWallLEFT = True
+        if self.coord[1] == board.size-1 :
+            self.hasWallRIGHT = True
+        if self.coord[0] == board.size-1 :
+            self.hasWallDOWN = True
+        if self.coord[0] == 0 : 
+            self.hasWallUP = True
+
+
+    def __str__(self) :
+        res = ""
+        if self.hasPawn :
+            res += "!" #will be MOAI.__str__ (<item>.__str__)
+        if self.hasWallLEFT :
+            res += "["
+        if self.hasWallUP :
+            res += "/"
+
+        if self.hasWallDOWN :
+            res += "\\"
+        if self.hasWallRIGHT :
+            res += "]" 
+        else :
+            res += "O"
+        return res
+
+    def hasWall(self) :
+        """
+        Returns "True" if the PlayerCell has at least 1 wall (or Board border).
+        """
+        if self.hasWallDOWN or self.hasWallLEFT or self.hasWallRIGHT or self.hasWallUP :
+            return True
+        else :
+            return False
+
+    def wallTo(self, direction) :
+        """
+        Returns "True" if there is a wall on the /Direction/ side of the PlayerCell.
+        """
+        if direction == self.UP :
+            return self.hasWallUP
+        elif direction == self.DOWN :
+            return self.hasWallDOWN
+        elif direction == self.LEFT :
+            return self.hasWallLEFT
+        elif direction == self.RIGHT :
+            return self.hasWallRIGHT
