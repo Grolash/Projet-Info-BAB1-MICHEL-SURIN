@@ -13,24 +13,14 @@ class Game() :
             pawnName = "Pawn" + str(i)
             self.pawnList.append(Pawn(pawnName))
             # create a Controller named "Player + i" and bind the Controller to the Pawn
-            pawnIndex = self.pawnList[i-1]
+            pawn = self.pawnList[i-1]
             playerName = "Player" + str(i)
-            newController = PawnController("Human", pawnIndex, self.board, playerName, 10)
+            newController = PawnController("Human", pawn, self.board, playerName, 10)
             self.playerList.append(newController)
             self.refresh()
     
     def __str__(self) :
         return self.board.__str__()
-
-    def refresh(self) :
-        """
-        Takes a game as argument and refresh all pawns positions
-        """
-        self.board.reset()
-        for j in range(len(self.playerList)) :
-            x = self.playerList[j].depedency.coord[1]
-            y = self.playerList[j].depedency.coord[0]
-            self.board.playerCellList[y][x].hasPawn = True
 
     def checkWin(self, player) :
         """
@@ -76,7 +66,14 @@ class Game() :
                 pass
             i += 1
         return True
-        
+      
+    def refresh(self) :
+        self.board.reset()
+        for player in self.playerList :
+            x = player.depedency.coord[1]
+            y = player.depedency.coord[0]
+            self.board.playerCellList[y][x].hasPawn = True
+    
 
 if __name__ == '__main__':
     newGame = Game(1,9)
