@@ -69,6 +69,10 @@ class Game() :
                 else :
                     self.playerList[i].move(self.board.LEFT)
             elif choice == 2 :
+                print("choose a valid case (format : 'x y')")
+                wallOriginInput = input().split()
+                wallOrigin_Y = int(wallOriginInput[1])
+                wallOrigin_X = int(wallOriginInput[0])
                 pass
             i += 1
         return True
