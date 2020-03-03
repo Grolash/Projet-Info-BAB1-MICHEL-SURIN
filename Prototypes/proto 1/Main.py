@@ -28,8 +28,8 @@ class Game() :
         """
         self.board.reset()
         for player in self.playerList :
-            x = player.depedency.coord[1]
-            y = player.depedency.coord[0]
+            x = player.dependency.coord[1]
+            y = player.dependency.coord[0]
             self.board.playerCellList[y][x].hasPawn = True
 
     def checkWin(self, player) :
