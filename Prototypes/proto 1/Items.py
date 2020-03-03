@@ -33,9 +33,10 @@ class Pawn(MOAI):
     -----------    -----------    -----------
     """
 
-    def __init__(self, name, coord=(0,4)):
+    def __init__(self, name, coord=(0,4), start=(0,4)):
         self.name = name
         super().__init__(coord)
+        self.start = start
         self.representation = "!"
 
 
@@ -57,8 +58,8 @@ class Wall(MOAI):
             self.representation = "\\"
         if self.coord[0] == 0 :
             self.representation = "/"
-        SecondPart()
+        self.secondPart()
 
-    def SecondPart(self):
+    def secondPart(self):
         new_coordinates = (self.coord + self.direction)
         SecondPartOfWAll = Wall(new_coordinates)
