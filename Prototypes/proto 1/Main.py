@@ -16,11 +16,19 @@ class Game() :
             pawn = self.pawnList[i-1]
             playerName = "Player" + str(i)
             newController = PawnController("Human", pawn, self.board, playerName, 10)
+            print(newController.dependency.coord)
             self.playerList.append(newController)
             self.refresh()
     
     def __str__(self) :
         return self.board.__str__()
+
+    def refresh(self) :
+        self.board.reset()
+        for player in self.playerList :
+            x = player.dependency.coord[1]
+            y = player.dependency.coord[0]
+            self.board.playerCellList[y][x].hasPawn = True
 
     def checkWin(self, player) :
         """
@@ -67,12 +75,7 @@ class Game() :
             i += 1
         return True
       
-    def refresh(self) :
-        self.board.reset()
-        for player in self.playerList :
-            x = player.depedency.coord[1]
-            y = player.depedency.coord[0]
-            self.board.playerCellList[y][x].hasPawn = True
+    
     
 
 if __name__ == '__main__':
