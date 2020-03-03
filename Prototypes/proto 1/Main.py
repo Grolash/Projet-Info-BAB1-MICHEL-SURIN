@@ -49,6 +49,8 @@ class Game() :
                 y = player.dependency.coord[0]
                 self.board.playerCellList[y][x].hasPawn = True
 
+
+
     def checkWin(self, player) :
         """
         check if the player has reached the opposite of the board
