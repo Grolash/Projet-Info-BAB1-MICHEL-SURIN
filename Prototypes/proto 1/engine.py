@@ -42,11 +42,45 @@ class PawnController(Controller) :
         self.stock = numbWall
 
     def move(self, direction) :
-        if direction is not None :
-            y = self.dependency.coord[0]
-            x = self.dependency.coord[1]
-            if canMove(self, direction):
-                self.dependency.coord += direction
+        """
+        The move method test if there is a pawn in the desired direction.
+        If there is no pawn, it does a normal move if possible.
+        If there is one, it makes (if possible) an automatic move to a legal position, diagonally, with a priority to the right of the pawn.
+        """
+        y, x = self.dependency.coord
+        if not(PlayerCell.pawnTo(self.board.playerCellList[y][x], direction)):
+            if direction is not None :
+                if canMove(self, direction):
+                    self.dependency.coord += direction
+        else:
+            if direction is self.board.UP :
+                if canMove(self, self.board.RIGHT, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.RIGHT
+                elif canMove(self, self.board.LEFT, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.LEFT
+            elif direction is self.board.RIGHT :
+                if canMove(self, self.board.UP, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.DOWN
+                elif canMove(self, self.board.DOWN, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.UP
+            elif direction is self.board.DOWN :
+                if canMove(self, self.board.LEFT, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.LEFT
+                elif canMove(self, self.board.RIGHT, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.RIGHT
+            elif direction is self.board.LEFT :
+                if canMove(self, self.board.UP, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.UP
+                elif canMove(self, self.board.DOWN, self.dependency.coord + direction):
+                    self.dependency.coord += direction
+                    self.dependency.coord += self.board.DOWN
 
     def placeWall(self, coord, direction) :
         if self.stock >= 0:

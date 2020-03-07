@@ -111,3 +111,15 @@ class PlayerCell(Board) :
             return self.hasWallLEFT
         elif direction == self.RIGHT :
             return self.hasWallRIGHT
+
+
+    def pawnTo(self, direction) :
+        """
+        Returns "True" if the PlayerCell in the selected direction has a pawn on it.
+        """
+        dirCoord = self.coord + direction
+        y, x = dirCoord
+        if self.board.playerCellList[y][x].hasPawn:
+            return True
+        else :
+            return False
