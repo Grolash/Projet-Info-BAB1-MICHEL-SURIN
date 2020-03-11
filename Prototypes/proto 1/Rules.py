@@ -7,7 +7,7 @@ def canMove(PawnController, direction, coordinates = None):
     '''
     y, x = PawnController.dependency.coord
     if coordinates != None:
-        y, x = coordinates
+        (y, x) = coordinates
     if PawnController.board.playerCellList[y][x].wallTo(direction):
         return False
     return True

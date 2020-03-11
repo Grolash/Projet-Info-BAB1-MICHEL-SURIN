@@ -1,8 +1,9 @@
 TODO list :
 
--Wall : origin, representation(actually represented through the PlayerCell), direction
--Controller ?
 
 
 
 FIX list :
+
+- the player move function currently makes the player to move in diagonals (WTF xD)
+- the placeWall function crashes the game

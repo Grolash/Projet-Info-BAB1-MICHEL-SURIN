@@ -118,8 +118,7 @@ class PlayerCell(Board) :
         Returns "True" if the PlayerCell in the selected direction has a pawn on it.
         """
         dirCoord = self.coord + direction
-        y, x = dirCoord
-        if self.board.playerCellList[y][x].hasPawn:
+        if self.board.playerCellList[dirCoord[0]][dirCoord[1]].hasPawn:
             return True
         else :
             return False
