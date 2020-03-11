@@ -49,46 +49,51 @@ class PawnController(Controller) :
         If there is one, it makes (if possible) an automatic move to a legal position, diagonally, with a priority to the right of the pawn.
         """
         y, x = self.dependency.coord 
+        if direction is not None:
+            if canMove(self, direction): #checks if there is no wall between the pawn and the next cell
+                nextCoord = add(self.dependency.coord, direction) #coordinates of forward cell to move, used to check canMove and make a move if there is no pawn
 
-        if self.board.playerCellList[y][x].pawnTo(direction):
-            nextCoord = add(self.dependency.coord, direction)
+                if self.board.playerCellList[y][x].pawnTo(direction):
 
-            if direction is self.board.UP :
-                if canMove(self, self.board.RIGHT, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.RIGHT)
-                elif canMove(self, self.board.LEFT, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.LEFT)
+                    if canMove(self, direction, nextCoord): #checks if the played pawn can bypass the other pawn
+                        superMoveCoord = add(nextCoord, direction) #coorinates of cell after the pawn, used to make a "super" move one more cell than normal
+                        self.dependency.coord = superMoveCoord
 
-            elif direction is self.board.RIGHT :
-                if canMove(self, self.board.UP, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
-                elif canMove(self, self.board.DOWN, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.UP)
+                    else: #checks if the played pawn can otherwise move to a diagonal direction (through the other pawn cell), one direction at a time
+                        if direction is self.board.UP :
+                            if canMove(self, self.board.RIGHT, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.RIGHT)
+                            elif canMove(self, self.board.LEFT, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.LEFT)
 
-            elif direction is self.board.DOWN :
-                if canMove(self, self.board.LEFT, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.LEFT)
-                elif canMove(self, self.board.RIGHT, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.RIGHT)
+                        elif direction is self.board.RIGHT :
+                            if canMove(self, self.board.UP, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
+                            elif canMove(self, self.board.DOWN, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.UP)
 
-            elif direction is self.board.LEFT :
-                if canMove(self, self.board.UP, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.UP)
-                elif canMove(self, self.board.DOWN, nextCoord):
-                    self.dependency.coord = add(self.dependency.coord, direction)
-                    self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
+                        elif direction is self.board.DOWN :
+                            if canMove(self, self.board.LEFT, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.LEFT)
+                            elif canMove(self, self.board.RIGHT, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.RIGHT)
+
+                        elif direction is self.board.LEFT :
+                            if canMove(self, self.board.UP, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.UP)
+                            elif canMove(self, self.board.DOWN, nextCoord):
+                                self.dependency.coord = add(self.dependency.coord, direction)
+                                self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
                     
-        else :
-            if direction is not None :
-                if canMove(self, direction):
-                    self.dependency.coord = add(self.dependency.coord, direction)
+                else: #if there is no pawn, just make a normal move ;3
+                    self.dependency.coord = nextCoord
 
     def placeWall(self, coord, direction) :
         if self.stock >= 0:

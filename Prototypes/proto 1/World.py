@@ -1,4 +1,4 @@
-
+from add import *
 
 
 
@@ -117,8 +117,5 @@ class PlayerCell(Board) :
         """
         Returns "True" if the PlayerCell in the selected direction has a pawn on it.
         """
-        dirCoord = self.coord + direction
-        if self.board.playerCellList[dirCoord[0]][dirCoord[1]].hasPawn:
-            return True
-        else :
-            return False
+        dirCoord = add(self.coord, direction)
+        return self.board.playerCellList[dirCoord[0]][dirCoord[1]].hasPawn
