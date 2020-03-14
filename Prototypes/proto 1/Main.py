@@ -106,7 +106,7 @@ class Game() :
             i += 1
             if i >= len(self.playerList) :
                 i = 0
-        return True
+        print("WON")
       
     
     

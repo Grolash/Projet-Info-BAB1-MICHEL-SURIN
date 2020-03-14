@@ -19,3 +19,18 @@ objectifs : - avoir un plateau de jeu
     -----------    -----------    -----------
 02 mars 2020:
 installation de Gradle et mise en place du projet Gradle
+
+    -----------    -----------    -----------
+
+14/03/2020 :
+début d'un 2eme prototype en Java afin de tester un autre systeme de grille (avec intergrille) ° se familiariser avec la Javadoc
+    -----------    -----------    -----------
+
+
+    -----------    -----------    -----------
+
+
+    -----------    -----------    -----------
+
+
+    -----------    -----------    -----------
