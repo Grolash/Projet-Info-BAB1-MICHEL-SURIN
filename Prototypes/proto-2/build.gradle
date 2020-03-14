@@ -1,0 +1,22 @@
+plugins {
+    id 'java' // Utilise le plugin Java
+    id 'application' // On développe une application
+}
+repositories {
+    // Endroit où trouver les dépendances
+    // (serveur jcenter.bintray.com)
+    jcenter()
+}
+
+test {
+
+}
+
+dependencies {
+
+}
+
+application {
+    // Classe principale à exécuter
+    mainClassName = 'Main'
+}

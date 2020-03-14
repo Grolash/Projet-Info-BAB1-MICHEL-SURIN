@@ -1,5 +1,0 @@
-
-class WallPart extends Wall {
-
-
-}
