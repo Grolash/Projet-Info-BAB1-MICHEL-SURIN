@@ -49,7 +49,7 @@ public class Coord {
      *
      * @param other is a global.Coord object whom will be added to the instance.
      */
-    public void add(Coord other) {
+    public void add(Coord other) { //TODO override "+"
         this.setY(this.getY() + other.getY());
         this.setX(this.getX() + other.getX());
     }
