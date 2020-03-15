@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45be14f7-b4eb-482d-b091-b1db52583f49" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../../proto 1/Items.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../proto 1/Items.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../proto 1/Rules.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../proto 1/Rules.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../proto 1/engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../proto 1/engine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global/Coord.java" beforeDir="false" afterPath="$PROJECT_DIR$/global/Coord.java" afterDir="false" />
-    </list>
+    <list default="true" id="45be14f7-b4eb-482d-b091-b1db52583f49" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
