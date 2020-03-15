@@ -60,4 +60,4 @@ class Wall(MOAI):
 
     def secondPart(self):
         new_coordinates = (self.coord + self.direction)
-        SecondPartOfWAll = Wall(new_coordinates)
+        secondPartOfWAll = Wall(new_coordinates)

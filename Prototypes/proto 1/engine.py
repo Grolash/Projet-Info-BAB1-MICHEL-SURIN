@@ -98,7 +98,7 @@ class PawnController(Controller) :
     def placeWall(self, coord, direction) :
         if self.stock >= 0:
             self.stock -= 1
-            Wall(coord, direction)
+            newWall = Wall(coord, direction)
 
     def hasWon(self) :
         """

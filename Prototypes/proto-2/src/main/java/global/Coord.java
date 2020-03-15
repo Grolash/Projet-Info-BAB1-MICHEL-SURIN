@@ -6,6 +6,9 @@ public class Coord {
     private int x;
 
     public Coord(int y, int x) {
+        /** /!\ It is important to note that first component is ordinate and second is absciss, contrary to conventions.
+         * This has been done so because of practicallity in working with arrays.
+         */
         this.y = y;
         this.x = x;
     }
