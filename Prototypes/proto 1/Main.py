@@ -37,13 +37,13 @@ class Game() :
             if direction == self.board.UP :
                 self.board.playerCellList[y][x].hasWallRIGHT = True
                 self.board.playerCellList[y][x+1].hasWallLEFT = True
-                self.board.playerCellList[y+1][x].hasWallRIGHT = True
-                self.board.playerCellList[y+1][x+1].hasWallLEFT = True
+                self.board.playerCellList[y-1][x].hasWallRIGHT = True
+                self.board.playerCellList[y-1][x+1].hasWallLEFT = True
             elif direction == self.board.RIGHT :
                 self.board.playerCellList[y][x].hasWallUP = True
                 self.board.playerCellList[y][x+1].hasWallUP = True
-                self.board.playerCellList[y+1][x].hasWallDOWN = True
-                self.board.playerCellList[y+1][x+1].hasWallDOWN = True
+                self.board.playerCellList[y-1][x].hasWallDOWN = True
+                self.board.playerCellList[y-1][x+1].hasWallDOWN = True
         else :
             self.board.reset()
             for player in self.playerList :
@@ -114,8 +114,8 @@ class Game() :
             elif choice == 2 :
                 print("choose a valid case (format : 'x y')")
                 wallOriginInput = input().split()
-                wallOrigin_Y = int(wallOriginInput[1])
-                wallOrigin_X = int(wallOriginInput[0])
+                wallOrigin_Y = int(wallOriginInput[0])
+                wallOrigin_X = int(wallOriginInput[1])
                 wallOrigin = wallOrigin_Y, wallOrigin_X
                 print("choose the direction : ")
                 print("1) horizontal")
