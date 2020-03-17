@@ -5,6 +5,9 @@ to the goal line.
 """
 import World
 from Rules import canMove
+import liste_chainee
+import Node
+from add import *
 
 def path(start, goal, controller, board) :
     """
@@ -19,12 +22,10 @@ def path(start, goal, controller, board) :
     while len(toBeExplored) != 0 :
         current = toBeExplored.pop()
         explored.append(current)
-        explore(current, explored, goal, controller, board)
+        explore(current, toBeExplored, explored, goal, controller, board)
         if toBeExplored[-1] == None :
             return None
-        
-
-
+    
 def explore(start, toBeExplored, explored, goal, controller, board) :
     """
     the goal is to explore every cell around the start cell except

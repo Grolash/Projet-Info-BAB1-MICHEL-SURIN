@@ -58,10 +58,10 @@ class PlayerCell(Board) :
         self.hasWallDOWN = False
         self.hasWallLEFT = False
         self.hasWallRIGHT = False
-        self.UP = (0,1)
-        self.DOWN = (0,-1)
-        self.LEFT = (-1,0)
-        self.RIGHT = (1,0)
+        self.UP = (1,0)
+        self.DOWN = (-1,0)
+        self.LEFT = (0,-1)
+        self.RIGHT = (0,1)
         #the following lines create a "Wall" if the PlayerCell is at a border of the Board
         if self.coord[1] == 0 : 
             self.hasWallLEFT = True

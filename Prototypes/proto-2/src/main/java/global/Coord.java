@@ -1,5 +1,8 @@
 package global;
 
+/**
+ * class that represents a coord within a board with (heigth, absciss) format.
+ */
 public class Coord {
 
     private int y;
@@ -45,9 +48,12 @@ public class Coord {
     }
 
     /**
-     * Increments y and x by the y and x of a second object (ex : a direction (0,1))
+     * Increments y and x value of the instance the method is applied
+     * <br> ex : given c1 = (4,5), c2 = (7,-2)
+     * <br> c1.add(c2)
+     * <br> c1 = (11, 3)
      *
-     * @param other is a global.Coord object whom will be added to the instance.
+     * @param other is a global. Coord object whom will be added to the instance.
      */
     public void add(Coord other) { //TODO override "+"
         this.setY(this.getY() + other.getY());

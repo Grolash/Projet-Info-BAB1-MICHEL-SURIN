@@ -1,4 +1,4 @@
-
+from add import *
 
 class MOAI():
     """ 
@@ -59,5 +59,5 @@ class Wall(MOAI):
         self.secondPart()
 
     def secondPart(self):
-        new_coordinates = (self.coord + self.direction)
+        new_coordinates = add(self.coord, self.direction)
         secondPartOfWAll = Wall(new_coordinates)
