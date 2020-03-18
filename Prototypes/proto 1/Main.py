@@ -2,7 +2,7 @@ from World import *
 from Items import *
 from engine import *
 from Rules import *
-
+import AI
 
 class Game() :
 
@@ -69,29 +69,16 @@ class Game() :
         i = 0
         while not self.checkWin(self.playerList[i]) :
             playerCtrl = self.playerList[i]
-            coord = playerCtrl.dependency.coord
-            print(self.board)
-            print("player " + str(i+1) + " pick-up an action :")
-            print("1) move")
-            print("2) place a Wall")
-            choice = int(input("your choice : "))
-            #following lines can be improved with a do...while (80 to 110)
-            if choice == 1 :
-                print("choose a direction :")
-                print("1) UP")
-                print("2) RIGHT")
-                print("3) DOWN")
-                print("4) LEFT")
-                intDir = int(input("direction : "))
-                if intDir == 1 :
-                    direction = self.board.UP
-                elif intDir == 2 :
-                    direction = self.board.RIGHT
-                elif intDir == 3 :
-                    direction = self.board.DOWN
-                elif intDir == 4 :
-                    direction = self.board.LEFT
-                while not canMove(playerCtrl, direction, coord) :
+            if playerCtrl.controllerType == "Human":
+                coord = playerCtrl.dependency.coord
+                print(self.board)
+                print("player " + str(i+1) + " pick-up an action :")
+                print("1) move")
+                print("2) place a Wall")
+                choice = int(input("your choice : "))
+                #print(path(self.playerList[i].dependency.coord, 8, self.playerList[i], self.board))
+                #following lines can be improved with a do...while (80 to 110)
+                if choice == 1 :
                     print("choose a direction :")
                     print("1) UP")
                     print("2) RIGHT")
@@ -106,26 +93,26 @@ class Game() :
                         direction = self.board.DOWN
                     elif intDir == 4 :
                         direction = self.board.LEFT
-                playerCtrl.move(direction)
+                    while (playerCtrl.move(direction) == 0) : #if the player can move, "move()" does so, else it returns 0 and the loop demands again
+                        print("choose a direction :")
+                        print("1) UP")
+                        print("2) RIGHT")
+                        print("3) DOWN")
+                        print("4) LEFT")
+                        intDir = int(input("direction : "))
+                        if intDir == 1 :
+                            direction = self.board.UP
+                        elif intDir == 2 :
+                            direction = self.board.RIGHT
+                        elif intDir == 3 :
+                            direction = self.board.DOWN
+                        elif intDir == 4 :
+                            direction = self.board.LEFT
+                
                 
                     
-                self.refresh()
-            elif choice == 2 :
-                print("choose a valid case (format : 'x y')")
-                wallOriginInput = input().split()
-                wallOrigin_Y = int(wallOriginInput[0])
-                wallOrigin_X = int(wallOriginInput[1])
-                wallOrigin = wallOrigin_Y, wallOrigin_X
-                print("choose the direction : ")
-                print("1) horizontal")
-                print("2) vertical")
-                wallDirectionInput = int(input())
-                if wallDirectionInput == 1 :
-                    wallDirection = self.board.RIGHT
-                else :
-                    wallDirection = self.board.UP 
-                while not canPlaceWall(wallOrigin, wallDirection, self) :
-                    print("invalid wall")
+                    self.refresh()
+                elif choice == 2 :
                     print("choose a valid case (format : 'x y')")
                     wallOriginInput = input().split()
                     wallOrigin_Y = int(wallOriginInput[0])
@@ -139,9 +126,11 @@ class Game() :
                         wallDirection = self.board.RIGHT
                     else :
                         wallDirection = self.board.UP 
-                self.playerList[i].placeWall(wallOrigin, wallDirection)
-                self.refresh(True, wallOrigin, wallDirection)
-            print(self.playerList[i].dependency.coord)
+                    self.playerList[i].placeWall(wallOrigin, wallDirection)
+                    self.refresh(True, wallOrigin, wallDirection)
+                print(self.playerList[i].dependency.coord)
+            elif playerCtrl.controllerType == "Debilus":
+                AI.Debilus(playerCtrl.board, playerCtrl).act()
             i += 1
             if i >= len(self.playerList) :
                 i = 0
