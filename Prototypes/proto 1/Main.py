@@ -2,7 +2,7 @@ from World import *
 from Items import *
 from engine import *
 from Rules import *
-from Path import *
+
 
 class Game() :
 
@@ -75,7 +75,6 @@ class Game() :
             print("1) move")
             print("2) place a Wall")
             choice = int(input("your choice : "))
-            #print(path(self.playerList[i].dependency.coord, 8, self.playerList[i], self.board))
             #following lines can be improved with a do...while (80 to 110)
             if choice == 1 :
                 print("choose a direction :")
@@ -125,6 +124,21 @@ class Game() :
                     wallDirection = self.board.RIGHT
                 else :
                     wallDirection = self.board.UP 
+                while not canPlaceWall(wallOrigin, wallDirection, self) :
+                    print("invalid wall")
+                    print("choose a valid case (format : 'x y')")
+                    wallOriginInput = input().split()
+                    wallOrigin_Y = int(wallOriginInput[0])
+                    wallOrigin_X = int(wallOriginInput[1])
+                    wallOrigin = wallOrigin_Y, wallOrigin_X
+                    print("choose the direction : ")
+                    print("1) horizontal")
+                    print("2) vertical")
+                    wallDirectionInput = int(input())
+                    if wallDirectionInput == 1 :
+                        wallDirection = self.board.RIGHT
+                    else :
+                        wallDirection = self.board.UP 
                 self.playerList[i].placeWall(wallOrigin, wallDirection)
                 self.refresh(True, wallOrigin, wallDirection)
             print(self.playerList[i].dependency.coord)
