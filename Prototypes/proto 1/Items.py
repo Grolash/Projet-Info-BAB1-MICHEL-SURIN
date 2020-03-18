@@ -56,8 +56,9 @@ class Wall(MOAI):
             self.representation = "\\"
         if self.coord[0] == 0 :
             self.representation = "/"
-        self.secondPart()
+        if direction != None :
+            self.secondPart(coord, direction)
 
-    def secondPart(self):
+    def secondPart(self, coord, direction):
         new_coordinates = add(self.coord, self.direction)
         secondPartOfWAll = Wall(new_coordinates)

@@ -93,7 +93,7 @@ class PawnController(Controller) :
                                 self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
                     
                 else: #if there is no pawn, just make a normal move ;3
-                    self.dependency.coord = nextCoord
+                    self.dependency.coord = add(self.dependency.coord, direction)
 
     def placeWall(self, coord, direction) :
         if self.stock >= 0:
