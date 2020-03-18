@@ -47,6 +47,7 @@ class PawnController(Controller) :
         The move method test if there is a pawn in the desired direction.
         If there is no pawn, it does a normal move if possible.
         If there is one, it makes (if possible) an automatic move to a legal position, diagonally, with a priority to the right of the pawn.
+        /!\\ IF NO MOVE IS POSSIBLE, RETURN 0 /!\\
         """
         y, x = self.dependency.coord 
         if direction is not None:
@@ -91,9 +92,16 @@ class PawnController(Controller) :
                             elif canMove(self, self.board.DOWN, nextCoord):
                                 self.dependency.coord = add(self.dependency.coord, direction)
                                 self.dependency.coord = add(self.dependency.coord, self.board.DOWN)
+                        
+                        else:
+                            return 0
                     
                 else: #if there is no pawn, just make a normal move ;3
                     self.dependency.coord = add(self.dependency.coord, direction)
+            else:
+                return 0
+        else:
+            return 0
 
     def placeWall(self, coord, direction) :
         if self.stock >= 0:
