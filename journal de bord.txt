@@ -25,7 +25,8 @@ installation de Gradle et mise en place du projet Gradle
 14/03/2020 :
 début d'un 2eme prototype en Java afin de tester un autre systeme de grille (avec intergrille) ° se familiariser avec la Javadoc
     -----------    -----------    -----------
-prototype hexa SIMON
+prototype hexa SIMON: test de grille hexagonale; conclusion: le système de directions n'est pas suffisemment modulaire, des adaptations majeures du code seraient nécessaires 
+pour l'intégrer dans le projet final.
 
     -----------    -----------    -----------
 18/03/2020 :
@@ -33,6 +34,9 @@ début du travail sur la logique et les règles du jeu. Cela implique beaucoup d
 --> idée pathfinding : parcours en largeur présenté en séance de projet d'informatique
 
     -----------    -----------    -----------
-
+21/03/2020 :
+2 IA fonctionnelles (pas encore insérées dans le jeu mais capables d'agir comme désiré): 
+ -"Debilus": IA entièrement aléatoire sans considérations aucune mis à part les règles du jeu
+ -"Smarted": IA plus développée, aléatoire mais n'allant pas à l'encontre de son objectif, avec un aspect stratégique très sommaire pris en compte.
 
     -----------    -----------    -----------
