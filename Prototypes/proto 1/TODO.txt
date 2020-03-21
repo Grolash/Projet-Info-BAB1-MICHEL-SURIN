@@ -5,5 +5,5 @@ TODO list :
 
 FIX list :
 
-- the player move function currently makes the player to move in diagonals (WTF xD)
-- the placeWall function crashes the game
+- the player move function currently makes the player to move in diagonals (WTF xD) / FIXED
+- the placeWall function crashes the game / FIXED

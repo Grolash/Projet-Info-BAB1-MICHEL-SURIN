@@ -19,6 +19,8 @@ class Debilus(AI):
         super().__init__(controller, board)
     
     def act(self):
+        time.sleep(0,2)
+
         directions = {1 : self.board.UP, 2 : self.board.RIGHT, 3 : self.board.DOWN, 4 : self.board.LEFT}
 
         action = random.randint(1, 2)
@@ -35,8 +37,6 @@ class Debilus(AI):
             dir = random.randint(1, 2)
             self.controller.placeWall(wallOrigin, directions[dir])
 
-    time.sleep(0,2)
-
 class Smarted(AI):
     """
     Less dumb AI, because I could. Does not move backward and do not place a wall in front of self.
@@ -48,6 +48,8 @@ class Smarted(AI):
         self.action = 1
     
     def act(self):
+        time.sleep(0,5)
+
         directions = {1 : self.board.UP, 2 : self.board.RIGHT, 3 : self.board.DOWN, 4 : self.board.LEFT}
 
         if self.action == 1:
@@ -70,16 +72,15 @@ class Smarted(AI):
         elif self.action == 2:
             ordinate = random.randint(0, self.controller.dependency.coord[0])
             absciss = random.randint(0, self.board.size)
-            wallOrigin = ordinate, absciss
             dir = random.randint(1, 2)
             if (absciss == self.controller.dependency.coord[1]) and (dir == 2):
                 absciss += 1
+            wallOrigin = ordinate, absciss
             self.controller.placeWall(wallOrigin, directions[dir])
         
         self.action += 1
         if self.action == 3:
             self.action = 1
-        time.sleep(0,5)
 
 
 
