@@ -113,13 +113,13 @@ class PawnController(Controller) :
         first check the initial spawn of the player
         then return true if the player has reached to opposite of the board
         """
-        if self.dependency.start[0] == self.board.playerCellList[0] : #if the player starts at the top
-            if self.dependency.coord[0] == self.board.playerCellList[-1] : #if he reaches the bottom
+        if self.dependency.start[0] == self.board.playerCellList[0].coord[0]  : #if the player starts at the top
+            if self.dependency.coord[0] == self.board.playerCellList[-1].coord[0] : #if he reaches the bottom
                 return True
             else :
                 return False
-        elif self.dependency.start[0] == self.board.playerCellList[-1] : #if the player starts at the bottom
-            if self.dependency.coord[0] == self.board.playerCellList[0] :  #if he reaches the top
+        elif self.dependency.start[0] == self.board.playerCellList[-1].coord[0]  : #if the player starts at the bottom
+            if self.dependency.coord[0] == self.board.playerCellList[0].coord[0]  :  #if he reaches the top
                 return True
             else :
                 return False
