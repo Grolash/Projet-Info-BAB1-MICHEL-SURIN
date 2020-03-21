@@ -23,7 +23,7 @@ class Controller() :
     """
 
     def __init__(self, controllerType, dependency, board) :
-        self.controller = controllerType
+        self.controllerType = controllerType
         self.dependency = dependency
         self.board = board
 
@@ -113,13 +113,14 @@ class PawnController(Controller) :
         first check the initial spawn of the player
         then return true if the player has reached to opposite of the board
         """
-        if self.dependency.start[0] == self.board.playerCellList[0].coord[0]  : #if the player starts at the top
-            if self.dependency.coord[0] == self.board.playerCellList[-1].coord[0] : #if he reaches the bottom
-                return True
-            else :
-                return False
-        elif self.dependency.start[0] == self.board.playerCellList[-1].coord[0]  : #if the player starts at the bottom
-            if self.dependency.coord[0] == self.board.playerCellList[0].coord[0]  :  #if he reaches the top
-                return True
-            else :
-                return False
+        for i in range(self.board.size):
+            if self.dependency.start[0] == 0  : #if the player starts at the top
+                if self.dependency.coord[0] == self.board.playerCellList[-1][i].coord[0] : #if he reaches the bottom
+                    return True
+                else :
+                    return False
+            elif self.dependency.start[0] == self.board.size  : #if the player starts at the bottom
+                if self.dependency.coord[0] == self.board.playerCellList[0][i].coord[0]  :  #if he reaches the top
+                    return True
+                else :
+                    return False
