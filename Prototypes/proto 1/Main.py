@@ -76,7 +76,6 @@ class Game() :
                 print("1) move")
                 print("2) place a Wall")
                 choice = int(input("your choice : "))
-                #print(path(self.playerList[i].dependency.coord, 8, self.playerList[i], self.board))
                 #following lines can be improved with a do...while (80 to 110)
                 if choice == 1 :
                     print("choose a direction :")
@@ -129,6 +128,7 @@ class Game() :
                     self.playerList[i].placeWall(wallOrigin, wallDirection)
                     self.refresh(True, wallOrigin, wallDirection)
                 print(self.playerList[i].dependency.coord)
+                findAPath(self, playerCtrl)
             elif playerCtrl.controllerType == "Debilus":
                 AI.Debilus(playerCtrl.board, playerCtrl).act()
             i += 1

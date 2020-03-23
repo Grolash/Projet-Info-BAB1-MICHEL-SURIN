@@ -1,5 +1,6 @@
 from World import *
 from engine import *
+import copy
 
 def canMove(PawnController, direction, coordinates = None):
     '''
@@ -52,75 +53,61 @@ def validPlacement(coord, direction, board) :
 def isPath(coord, direction, game) :
     return True
 
+def findAPath(game, playerController):
+    """
+    game : the game
+    playerController : the controller which for we need to find a path
+    """
+    startingCoord = playerController.dependency.coord #the coord where the pawn is at the beginning of the algorithm
+    linked_explored = {} # will link the cell between them. They key is the cell and it's value is the "previous" cell
+    explored_cell = [] # list containing all the explored cell
+    toBeExplored = [] #the list containing all the cells who's surrounding needs to be explored
+    toBeExplored.append(startingCoord)
+    flag = False
+    while not flag :
+        flag = explore(linked_explored, explored_cell, toBeExplored, playerController)
+        print(linked_explored)
+    return linked_explored
 
-def findAPath(board, pawnCoord, objective):
+def explore(linked_explored, explored_cell, toBeExplored, playerController) : 
     """
-    board : the board in wich the algorithm will try to find a path
-    pawnCoord : the starting point of the algorithm 
-    objective : the targeted line. Basically the first line or the last line of the board depending
-    on the player
+    from a cell, will explore all the cell around *cell*, makes a check to see if the surrounding cells are not yet explored.
+    at the end, put the newly explored cell in a list of explored cell and linked them to the cell they were explored from.
+    """
+    currentList = copy.deepcopy(toBeExplored)
+    directions = {"UP" : (-1,0), "LEFT":(0,-1), "DOWN":(1,0), "RIGHT":(0,1)}
+    while len(currentList) > 0 : #will do for all the cells who's surrounding needs to be explored, stop if the list is empty. :)
+        current = currentList.pop() #withdrawn the last element of the list.
+        toBeExplored.pop() #simply pop the last cell. Does not interfer with the while. New cells will be append later
+        explored_cell.append(current) #mark the cell has explored
+        #then we explore it
+        block_counter = 0
+        for j in directions : #will do for each direction
+            nextCell = add(current, directions[j])
+            if canMove(playerController, directions[j], current) and nextCell not in explored_cell :
+                if checkGoal(nextCell, playerController) :
+                    linked_explored[nextCell] = current
+                    linked_explored["GOAL"] = nextCell #will allow to find the path
+                else :
+                    linked_explored[nextCell] = current
+                    toBeExplored.append(nextCell) #next time we call this function, this list is updated
+                    
+        if "GOAL" not in linked_explored :
+            return False
+        else :
+            return True
+                
 
-    @return return the shortest path.
-    """
-    pass
 
-def path(start, goal, controller, board) :
-    """
-    start : a tuple representing the starting coord
-    goal : the targetted line.
-    controller : the current player whom we need to find a path :)
-    board : refers to the actual board where a path is needed to be find
-    """
-    toBeExplored = []
-    explored = []
-    toBeExplored.append(start)
-    while len(toBeExplored) != 0 :
-        current = toBeExplored.pop()
-        explored.append(current)
-        explore(current, toBeExplored, explored, goal, controller, board)
-        if toBeExplored[-1] == None :
-            return None
-    return explored
-    
-def explore(start, toBeExplored, explored, goal, controller, board) :
-    """
-    the goal is to explore every cell around the start cell except
-    if a surrounding cell is already in explored list, it's not considered as
-    a need-to-explore.
-    """
-    startUP = add(start, board.UP)
-    startLEFT = add(start, board.LEFT)
-    startDOWN = add(start, board.DOWN)
-    startRIGHT = add(start, board.RIGHT)
-    blockedCounter = 0
-    if canMove(controller, board.UP, start) and (startUP not in explored) and not (checkGoal(startUP, goal)) :
-        toBeExplored.append(startUP)
-    else :
-        blockedCounter += 1
-    if canMove(controller, board.LEFT, start) and (startLEFT not in explored) and not (checkGoal(startLEFT, goal)) :
-        toBeExplored.append(startLEFT)
-    else :
-        blockedCounter += 1
-    if canMove(controller, board.DOWN, start) and (startDOWN not in explored) and not (checkGoal(startDOWN, goal)) :
-        toBeExplored.append(startDOWN)
-    else :
-        blockedCounter += 1
-    if canMove(controller, board.RIGHT, start) and (startRIGHT not in explored) and not (checkGoal(startRIGHT, goal)) :
-        toBeExplored.append(startRIGHT)
-    else :
-        blockedCounter += 1
-    if blockedCounter == 4 :
-        toBeExplored.append(None)
-    
+                    
 
-def checkGoal(current, goal) :
+def checkGoal(current, playerController) :
     """
     return True if the current coord tuple's is on the goal line
     """
-    if current[0] == goal :
-        return True
-    else :
-        return False
+    controller2 = copy.deepcopy(playerController)
+    controller2.dependency.coord = current
+    return controller2.hasWon()
 
 
 
