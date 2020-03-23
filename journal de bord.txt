@@ -40,3 +40,9 @@ début du travail sur la logique et les règles du jeu. Cela implique beaucoup d
  -"Smarted": IA plus développée, aléatoire mais n'allant pas à l'encontre de son objectif, avec un aspect stratégique très sommaire pris en compte.
 
     -----------    -----------    -----------
+
+23/03/2020 :
+une première version d'un algorithme de pahfinding a été mis au point. L'idée de base était d'implémenter l'idée du parcours en largeur mais il me semble qu'au final c'est un
+parcours en profondeurs qu'est appliqué par le pathfinding.
+--> il n'est pas parfait, il ne trouve pas le chemin le plus cours ET si il n'y a pas de chemin possible, l'algo tourne en rond...
+ref : pathfinding V1
