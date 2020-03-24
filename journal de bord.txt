@@ -40,3 +40,6 @@ début du travail sur la logique et les règles du jeu. Cela implique beaucoup d
  -"Smarted": IA plus développée, aléatoire mais n'allant pas à l'encontre de son objectif, avec un aspect stratégique très sommaire pris en compte.
 
     -----------    -----------    -----------
+21/03/2020 2h15 du matin: 
+IA "Smart" presque terminée
+    -----------    -----------    -----------

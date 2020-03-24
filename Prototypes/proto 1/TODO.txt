@@ -6,3 +6,4 @@ TODO list :
 FIX list :
 
 - wall collision
+- possible "Smart" fixes needed; too tired to do now
