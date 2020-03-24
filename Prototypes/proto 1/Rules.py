@@ -71,12 +71,15 @@ def findAPath(game, playerController):
 
 def explore(linked_explored, explored_cell, toBeExplored, playerController) : 
     """
-    from a cell, will explore all the cell around *cell*, makes a check to see if the surrounding cells are not yet explored.
+    from a cell, will explore all the cell around a cell from toBeExplored (for each cell of this list), makes a check to see if the surrounding cells are not yet explored.
     at the end, put the newly explored cell in a list of explored cell and linked them to the cell they were explored from.
     """
     currentList = copy.deepcopy(toBeExplored)
     directions = {"UP" : (-1,0), "LEFT":(0,-1), "DOWN":(1,0), "RIGHT":(0,1)}
     while len(currentList) > 0 : #will do for all the cells who's surrounding needs to be explored, stop if the list is empty. :)
+        """
+        IDEA : why it won't stop ? Maybe because it wants to check cells trought walls !
+        """
         current = currentList.pop() #withdrawn the last element of the list.
         toBeExplored.pop() #simply pop the last cell. Does not interfer with the while. New cells will be append later
         explored_cell.append(current) #mark the cell has explored
