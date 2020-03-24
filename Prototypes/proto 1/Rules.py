@@ -50,8 +50,6 @@ def validPlacement(coord, direction, board) :
         else :
             return True
 
-def isPath(coord, direction, game) :
-    return True
 
 def findAPath(game, playerController):
     """
@@ -84,7 +82,6 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
         toBeExplored.pop() #simply pop the last cell. Does not interfer with the while. New cells will be append later
         explored_cell.append(current) #mark the cell has explored
         #then we explore it
-        block_counter = 0
         for j in directions : #will do for each direction
             nextCell = add(current, directions[j])
             if canMove(playerController, directions[j], current) and nextCell not in explored_cell :
@@ -94,15 +91,15 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
                 else :
                     linked_explored[nextCell] = current
                     toBeExplored.append(nextCell) #next time we call this function, this list is updated
-                    
+
         if "GOAL" not in linked_explored :
-            return False
+            
+            if list(linked_explored).sort() == explored_cell.sort() :
+                return True #should return True if there is no path
+            else :
+                return False
         else :
             return True
-                
-
-
-                    
 
 def checkGoal(current, playerController) :
     """
@@ -111,6 +108,26 @@ def checkGoal(current, playerController) :
     controller2 = copy.deepcopy(playerController)
     controller2.dependency.coord = current
     return controller2.hasWon()
+
+def pathOrNot(game, playerController) :
+    """
+    return True if there is a possible path, else otherwise
+    """
+    linked_explored = findAPath(game, playerController)
+    if "GOAL" not in linked_explored :
+        return False
+    else : 
+        return True
+
+def path(game, playerController) :
+    """
+    return the path to follow (should be the shortest)
+    """
+    linked_explored = findAPath(game, playerController)
+    
+
+
+
 
 
 
