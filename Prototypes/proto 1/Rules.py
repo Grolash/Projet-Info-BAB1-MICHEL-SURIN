@@ -59,7 +59,7 @@ def findAPath(game, playerController):
     playerController : the controller which for we need to find a path
     """
     startingCoord = playerController.dependency.coord #the coord where the pawn is at the beginning of the algorithm
-    linked_explored = {} # will link the cell between them. They key is the cell and it's value is the "previous" cell
+    linked_explored = {} # will link the cell between them. The key is the cell and it's value is the "previous" cell
     explored_cell = [] # list containing all the explored cell
     toBeExplored = [] #the list containing all the cells who's surrounding needs to be explored
     toBeExplored.append(startingCoord)
