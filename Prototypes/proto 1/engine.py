@@ -41,14 +41,16 @@ class PawnController(Controller) :
         super().__init__(controllerType, dependency, board)
         self.playerName = playerName
         self.stock = numbWall
+        self.lastMovedDirection = None
 
     def move(self, direction) :
         """
         The move method test if there is a pawn in the desired direction.
         If there is no pawn, it does a normal move if possible.
         If there is one, it makes (if possible) an automatic move to a legal position, diagonally, with a priority to the right of the pawn.
-        /!\\ IF NO MOVE IS POSSIBLE, RETURN 0 /!\\
+        /!\ IF NO MOVE IS POSSIBLE, RETURN 0 /!\ 
         """
+        self.lastMovedDirection = direction
         y, x = self.dependency.coord 
         if direction is not None:
             if canMove(self, direction): #checks if there is no wall between the pawn and the next cell

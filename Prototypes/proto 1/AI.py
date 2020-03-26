@@ -120,7 +120,7 @@ class Smart(AI):
             self.travelDic[str(self.game.playerList[i].playerName)] = travelled(self.game.playerList[i])
 
     def travelled(self, PawnController):
-        pass #give the travelled distance by X PawnController
+        travelled = abs(PawnController.dependency.start[0] - PawnController.dependency.coord[0])
 
     def AIMove(self):
         pass #calculate a move based on pathfinding
