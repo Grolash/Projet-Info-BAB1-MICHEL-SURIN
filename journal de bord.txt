@@ -25,12 +25,42 @@ installation de Gradle et mise en place du projet Gradle
 14/03/2020 :
 début d'un 2eme prototype en Java afin de tester un autre systeme de grille (avec intergrille) ° se familiariser avec la Javadoc
     -----------    -----------    -----------
+prototype hexa SIMON: test de grille hexagonale; conclusion: le système de directions n'est pas suffisemment modulaire, des adaptations majeures du code seraient nécessaires 
+pour l'intégrer dans le projet final.
 
+    -----------    -----------    -----------
+18/03/2020 :
+début du travail sur la logique et les règles du jeu. Cela implique beaucoup de condition et surtout de créer un algo de pathfinding
+--> idée pathfinding : parcours en largeur présenté en séance de projet d'informatique
+
+    -----------    -----------    -----------
+21/03/2020 :
+2 IA fonctionnelles (pas encore insérées dans le jeu mais capables d'agir comme désiré): 
+ -"Debilus": IA entièrement aléatoire sans considérations aucune mis à part les règles du jeu
+ -"Smarted": IA plus développée, aléatoire mais n'allant pas à l'encontre de son objectif, avec un aspect stratégique très sommaire pris en compte.
 
     -----------    -----------    -----------
 
+23/03/2020 :
+une première version d'un algorithme de pahfinding a été mis au point. L'idée de base était d'implémenter l'idée du parcours en largeur mais il me semble qu'au final c'est un
+parcours en profondeurs qu'est appliqué par le pathfinding.
+--> il n'est pas parfait, il ne trouve pas le chemin le plus cours ET si il n'y a pas de chemin possible, l'algo tourne en rond...
+ref : pathfinding V1
 
     -----------    -----------    -----------
 
+24/03/2020 2h15 du matin: 
+IA "Smart" presque terminée
 
     -----------    -----------    -----------
+26/03/2020 :
+pathfinding --> bug de la boucle infinies toujours présente
+WallCollision --> piste de résolution pour détecter si un mur en coupe un autre ou pas : stocker une liste de tout les murs dans le board
+WallCollision FIX
+    -----------    -----------    -----------
+    -----------    -----------    -----------
+    -----------    -----------    -----------
+    -----------    -----------    -----------
+    -----------    -----------    -----------
+    -----------    -----------    -----------
+

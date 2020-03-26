@@ -1,9 +1,9 @@
 TODO list :
 
-
+-pathfinding --> rule (possible path ) + shortest path
 
 
 FIX list :
 
-- the player move function currently makes the player to move in diagonals (WTF xD)
-- the placeWall function crashes the game
+- wall collision
+- possible "Smart" fixes needed; too tired to do now

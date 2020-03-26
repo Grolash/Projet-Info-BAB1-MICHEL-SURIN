@@ -9,13 +9,15 @@ class Board :
     represent the board.
     - controllerList : is a list that contain i element. i is the number of player in the game given by Init
     - size = the size of the Board (it's a square) MUST BE A ODD NUMBER
-    - direction = represents the possible direction (UP, DOWN, LEFT, RIGHT)
+    - direction = represents the possible direction (UP, DOWN, LEFT, RIGHT) --> should be a dico
     - PlayerCellList = contains a double array of PlayerCell 
+    - wallList = list containing each wall placed in the board in tuple form : (ORIGIN, SECONDPART) with ORIGIN and SECONDPART being coordinates
     """
     def __init__(self, size) :
         #self.pawnList = controllerList
         self.size = size
         self.playerCellList = []
+        self.wallList = []
         self.UP = (-1,0)
         self.DOWN = (1,0)
         self.LEFT = (0,-1)
@@ -65,9 +67,9 @@ class PlayerCell(Board) :
         #the following lines create a "Wall" if the PlayerCell is at a border of the Board
         if self.coord[1] == 0 : 
             self.hasWallLEFT = True
-        if self.coord[1] == board.size-1 :
+        if self.coord[1] == self.board.size-1 :
             self.hasWallRIGHT = True
-        if self.coord[0] == board.size-1 :
+        if self.coord[0] == self.board.size-1 :
             self.hasWallDOWN = True
         if self.coord[0] == 0 : 
             self.hasWallUP = True
