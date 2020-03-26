@@ -72,6 +72,11 @@ class Game() :
             if playerCtrl.controllerType == "Human":
                 coord = playerCtrl.dependency.coord
                 print(self.board)
+                if pathOrNot(self, playerCtrl) :
+                    pathToFollow = path(self, playerCtrl)
+                    print(pathToFollow)
+                else :
+                    print("NO PATH")
                 print("player " + str(i+1) + " pick-up an action :")
                 print("1) move")
                 print("2) place a Wall")
@@ -124,11 +129,27 @@ class Game() :
                     if wallDirectionInput == 1 :
                         wallDirection = self.board.RIGHT
                     else :
-                        wallDirection = self.board.UP 
+                        wallDirection = self.board.UP
+
+                    while not canPlaceWall(wallOrigin, wallDirection, self) : #if it's not a correct wall placement, we keep asking for a valid wall
+                        print("Invalid wall position, please try again")
+                        wallOriginInput = input().split()
+                        wallOrigin_Y = int(wallOriginInput[0])
+                        wallOrigin_X = int(wallOriginInput[1])
+                        wallOrigin = wallOrigin_Y, wallOrigin_X
+                        print("choose the direction : ")
+                        print("1) horizontal")
+                        print("2) vertical")
+                        wallDirectionInput = int(input())
+                        if wallDirectionInput == 1 :
+                            wallDirection = self.board.RIGHT
+                        else :
+                            wallDirection = self.board.UP
+
                     self.playerList[i].placeWall(wallOrigin, wallDirection)
                     self.refresh(True, wallOrigin, wallDirection)
                 print(self.playerList[i].dependency.coord)
-                findAPath(self, playerCtrl)
+                
             elif playerCtrl.controllerType == "Debilus":
                 AI.Debilus(playerCtrl.board, playerCtrl).act()
             i += 1

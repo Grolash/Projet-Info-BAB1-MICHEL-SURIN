@@ -36,22 +36,20 @@ def validPlacement(coord, direction, board) :
     origin = board.playerCellList[y][x]
     if direction == board.RIGHT :
         secondCell = board.playerCellList[y][x+1] #get the cell on the right of the wall's origin. 
-
-        if origin.hasWallUP or secondCell.hasWallUP :
+        possibleWall = ((y,x),(y-1,x)) #possible vertical wall that may be cut by the wall we want to place
+        if origin.hasWallUP or secondCell.hasWallUP or possibleWall in board.wallList :
             return False
         else :
             return True
 
     elif direction == board.UP :
         secondCell = board.playerCellList[y-1][x] #get the cell on the top of the wall's origin. 
-
-        if origin.hasWallRIGHT or secondCell.hasWallRIGHT :
+        possibleWall = ((y,x),(y,x+1)) #possible vertical wall that may be cut by the wall we want to place
+        if origin.hasWallRIGHT or secondCell.hasWallRIGHT or possibleWall in board.wallList :
             return False
         else :
             return True
 
-def isPath(coord, direction, game) :
-    return True
 
 def findAPath(game, playerController):
     """
@@ -60,13 +58,16 @@ def findAPath(game, playerController):
     """
     startingCoord = playerController.dependency.coord #the coord where the pawn is at the beginning of the algorithm
     linked_explored = {} # will link the cell between them. The key is the cell and it's value is the "previous" cell
+    linked_explored[startingCoord] = "START" #will be used to recreate the path
     explored_cell = [] # list containing all the explored cell
     toBeExplored = [] #the list containing all the cells who's surrounding needs to be explored
     toBeExplored.append(startingCoord)
-    flag = False
-    while not flag :
+    flag = 0
+    while flag != 1 :
         flag = explore(linked_explored, explored_cell, toBeExplored, playerController)
-        print(linked_explored)
+        if flag == 2 :
+            noPathDict = {"NO PATH": startingCoord}
+            return noPathDict #return a dict that indicates that there is no path
     return linked_explored
 
 def explore(linked_explored, explored_cell, toBeExplored, playerController) : 
@@ -77,14 +78,13 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
     currentList = copy.deepcopy(toBeExplored)
     directions = {"UP" : (-1,0), "LEFT":(0,-1), "DOWN":(1,0), "RIGHT":(0,1)}
     while len(currentList) > 0 : #will do for all the cells who's surrounding needs to be explored, stop if the list is empty. :)
-        """
-        IDEA : why it won't stop ? Maybe because it wants to check cells trought walls !
-        """
         current = currentList.pop() #withdrawn the last element of the list.
         toBeExplored.pop() #simply pop the last cell. Does not interfer with the while. New cells will be append later
         explored_cell.append(current) #mark the cell has explored
         #then we explore it
-        block_counter = 0
+        block_counter = 0 #will help to detect the case where there is no path
+        border_counter = 0 #count the "border" of the explored_cell
+        try_counter = 0
         for j in directions : #will do for each direction
             nextCell = add(current, directions[j])
             if canMove(playerController, directions[j], current) and nextCell not in explored_cell :
@@ -94,15 +94,30 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
                 else :
                     linked_explored[nextCell] = current
                     toBeExplored.append(nextCell) #next time we call this function, this list is updated
-                    
+            else :
+                block_counter += 1
+
+        for j in directions :
+            try_counter += 1
+            nextCell = add(current, directions[j])
+            if canMove(playerController, directions[j], current) :
+                if nextCell not in explored_cell :
+                    if checkGoal(nextCell, playerController) :
+                        linked_explored[nextCell] = current
+                        linked_explored["GOAL"] = nextCell #will allow to find the path
+                    else :
+                        linked_explored[nextCell] = current
+                        toBeExplored.append(nextCell) #next time we call this function, this list is updated
+                else :
+                    block_counter += 1
+            else : 
+                border_counter += 1 #if there is a wall, it's a border, so it increments the border_counter
+                block_counter += 1
+        
         if "GOAL" not in linked_explored :
-            return False
+            return 0 #there is no path
         else :
-            return True
-                
-
-
-                    
+            return 1 # there is a path
 
 def checkGoal(current, playerController) :
     """
@@ -111,6 +126,34 @@ def checkGoal(current, playerController) :
     controller2 = copy.deepcopy(playerController)
     controller2.dependency.coord = current
     return controller2.hasWon()
+
+def pathOrNot(game, playerController) :
+    """
+    return True if there is a possible path, else otherwise
+    """
+    linked_explored = findAPath(game, playerController)
+    if "GOAL" not in linked_explored :
+        return False
+    else : 
+        return True
+
+def path(game, playerController) :
+    """
+    return the path to follow (should be the shortest)
+    THERE MUST BE A pathOrNot CHECK BEFORE ! If "GOAL" is not in linked-explored (so if there is no path),
+    there will be a problem
+    """
+    linked_explored = findAPath(game, playerController)
+    path = []
+    key = "GOAL" #initiate the key to look in linked_explored, the first key is "GOAL"
+    while key != "START" :
+        value = linked_explored[key] #value is the cell from the path.
+        path.append(value)
+        key = value
+    return path
+
+
+
 
 
 
