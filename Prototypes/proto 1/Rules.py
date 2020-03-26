@@ -36,16 +36,16 @@ def validPlacement(coord, direction, board) :
     origin = board.playerCellList[y][x]
     if direction == board.RIGHT :
         secondCell = board.playerCellList[y][x+1] #get the cell on the right of the wall's origin. 
-
-        if origin.hasWallUP or secondCell.hasWallUP :
+        possibleWall = ((y,x),(y-1,x)) #possible vertical wall that may be cut by the wall we want to place
+        if origin.hasWallUP or secondCell.hasWallUP or possibleWall in board.wallList :
             return False
         else :
             return True
 
     elif direction == board.UP :
         secondCell = board.playerCellList[y-1][x] #get the cell on the top of the wall's origin. 
-
-        if origin.hasWallRIGHT or secondCell.hasWallRIGHT :
+        possibleWall = ((y,x),(y,x+1)) #possible vertical wall that may be cut by the wall we want to place
+        if origin.hasWallRIGHT or secondCell.hasWallRIGHT or possibleWall in board.wallList :
             return False
         else :
             return True
