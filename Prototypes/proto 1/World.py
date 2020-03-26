@@ -11,11 +11,13 @@ class Board :
     - size = the size of the Board (it's a square) MUST BE A ODD NUMBER
     - direction = represents the possible direction (UP, DOWN, LEFT, RIGHT) --> should be a dico
     - PlayerCellList = contains a double array of PlayerCell 
+    - wallList = list containing each wall placed in the board in tuple form : (ORIGIN, SECONDPART) with ORIGIN and SECONDPART being coordinates
     """
     def __init__(self, size) :
         #self.pawnList = controllerList
         self.size = size
         self.playerCellList = []
+        self.wallList = []
         self.UP = (-1,0)
         self.DOWN = (1,0)
         self.LEFT = (0,-1)

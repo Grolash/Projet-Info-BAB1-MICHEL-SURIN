@@ -72,6 +72,11 @@ class Game() :
             if playerCtrl.controllerType == "Human":
                 coord = playerCtrl.dependency.coord
                 print(self.board)
+                if pathOrNot(self, playerCtrl) :
+                    pathToFollow = path(self, playerCtrl)
+                    print(pathToFollow)
+                else :
+                    print("NO PATH")
                 print("player " + str(i+1) + " pick-up an action :")
                 print("1) move")
                 print("2) place a Wall")
@@ -128,7 +133,7 @@ class Game() :
                     self.playerList[i].placeWall(wallOrigin, wallDirection)
                     self.refresh(True, wallOrigin, wallDirection)
                 print(self.playerList[i].dependency.coord)
-                findAPath(self, playerCtrl)
+                
             elif playerCtrl.controllerType == "Debilus":
                 AI.Debilus(playerCtrl.board, playerCtrl).act()
             i += 1

@@ -2,7 +2,7 @@ from Items import *
 from World import *
 from Rules import *
 from add import *
-
+#WARNING : Controller should take game instead of board as argument
 """
 This file will contain objects related to the game mechanics and the playable-side of the game.
 """
@@ -107,6 +107,7 @@ class PawnController(Controller) :
         if self.stock >= 0:
             self.stock -= 1
             newWall = Wall(coord, direction)
+
 
     def hasWon(self) :
         """
