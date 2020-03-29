@@ -22,6 +22,8 @@ public class firstTest extends Application implements EventHandler<ActionEvent>{
         button.setText("Click me");
         button.setOnAction(this); // indique que la méthode handle se trouve dans cette classe
 
+
+
         StackPane layout = new StackPane();
         layout.getChildren().add(button);
 
