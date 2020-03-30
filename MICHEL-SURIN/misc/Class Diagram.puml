@@ -1,0 +1,81 @@
+@startuml
+
+!define DARKBLUE
+!includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
+
+
+package tools {
+    class Coord {
+        -x: int
+        -y: int
+        --method--
+        +getY(): int
+        +getX(): int
+        +toString(): String
+        +equals(Coord other): boolean
+        +add(Coord other): void
+    }
+}
+
+package controller {
+}
+
+package game {
+    class Rules {
+    }
+    class Game {
+    }
+}
+
+
+package items {
+    abstract MOAI {
+    -coord: Coord
+    --method--
+    +getCoord(): Coord
+    +setCoord(Coord coord): void
+    }
+
+    class Pawn extends MOAI {
+    -start: Coord
+    --method--
+    +getStart(): Coord
+    }
+
+    class Wall extends MOAI {
+    --constructor--
+    +Wall(Coord origin, Coord direction)
+    -Wall(Coord origin)
+    }
+    note "The public wall constructor calls \nthe private one to build \nthe second part of the wall." as N1
+    N1 .. Wall
+}
+
+package world {
+
+    class Board {
+        -size: int
+        -cellArray: Cell[][]
+        -wallArray: ArrayList
+        +{static}directions: HashTable<String, Coord>
+        --method--
+        +getWallArray(): Array
+        +getCellArray(): Array
+        +getCell(Coord coord):  Cell
+    }
+
+    class Cell {
+        -coord: Coord
+        -pawn: Boolean
+        -wallOnSide: HashTable<String, Boolean>
+        --method--
+        +wallTo(Coord directions): Boolean
+        +hasPawn(): Boolean
+    }
+    Board *- Cell
+}
+
+tools -right-> world
+tools -down-> items
+
+@enduml
