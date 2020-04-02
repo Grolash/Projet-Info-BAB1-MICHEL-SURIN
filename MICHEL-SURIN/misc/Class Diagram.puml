@@ -3,7 +3,7 @@
 !define DARKBLUE
 !includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
 
-
+note "upgrade that shit" as N2
 package tools {
     class Coord {
         -x: int
@@ -20,7 +20,7 @@ package tools {
 package controller {
 }
 
-package game {
+package engine {
     class Rules {
     }
     class Game {
@@ -72,7 +72,9 @@ package world {
         +wallTo(Coord directions): Boolean
         +hasPawn(): Boolean
     }
-    Board *- Cell
+
+    Board "0..* " *-- "1 " Cell
+
 }
 
 tools -right-> world

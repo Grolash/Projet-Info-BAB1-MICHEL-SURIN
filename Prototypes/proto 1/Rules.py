@@ -131,6 +131,7 @@ def path(game, playerController) :
         path.append(value)
         key = value
     path.pop()
+    
     path.pop()
     return path
 
