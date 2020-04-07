@@ -1,5 +1,6 @@
 package world;
 
+import items.Wall;
 import tools.Coord;
 
 import java.util.ArrayList;
@@ -75,5 +76,14 @@ public class Board {
         int y = coord.getY();
         int x = coord.getX();
         return cellArray[y][x];
+    }
+
+    /**
+     *
+     * @param coordOfWall an array containing the coordinates of the first part of the wall
+     *                   and the coordinates of the following parts (length of 2 in a standard game)
+     */
+    public void addToWallList(Coord[] coordOfWall) {
+        wallList.add(coordOfWall);
     }
 }

@@ -7,6 +7,10 @@ import world.Board;
 
 import java.util.Hashtable;
 
+/**
+ * @version v0.1
+ *
+ */
 public class Game {
 
     int playerNumber;
@@ -17,13 +21,26 @@ public class Game {
      * contains all the possible directions (basically UP, DOWN, LEFT and RIGHT). Won't change.
      * Needs to be accessible for everyone
      */
-    public static final Hashtable<String, Coord> directions = new Hashtable<>();
+    public static final Hashtable<String, Coord> directions = new Hashtable<String, Coord>();
+    //the following lines initialize the 4 directions
+    static {
+        directions.put("UP", new Coord(-1,0));
+        directions.put("LEFT", new Coord(0,-1));
+        directions.put("DOWN", new Coord(1,0));
+        directions.put("RIGHT", new Coord(0,1));
+    }
+
 
     /**
-     * @param size the size of the board, should be 9
-     * @param playerNumber the number of player, should be 2
+     *
+     * @param size the size of the board, should be 9.
+     * @param playerNumber the number of player playing, must be 2 (or 4).
+     * @throws IllegalArgumentException raise exception if an invalid number of player is used.
      */
-    public Game(int size, int playerNumber) {
+    public Game(int size, int playerNumber) throws IllegalArgumentException {
+            if (playerNumber != 2 /*|| playerNumber != 4*/) {
+                throw new IllegalArgumentException("Invalid number of player. Should be 2");
+            }
             this.board = new Board(size);
             this.playerNumber = playerNumber;
             this.pawnArray = new Pawn[playerNumber];
@@ -56,11 +73,6 @@ public class Game {
                                                         this.board,
                                             "player "+i); //default wall numb set = 10
             }
-
-            directions.put("UP", new Coord(-1,0));
-            directions.put("LEFT", new Coord(0,-1));
-            directions.put("DOWN", new Coord(1,0));
-            directions.put("RIGHT", new Coord(0,1));
         }
 
 }

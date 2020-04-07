@@ -27,6 +27,7 @@ public class Coord {
         return x;
     }
 
+    @Override
     public String toString() {
         return "(" + y + ", " + x + ")";
     }
@@ -51,6 +52,7 @@ public class Coord {
         this.y += other.getY();
         this.x += other.getX();
     }
+
 
 }
 

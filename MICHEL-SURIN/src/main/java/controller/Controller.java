@@ -25,4 +25,15 @@ public abstract class Controller {
         return AI;
     }
 
+    public MOAI getDependency() {
+        return dependency;
+    }
+
+    public void setDependency(MOAI dependency) {
+        this.dependency = dependency;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 }
