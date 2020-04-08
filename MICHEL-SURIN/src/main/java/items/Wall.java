@@ -13,8 +13,8 @@ public class Wall extends MOAI {
      */
     public Wall(Coord origin, Coord direction) {
         super(origin);
-        origin.add(direction); //the coordinates of the second part of the wall.
-        new Wall(origin); //has no direction because it's the last part of the wall.
+        Coord secondPartCoord = Coord.add(origin, direction);
+        new Wall(secondPartCoord); //has no direction because it's the last part of the wall.
     }
 
     /**

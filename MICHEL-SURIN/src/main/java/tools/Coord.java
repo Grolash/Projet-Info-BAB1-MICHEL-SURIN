@@ -44,13 +44,17 @@ public class Coord {
     }
 
     /**
-     * Increments y and x value of the instance the method is applied
+     * create a new Coord instance with y and x value 
+     * being the result of the addition between y and x value of the two terms.
      *
-     * @param other is a Coord object whom will be added to the instance.
+     * @param first the first term of the addition
+     * @param second the second term of the addition
+     * @return a new Coord instance that is the result of the addition
      */
-    public void add(Coord other) { //TODO override "+" symbol
-        this.y += other.getY();
-        this.x += other.getX();
+    public static Coord add(Coord first, Coord second) {
+        int y = first.getY() + second.getY();
+        int x = first.getX() + second.getX();
+        return new Coord(y,x);
     }
 
 

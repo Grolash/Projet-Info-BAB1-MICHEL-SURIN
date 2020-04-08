@@ -38,8 +38,7 @@ public class Rules {
             //checks potential collisions with existing walls
             } else {
                 //nextCoord will be used to check if there is already a wall at the place we want to place a wall
-                Coord nextCoord = new Coord(coord.getY(),coord.getX()); //copy the origin coordinates
-                nextCoord.add(direction); //go to the cell coordinates above the originCell's coordinates
+                Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
 
                 //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
                 Cell secondCell = board.getCell(nextCoord);
@@ -63,8 +62,7 @@ public class Rules {
                 return false;
             } else {
                 //nextCoord will be used to check if there is already a wall at the place we want to place a wall
-                Coord nextCoord = new Coord(coord.getY(),coord.getX()); //copy the origin coordinates
-                nextCoord.add(direction); //go to the cell coordinates next to the originCell's coordinates
+                Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
 
                 //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
                 Cell secondCell = board.getCell(nextCoord);

@@ -44,7 +44,7 @@ public class PawnController extends Controller {
 
     public void move(Coord direction) {
         Coord depCoord = getDependency().getCoord();
-        depCoord.add(direction);
+        depCoord = Coord.add(depCoord, direction);
     }
 
     public void placeWall(Coord origin, Coord direction) throws InvalidParameterException {
