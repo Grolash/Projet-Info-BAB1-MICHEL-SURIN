@@ -1,7 +1,9 @@
+/**
+ * package containing the classes of objects that are able to interact in the game.
+ */
 package controller;
 
 import engine.Game;
-import items.MOAI;
 import items.Pawn;
 import items.Wall;
 import tools.Coord;
@@ -9,6 +11,9 @@ import world.Board;
 
 import java.security.InvalidParameterException;
 
+/**
+ * a type of controller designed to control a Pawn instance. It is a player.
+ */
 public class PawnController extends Controller {
 
     private String playerName;
@@ -42,22 +47,32 @@ public class PawnController extends Controller {
     //NOTE ABOUT ACTIONS : THESE METHODS DO NOT TEST THE VALIDATION OF THE ACTION !
     //validation is handled by the Rules class and nothing else
 
+    /**
+     * Will move the controller's pawn into the given direction.
+     * Does not care if there is a wall or not. It does it.
+     * This kind of verification must be called before calling this method.
+     *
+     * @param direction the direction the controller is moving
+     */
     public void move(Coord direction) {
         Coord depCoord = getDependency().getCoord();
         depCoord = Coord.add(depCoord, direction);
     }
 
+    /**
+     * given an coordinate (origin) and a direction (UP or RIGHT), place a wall and register it in the board.
+     *
+     * @param origin the origin of the wall
+     * @param direction the direction of the wall used to create it's second part (UP or RIGHT)
+     * @throws InvalidParameterException is thrown if the direction is invalid (not UP or RIGHT)
+     */
     public void placeWall(Coord origin, Coord direction) throws InvalidParameterException {
 
         if (direction == Game.directions.get("UP")) {
             numbWall -= 1;
             Coord[] fullWallCoord = new Coord[2];
-            fullWallCoord[1] = origin;
-
-            int y = origin.getY();
-            int x = origin.getX();
-            Coord secondPart = new Coord(y, x) ;
-            fullWallCoord[0] = secondPart;
+            fullWallCoord[0] = origin;
+            fullWallCoord[1] = Coord.add(origin, direction);
 
             Board board = getBoard();
             board.addToWallList(fullWallCoord);
@@ -66,12 +81,8 @@ public class PawnController extends Controller {
         } else if (direction == Game.directions.get("RIGHT")) {
             numbWall -= 1;
             Coord[] fullWallCoord = new Coord[2];
-            fullWallCoord[1] = origin;
-
-            int y = origin.getY();
-            int x = origin.getX();
-            Coord secondPart = new Coord(y, x) ;
-            fullWallCoord[0] = secondPart;
+            fullWallCoord[0] = origin;
+            fullWallCoord[1] = Coord.add(origin, direction);
 
             Board board = getBoard();
             board.addToWallList(fullWallCoord);

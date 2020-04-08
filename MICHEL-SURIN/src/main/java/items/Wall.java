@@ -4,6 +4,8 @@ import tools.Coord;
 
 /**
  * represents a wall
+ *
+ * @author Simon MICHEL
  */
 public class Wall extends MOAI {
 

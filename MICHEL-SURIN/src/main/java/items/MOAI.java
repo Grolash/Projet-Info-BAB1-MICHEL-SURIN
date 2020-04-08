@@ -4,6 +4,8 @@ import tools.Coord;
 
 /**
  * defines the minimum requirements of an item
+ *
+ * @author Simon MICHEL
  */
 public abstract class MOAI {
 

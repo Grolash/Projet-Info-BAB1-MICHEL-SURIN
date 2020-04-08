@@ -2,23 +2,106 @@ package engine;
 
 import controller.PawnController;
 import items.Pawn;
+import items.Wall;
 import tools.Coord;
 import world.Board;
 import world.Cell;
 
-import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
+/**
+ * this class contains the main logic of the game as well as all the rules.
+ *
+ * @author Virgil SURIN
+ */
 public class Rules {
 
+    /**
+     * it's a coord code that marks the start.
+     */
+    private static final Coord startMark = new Coord(-42,-42);
+    /**
+     * it's a coord code that indicates that there are no path.
+     */
+    private static final Coord noPathMark = new Coord(-666,-666);
+    /**
+     * it's a coord code that marks the goal
+     */
+    private static final Coord goalMark = new Coord(-66,-66);
+
+    /**
+     * from the controller position, tells if it can move into the given direction.
+     *
+     * @param ctrl the controller, take is current position to check.
+     * @param direction the direction we are checking with.
+     * @return true if there is no obstacle from the controller coordinates to the given direction, false otherwise.
+     */
     public static boolean canMove(PawnController ctrl, Coord direction) {
         Coord pawnCoord = ctrl.getDependency().getCoord();
         return !(ctrl.getBoard().getCell(pawnCoord).wallTo(direction)); //wallTo return true if there is a wall
     }
 
+    /**
+     * does the same as the 2 parameters canMove but
+     * it checks from a given coordinates instead of the controller's coordinates.
+     *
+     * @param ctrl the controller, used to get the board in this case.
+     * @param direction the direction we are checking with.
+     * @param currentCoord the coordinates from which we are looking.
+     * @return true if there is no obstacle from the currentCoord in the given direction.
+     */
+    public static boolean canMove(PawnController ctrl, Coord direction, Coord currentCoord) {
+        return !(ctrl.getBoard().getCell(currentCoord).wallTo(direction));
+    }
 
-    public static boolean canPlaceWall(Coord origin, Coord direction, Board board) {
-        return true; //TODO bind validPlacement AND IsaPath to get the value
+
+    /**
+     * is a global verification combining {@link #validPlacement(Coord, Coord, Board)} and {@link #pathOrNot(PawnController)}.
+     * It checks if the wall the controller wants to place does not get Out Of Bounds (OOB), does not cut or stacks up to
+     * an existing wall or if it does not prevent a controller from finding a path to it's objective.
+     *
+     * @param playerArray array containing all the PawnController playing in the game.
+     * @param ctrl the controller who wants to place a wall.
+     * @param origin the coordinates where a controller wants to place a wall
+     * @param direction the direction the controller wants to give to the wall.
+     * @return true if the wall that the controller wants to place does not break any rules, false otherwise.
+     */
+    public static boolean canPlaceWall(PawnController[] playerArray, PawnController ctrl, Coord origin, Coord direction) {
+        //if the wall stacks up on an other wall or is OOB, return false
+        if ( !( validPlacement(origin, direction, ctrl.getBoard()) ) ) {
+            return false;
+
+        //the wall does not stacks up, cut or is OOB, checks if there is still a path for each player(controller)
+        } else {
+            // we need to simulate the placement of the wall and then check if it blocks the game.
+
+            //first we create a copy of the board that and we add the supposed wall to it we already know it its spot is empty
+            Board tempBoard = new Board(ctrl.getBoard().getSize());
+            for (Coord[] wall : ctrl.getBoard().getWallList()) {
+                tempBoard.addToWallList(wall);
+            }
+            Coord[] testedWall = new Coord[2];
+            testedWall[0] = origin;
+            testedWall[1] = Coord.add(origin, direction);
+            tempBoard.addToWallList(testedWall);
+
+            //now that the board is copied and the wall is added, we check for every controller
+            for (PawnController controller : playerArray) {
+                //we create a copy of the actual controller (will be done for each controller in the game)
+                //with the tempBoard instead of the real board
+                PawnController tempCtrl = new PawnController(controller.isAI(), (Pawn) controller.getDependency(), tempBoard, "tempPlayer");
+
+                //and now we can proceed to the path check
+                if ( !(pathOrNot(controller)) ) {
+                    return false;
+                }
+            }
+            //if we get there, it means that the wall does not stacks up, get OOB or cut an existing wall
+            //and that it does not block the way of any controller to its own objective
+            //if we managed to get there, then the wall is valid.
+            return true;
+        }
     }
 
     /**
@@ -101,5 +184,129 @@ public class Rules {
         }
     }
 
-    public static Hashtable<Coord, Coord> finAPath()
+    /**
+     * It searches a path to the goal row of the controller's dependency starting from it's current coordinates.
+     * It starts to explore the surrounding of the controller's position in the board then it does the same for each
+     * newly discovered position. The idea behind this algorithm is the breadth-first search
+     *
+
+     * @param ctrl the controller for which we seek a path to victory if there is one.
+     * @return an Hashtable, if there is a path, it contains the startMark and the goalMark
+     * and all the coordinates that have been explored. It needs to be translated into a path.
+     * If there is no path, it's a one key one value Hashtable where the key is the noPathMark.
+     * @version 1.1.2
+     */
+    public static Hashtable<Coord, Coord> finAPath(PawnController ctrl) {
+        Coord startCoord = ctrl.getDependency().getCoord();
+
+        Hashtable<Coord, Coord> exploredTable = new Hashtable<Coord, Coord>();
+        exploredTable.put(startCoord, startMark); //used to know when we are at the start
+
+        ArrayList<Coord> exploredCoord = new ArrayList<Coord>(); //contains all the coordinates we have already explored
+        ArrayList<Coord> toBeExplored = new ArrayList<Coord>(); //contains all the coordinates we will explore
+        toBeExplored.add(startCoord);
+        int flag = 0;
+
+        while(flag != 1) {
+            flag = explore(exploredTable, exploredCoord, toBeExplored, ctrl);
+            if (flag == 2) {
+                Hashtable<Coord, Coord> noPathTable = new Hashtable<Coord, Coord>();
+                noPathTable.put(noPathMark, startCoord);
+                return noPathTable;
+            }
+        }
+        return exploredTable;
+    }
+
+    /**
+     * part of the breadth-first search, will explore all the surrounding positions and then repeat
+     * Each newly discovered position is added at the beginning of the toBeExplored list. Exploration begins by the end
+     * of this list.
+     *
+     * @param exploredTable the Hashtable containing all the explored positions.
+     * @param exploredCoord contains all the coordinates that have been marked as explored.
+     * @param toBeExplored the queue. All the positions that needs to be explored.
+     * @param ctrl the controller.
+     * @return 1 if a path to the objective has been found. 0 if a path to the objective hasn't been found yet.
+     * 2 if every possible positions have been explored but none of the is the objective, in other words, there is no path.s
+     */
+    public static int explore(Hashtable<Coord, Coord> exploredTable,
+                              ArrayList<Coord> exploredCoord,
+                              ArrayList<Coord> toBeExplored,
+                              PawnController ctrl) {
+
+        Pawn pawnDependency = (Pawn) ctrl.getDependency();
+        while(toBeExplored.size() > 0) {
+            int lastObjectIndex = toBeExplored.size()-1;
+            Coord current = toBeExplored.remove(lastObjectIndex);
+            exploredCoord.add(current); //mark the coord as explored
+
+            //initialize an array containing the four direction
+            Coord[] directions = new Coord[4];
+            directions[0] = new Coord(-1,0); //UP
+            directions[1] = new Coord(0,-1); //LEFT
+            directions[2] = new Coord(1,0); //DOWN
+            directions[3] = new Coord(0,1); //RIGHT
+
+            //now we explore its surrounding
+            for (Coord dir : directions) {
+                Coord nextCell = Coord.add(current, dir);
+                if (canMove(ctrl, dir, current) && !(exploredCoord.contains(nextCell))) {
+                    if (nextCell.getY() == pawnDependency.getGoalRow()) {
+                        //if the next cell is the goal we mark it
+                        exploredTable.put(nextCell, current);
+                        exploredTable.put(goalMark, nextCell);
+                    } else {
+                        exploredTable.put(nextCell, current);
+                        toBeExplored.add(0, nextCell); //shift everything into the list.
+                    }
+                }
+            }
+
+            if (exploredTable.containsKey(goalMark)) {
+                return 1; //there is a path to the goal and we found it.
+            } else {
+                return 0; //path not found yet.
+            }
+        }
+        return 2; //no more cells to explore and no path found. There is no path to victory.
+    }
+
+    //TODO change pathOrNot and path so we don't use findAPath twice
+
+    /**
+     * Interprets the Hashtable given by findAPath into a boolean result depending if there is a path from the
+     * controller's position to its objective by checking the presence of goalMark or noPathMark.
+     *
+     * @param ctrl the controller.
+     * @return true if there is a path from the controller's position to its objective, false otherwise.
+     */
+    public static boolean pathOrNot(PawnController ctrl) {
+        Hashtable<Coord, Coord> exploredTable = finAPath(ctrl);
+        if (exploredTable.containsKey(goalMark)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * this method translate the exploredTab of findAPath into a list containing the path to follow.
+     * It starts at the goalMark and go from key to value until it gets at the startMark.
+     *
+     * @param ctrl the controller
+     * @return a list containing the path to follow.
+     */
+    public static ArrayList<Coord> path(PawnController ctrl) {
+        Hashtable<Coord, Coord> exploredTable = finAPath(ctrl);
+        Coord key = new Coord(goalMark.getY(), goalMark.getX()); //at the beginning key = goalCoordMark
+        ArrayList<Coord> path = new ArrayList<Coord>();
+        while ( !(key.equals(startMark)) ) {
+            Coord value = exploredTable.get(key);
+            path.add(value);
+            key = value;
+        }
+        path.remove(path.size()-1); //remove the last Coord that is the startMark, we don't need it.
+        return path;
+    }
 }

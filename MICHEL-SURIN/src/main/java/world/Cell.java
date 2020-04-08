@@ -80,4 +80,7 @@ public class Cell {
         else //direction is LEFT
             return wallOnSide.get("LEFT");
     }
+    public void setWallOnSide(String side) {
+        wallOnSide.put(side, true);
+    }
 }

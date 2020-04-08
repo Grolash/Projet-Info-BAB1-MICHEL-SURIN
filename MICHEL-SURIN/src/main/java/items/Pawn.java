@@ -4,6 +4,8 @@ import tools.Coord;
 
 /**
  * represents a pawn that may be controller later by a controller.
+ *
+ * @author Simon MICHEL
  */
 public class Pawn extends MOAI {
 

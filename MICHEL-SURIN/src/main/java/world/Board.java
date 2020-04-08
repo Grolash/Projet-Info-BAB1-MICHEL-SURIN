@@ -85,5 +85,23 @@ public class Board {
      */
     public void addToWallList(Coord[] coordOfWall) {
         wallList.add(coordOfWall);
+        refresh();
+    }
+
+    public void refresh() {
+        for (Coord[] wall : wallList) {
+            Coord wallOrigin = wall[0];
+            Coord wallSecondPart = wall[1];
+            if (wallOrigin.getY() == wallSecondPart.getY() && wallOrigin.getX() == wallSecondPart.getX()-1) {
+                //wall is on the UP side of the cells
+                getCell(wallOrigin).setWallOnSide("UP");
+                getCell(wallSecondPart).setWallOnSide("UP");
+
+            } else if (wallOrigin.getX() == wallSecondPart.getX() && wallOrigin.getY() == wallSecondPart.getY()+1) {
+                //wall is on the RIGHT side of the cells
+                getCell(wallOrigin).setWallOnSide("RIGHT");
+                getCell(wallSecondPart).setWallOnSide("RIGHT");
+            }
+        }
     }
 }

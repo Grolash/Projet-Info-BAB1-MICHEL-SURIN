@@ -3,6 +3,9 @@ package controller;
 import items.MOAI;
 import world.Board;
 
+/**
+ * tha base of all controller type with the minimum requirement.
+ */
 public abstract class Controller {
 
     private boolean AI;
@@ -21,6 +24,10 @@ public abstract class Controller {
         this.board = board;
     }
 
+    /**
+     *
+     * @return true if the controller is handled by an AI, false otherwise.
+     */
     public boolean isAI() {
         return AI;
     }
