@@ -44,7 +44,7 @@ public class Coord {
     }
 
     /**
-     * create a new Coord instance with y and x value 
+     * create a new Coord instance with y and x value
      * being the result of the addition between y and x value of the two terms.
      *
      * @param first the first term of the addition

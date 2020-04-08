@@ -7,6 +7,7 @@ import world.Board;
 import world.Cell;
 
 import java.security.InvalidParameterException;
+import java.util.Hashtable;
 
 public class Rules {
 
@@ -99,4 +100,6 @@ public class Rules {
             return false;
         }
     }
+
+    public static Hashtable<Coord, Coord> finAPath()
 }

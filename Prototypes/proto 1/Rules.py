@@ -51,7 +51,7 @@ def validPlacement(coord, direction, board) :
             return True
 
 
-def findAPath(game, playerController):
+def findAPath(playerController):
     """
     game : the game
     playerController : the controller which for we need to find a path
@@ -107,23 +107,23 @@ def checkGoal(current, playerController) :
     controller2.dependency.coord = current
     return controller2.hasWon()
 
-def pathOrNot(game, playerController) :
+def pathOrNot(playerController) :
     """
     return True if there is a possible path, else otherwise
     """
-    linked_explored = findAPath(game, playerController)
+    linked_explored = findAPath(playerController)
     if "GOAL" not in linked_explored :
         return False
     else : 
         return True
 
-def path(game, playerController) :
+def path( playerController) :
     """
     return the path to follow (should be the shortest)
     THERE MUST BE A pathOrNot CHECK BEFORE ! If "GOAL" is not in linked-explored (so if there is no path),
     there will be a problem
     """
-    linked_explored = findAPath(game, playerController)
+    linked_explored = findAPath(playerController)
     path = []
     key = "GOAL" #initiate the key to look in linked_explored, the first key is "GOAL"
     while key != "START" :
