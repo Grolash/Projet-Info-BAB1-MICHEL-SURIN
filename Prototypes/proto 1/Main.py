@@ -72,8 +72,8 @@ class Game() :
             if playerCtrl.controllerType == "Human":
                 coord = playerCtrl.dependency.coord
                 print(self.board)
-                if pathOrNot(self, playerCtrl) :
-                    pathToFollow = path(self, playerCtrl)
+                if pathOrNot( playerCtrl) :
+                    pathToFollow = path(playerCtrl)
                     print(pathToFollow)
                 else :
                     print("NO PATH")

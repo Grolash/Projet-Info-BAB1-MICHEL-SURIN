@@ -7,7 +7,6 @@ from add import *
 class Board :
     """
     represent the board.
-    - controllerList : is a list that contain i element. i is the number of player in the game given by Init
     - size = the size of the Board (it's a square) MUST BE A ODD NUMBER
     - direction = represents the possible direction (UP, DOWN, LEFT, RIGHT) --> should be a dico
     - PlayerCellList = contains a double array of PlayerCell 

@@ -51,7 +51,7 @@ def validPlacement(coord, direction, board) :
             return True
 
 
-def findAPath(game, playerController):
+def findAPath(playerController):
     """
     game : the game
     playerController : the controller which for we need to find a path
@@ -82,9 +82,6 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
         toBeExplored.pop() #simply pop the last cell. Does not interfer with the while. New cells will be append later
         explored_cell.append(current) #mark the cell has explored
         #then we explore it
-        block_counter = 0 #will help to detect the case where there is no path
-        border_counter = 0 #count the "border" of the explored_cell
-        try_counter = 0
         for j in directions : #will do for each direction
             nextCell = add(current, directions[j])
             if canMove(playerController, directions[j], current) and nextCell not in explored_cell :
@@ -93,31 +90,14 @@ def explore(linked_explored, explored_cell, toBeExplored, playerController) :
                     linked_explored["GOAL"] = nextCell #will allow to find the path
                 else :
                     linked_explored[nextCell] = current
+                    currentList.append(nextCell)
                     toBeExplored.append(nextCell) #next time we call this function, this list is updated
-            else :
-                block_counter += 1
-
-        for j in directions :
-            try_counter += 1
-            nextCell = add(current, directions[j])
-            if canMove(playerController, directions[j], current) :
-                if nextCell not in explored_cell :
-                    if checkGoal(nextCell, playerController) :
-                        linked_explored[nextCell] = current
-                        linked_explored["GOAL"] = nextCell #will allow to find the path
-                    else :
-                        linked_explored[nextCell] = current
-                        toBeExplored.append(nextCell) #next time we call this function, this list is updated
-                else :
-                    block_counter += 1
-            else : 
-                border_counter += 1 #if there is a wall, it's a border, so it increments the border_counter
-                block_counter += 1
-        
+ 
         if "GOAL" not in linked_explored :
-            return 0 #there is no path
+            return 0 #there is no path at this stage of the exploration
         else :
             return 1 # there is a path
+    return 2 #if there is nothing left to explore and no goal found. Basically, there is no path
 
 def checkGoal(current, playerController) :
     """
@@ -127,29 +107,32 @@ def checkGoal(current, playerController) :
     controller2.dependency.coord = current
     return controller2.hasWon()
 
-def pathOrNot(game, playerController) :
+def pathOrNot(playerController) :
     """
     return True if there is a possible path, else otherwise
     """
-    linked_explored = findAPath(game, playerController)
+    linked_explored = findAPath(playerController)
     if "GOAL" not in linked_explored :
         return False
     else : 
         return True
 
-def path(game, playerController) :
+def path( playerController) :
     """
     return the path to follow (should be the shortest)
     THERE MUST BE A pathOrNot CHECK BEFORE ! If "GOAL" is not in linked-explored (so if there is no path),
     there will be a problem
     """
-    linked_explored = findAPath(game, playerController)
+    linked_explored = findAPath(playerController)
     path = []
     key = "GOAL" #initiate the key to look in linked_explored, the first key is "GOAL"
     while key != "START" :
         value = linked_explored[key] #value is the cell from the path.
         path.append(value)
         key = value
+    path.pop()
+    
+    path.pop()
     return path
 
 
