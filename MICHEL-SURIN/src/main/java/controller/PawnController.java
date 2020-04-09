@@ -16,19 +16,19 @@ import java.security.InvalidParameterException;
  */
 public class PawnController extends Controller {
 
-    private String playerName;
+    private int playerNumber;
     private int numbWall;
 
     /**
      * @param AI true : controlled by an AI, false for a human.
      * @param dependency refers to the items the controller is controlling.
      * @param board the board in which the controller is evolving.
-     * @param playerName the name of the player.
+     * @param playerNumber the number of the player.
      * @param numbWall the number of wall of the player. Default is 10.
      */
-    public PawnController(boolean AI, Pawn dependency, Board board, String playerName, int numbWall) {
+    public PawnController(boolean AI, Pawn dependency, Board board, int playerNumber, int numbWall) {
         super(AI, dependency, board);
-        this.playerName = playerName;
+        this.playerNumber = playerNumber;
         this.numbWall = numbWall;
     }
 
@@ -36,11 +36,11 @@ public class PawnController extends Controller {
      * @param AI true : controlled by an AI, false for a human.
      * @param dependency refers to the items the controller is controlling.
      * @param board the board in which the controller is evolving.
-     * @param playerName the name of the player.
+     * @param playerNumber the number of the player.
      */
-    public PawnController(boolean AI, Pawn dependency, Board board, String playerName) {
+    public PawnController(boolean AI, Pawn dependency, Board board, int playerNumber) {
         super(AI, dependency, board);
-        this.playerName = playerName;
+        this.playerNumber = playerNumber;
         this.numbWall = 10;
     }
 
@@ -57,6 +57,8 @@ public class PawnController extends Controller {
     public void move(Coord direction) {
         Coord depCoord = getDependency().getCoord();
         depCoord = Coord.add(depCoord, direction);
+        getDependency().setCoord(depCoord);
+        getBoard().movePawnCoord(playerNumber, depCoord);
     }
 
     /**
