@@ -90,8 +90,20 @@ public class PawnController extends Controller {
 
         } else
             throw new InvalidParameterException("Misuse direction, should ba UP or RIGHT");
+    }
 
-
+    /**
+     * Tells if the controller's dependency (typically a Pawn) has reached its objective (his goal row in a 2P game)
+     *
+     * @return true if the pawn is at is objective, false otherwise.
+     */
+    public boolean hasWon() {
+        Pawn dep = (Pawn) getDependency(); //Downcast
+        if (dep.getCoord().getY() == dep.getGoalRow()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

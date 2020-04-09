@@ -41,13 +41,14 @@ public class Game {
             if (playerNumber != 2 /*|| playerNumber != 4*/) {
                 throw new IllegalArgumentException("Invalid number of player. Should be 2");
             }
-            this.board = new Board(size);
+
             this.playerNumber = playerNumber;
             this.pawnArray = new Pawn[playerNumber];
             this.playerArray = new PawnController[playerNumber];
 
             Coord[] startCoordArray = new Coord[playerNumber];
             int[] goalRowArray = new int[playerNumber];
+
             if (playerNumber == 2) {
                 //create the two basics starting coordinates for a 2 player game
                 //and the associated goalRow
@@ -63,6 +64,8 @@ public class Game {
                 }
             }
 
+            this.board = new Board(size, startCoordArray);
+
             for (int i = 0; i < playerNumber; i++) {
                 //TODO add support for AI vs AI/ Human vs AI / Human vs Human
                 //TODO add parameters : can change numbWall
@@ -73,6 +76,7 @@ public class Game {
                                                         this.board,
                                             "player "+i); //default wall numb set = 10
             }
+
         }
 
 }

@@ -194,7 +194,7 @@ public class Rules {
      * @return an Hashtable, if there is a path, it contains the startMark and the goalMark
      * and all the coordinates that have been explored. It needs to be translated into a path.
      * If there is no path, it's a one key one value Hashtable where the key is the noPathMark.
-     * @version 1.1.2
+     * @version 1.2.0
      */
     public static Hashtable<Coord, Coord> finAPath(PawnController ctrl) {
         Coord startCoord = ctrl.getDependency().getCoord();

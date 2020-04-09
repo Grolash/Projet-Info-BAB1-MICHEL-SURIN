@@ -83,4 +83,8 @@ public class Cell {
     public void setWallOnSide(String side) {
         wallOnSide.put(side, true);
     }
+
+    public void setPawn(boolean pawn) {
+        this.pawn = pawn;
+    }
 }
