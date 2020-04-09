@@ -10,12 +10,14 @@ import javafx.stage.Stage;
 import javax.swing.*;
 
 
-public class twelvthTest extends Application{
+public class thirteenthTest extends Application{
 
     Stage window;
     Button button;
+    ComboBox<String> comboBox;
 
     public static void main(String[] args){
+
         launch(args);
     }
 
@@ -28,28 +30,32 @@ public class twelvthTest extends Application{
             e.consume(); //Say to Java "Hey, we're handling this ourselves."
             closeProgram();
         });
-
-
-        ChoiceBox<String> choiceBox = new ChoiceBox<>(); //Drop-down lists
-        //getItems returns the Observablelist object which you can add objects to
-        choiceBox.getItems().addAll("Apples", "Bananas");
-        choiceBox.setValue("Apples"); //set a default value.
-
-        //Listen for selection changes
-        choiceBox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> System.out.println(newValue));
-
-
         button = new Button("Click me");
+
+
+        comboBox = new ComboBox<>();
+        comboBox.getItems().addAll(
+                "Alien VS Predator", "Predator", "Alien"
+        );
+        comboBox.setPromptText("Select your favorite movie");
+        button.setOnAction(e -> printMovie());
+
+        comboBox.setOnAction(e -> System.out.println("User selected " + comboBox.getValue()));
+
+        comboBox.setEditable(true);
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(choiceBox, button);
-
+        layout.getChildren().addAll(comboBox, button);
 
         Scene scene = new Scene(layout, 400, 300);
         window.setScene(scene);
         window.show();
 
+    }
+
+    private void printMovie(){
+        System.out.println(comboBox.getValue());
     }
 
     private void closeProgram(){

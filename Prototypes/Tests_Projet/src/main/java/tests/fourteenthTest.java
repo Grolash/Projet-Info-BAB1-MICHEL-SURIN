@@ -1,6 +1,7 @@
 package tests;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,14 +9,17 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.util.Observable;
 
 
-public class twelvthTest extends Application{
+public class fourteenthTest extends Application{
 
     Stage window;
     Button button;
+    ListView<String>    listView;
 
     public static void main(String[] args){
+
         launch(args);
     }
 
@@ -28,28 +32,33 @@ public class twelvthTest extends Application{
             e.consume(); //Say to Java "Hey, we're handling this ourselves."
             closeProgram();
         });
-
-
-        ChoiceBox<String> choiceBox = new ChoiceBox<>(); //Drop-down lists
-        //getItems returns the Observablelist object which you can add objects to
-        choiceBox.getItems().addAll("Apples", "Bananas");
-        choiceBox.setValue("Apples"); //set a default value.
-
-        //Listen for selection changes
-        choiceBox.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> System.out.println(newValue));
-
-
         button = new Button("Click me");
+
+        listView = new ListView<>();
+        listView.getItems().addAll("Iron Man", "Thor", "Black Widow", "Captain America");
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        button.setOnAction(event -> buttonClicked());
+
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(choiceBox, button);
-
+        layout.getChildren().addAll(listView, button);
 
         Scene scene = new Scene(layout, 400, 300);
         window.setScene(scene);
         window.show();
 
+    }
+
+    private void buttonClicked(){
+        String message = "";
+        ObservableList<String> movies;
+        movies = listView.getSelectionModel().getSelectedItems();
+        for(String m: movies){
+            message += m + "\n";
+        }
+        System.out.println(message);
     }
 
     private void closeProgram(){
