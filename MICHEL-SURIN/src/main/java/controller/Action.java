@@ -9,53 +9,14 @@ import java.security.InvalidParameterException;
 
 public class Action {
 
-    /**
-     * Will move the controller's pawn into the given direction.
-     * Does not care if there is a wall or not. It does it.
-     * This kind of verification must be called before calling this method.
-     *
-     * @param ctrl the controller
-     * @param direction the direction the controller is moving
-     */
-    public static void move(PawnController ctrl, Coord direction) {
-        Coord depCoord = ctrl.getDependency().getCoord();
-        depCoord = Coord.add(depCoord, direction);
-        ctrl.getDependency().setCoord(depCoord);
-        ctrl.getBoard().movePawnCoord(ctrl.getPlayerNumber(), depCoord);
-    }
 
     /**
-     * given an coordinate (origin) and a direction (UP or RIGHT), place a wall and register it in the board.
+     * Given a controller, it will, depending on its type (Humain, AI, etc)
+     * call the correct method that will do an action.
      *
      * @param ctrl the controller
-     * @param origin the origin of the wall
-     * @param direction the direction of the wall used to create it's second part (UP or RIGHT)
-     * @throws InvalidParameterException is thrown if the direction is invalid (not UP or RIGHT)
+     * @throws IllegalArgumentException is thrown when a controller as an invalid type.
      */
-    public static void placeWall(PawnController ctrl, Coord origin, Coord direction) throws InvalidParameterException {
-        ctrl.addToNumbWall(-1);
-        Coord[] fullWallCoord = new Coord[2];
-        if (direction == Game.directions.get("UP")) {
-            fullWallCoord[0] = origin;
-            fullWallCoord[1] = Coord.add(origin, direction);
-
-            Board board = ctrl.getBoard();
-            board.addToWallList(fullWallCoord);
-            Wall wall = new Wall(origin, direction);
-
-        } else if (direction == Game.directions.get("RIGHT")) {
-            fullWallCoord[0] = origin;
-            fullWallCoord[1] = Coord.add(origin, direction);
-
-            Board board = ctrl.getBoard();
-            board.addToWallList(fullWallCoord);
-            Wall wall = new Wall(origin, direction);
-
-        } else
-            throw new InvalidParameterException("Misuse direction, should ba UP or RIGHT");
-    }
-
-
     public static void getAction(PawnController ctrl) throws IllegalArgumentException {
         if (ctrl.getType() == "Human") {
             //call HumanActionHandler
