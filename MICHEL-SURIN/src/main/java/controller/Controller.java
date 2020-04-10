@@ -8,7 +8,7 @@ import world.Board;
  */
 public abstract class Controller {
 
-    private String type;
+    private final String type;
     private MOAI dependency;
     private Board board;
 

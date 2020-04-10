@@ -44,6 +44,18 @@ public class PawnController extends Controller {
         this.numbWall = 10;
     }
 
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public int getNumbWall() {
+        return numbWall;
+    }
+
+    public void addToNumbWall(int x) {
+        numbWall += x;
+    }
+
     //NOTE ABOUT ACTIONS : THESE METHODS DO NOT TEST THE VALIDATION OF THE ACTION !
     //validation is handled by the Rules class and nothing else
 
