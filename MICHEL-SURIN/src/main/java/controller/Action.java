@@ -17,25 +17,25 @@ public class Action {
      * @param ctrl the controller
      * @throws IllegalArgumentException is thrown when a controller as an invalid type.
      */
-    public static void getAction(PawnController ctrl) throws IllegalArgumentException {
+    public static void getAction(Game game, PawnController ctrl) throws IllegalArgumentException {
         if (ctrl.getType() == "Human") {
             //call HumanActionHandler
         }
         switch (ctrl.getType()) {
             case "Human" :
-                humanActionHandler(ctrl);
+                humanActionHandler(game, ctrl);
                 break;
 
             case "Debilus" :
-                debilusActionHandler(ctrl);
+                debilusActionHandler(game, ctrl);
                 break;
 
             case "Smart" :
-                smartActionHandler(ctrl);
+                smartActionHandler(game, ctrl);
                 break;
 
             case "Smarted" :
-                smartedActionHandler(ctrl);
+                smartedActionHandler(game, ctrl);
                 break;
 
             default :
@@ -44,13 +44,13 @@ public class Action {
 
     }
 
-    private static void smartedActionHandler(PawnController ctrl) {
+    private static void smartedActionHandler(Game game, PawnController ctrl) {
     }
 
-    private static void smartActionHandler(PawnController ctrl) {
+    private static void smartActionHandler(Game game, PawnController ctrl) {
     }
 
-    private static void debilusActionHandler(PawnController ctrl) {
+    private static void debilusActionHandler(Game game, PawnController ctrl) {
     }
 
     /**
@@ -59,7 +59,7 @@ public class Action {
      * @param ctrl the controller for which we are picking an action
      * @return an action
      */
-    private static void humanActionHandler(PawnController ctrl) {
+    private static void humanActionHandler(Game game, PawnController ctrl) {
         //TODO implement it
     }
 }
