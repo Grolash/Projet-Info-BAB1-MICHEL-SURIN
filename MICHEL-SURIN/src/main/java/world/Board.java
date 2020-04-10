@@ -63,6 +63,10 @@ public class Board {
         return wallList;
     }
 
+    public Coord[] getPawnCoord() {
+        return pawnCoord;
+    }
+
     /**
      *
      * @return the size of the board

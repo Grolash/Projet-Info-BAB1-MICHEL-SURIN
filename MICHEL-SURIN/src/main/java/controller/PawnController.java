@@ -20,26 +20,26 @@ public class PawnController extends Controller {
     private int numbWall;
 
     /**
-     * @param AI true : controlled by an AI, false for a human.
+     * @param type define the type of the controller. Used to determined it's action.
      * @param dependency refers to the items the controller is controlling.
      * @param board the board in which the controller is evolving.
      * @param playerNumber the number of the player.
      * @param numbWall the number of wall of the player. Default is 10.
      */
-    public PawnController(boolean AI, Pawn dependency, Board board, int playerNumber, int numbWall) {
-        super(AI, dependency, board);
+    public PawnController(String type, Pawn dependency, Board board, int playerNumber, int numbWall) {
+        super(type, dependency, board);
         this.playerNumber = playerNumber;
         this.numbWall = numbWall;
     }
 
     /**
-     * @param AI true : controlled by an AI, false for a human.
+     * @param type define the type of the controller. Used to determined it's action.
      * @param dependency refers to the items the controller is controlling.
      * @param board the board in which the controller is evolving.
      * @param playerNumber the number of the player.
      */
-    public PawnController(boolean AI, Pawn dependency, Board board, int playerNumber) {
-        super(AI, dependency, board);
+    public PawnController(String type, Pawn dependency, Board board, int playerNumber) {
+        super(type, dependency, board);
         this.playerNumber = playerNumber;
         this.numbWall = 10;
     }
@@ -69,9 +69,8 @@ public class PawnController extends Controller {
      * @throws InvalidParameterException is thrown if the direction is invalid (not UP or RIGHT)
      */
     public void placeWall(Coord origin, Coord direction) throws InvalidParameterException {
-
+        numbWall -= 1;
         if (direction == Game.directions.get("UP")) {
-            numbWall -= 1;
             Coord[] fullWallCoord = new Coord[2];
             fullWallCoord[0] = origin;
             fullWallCoord[1] = Coord.add(origin, direction);
@@ -81,7 +80,6 @@ public class PawnController extends Controller {
             Wall wall = new Wall(origin, direction);
 
         } else if (direction == Game.directions.get("RIGHT")) {
-            numbWall -= 1;
             Coord[] fullWallCoord = new Coord[2];
             fullWallCoord[0] = origin;
             fullWallCoord[1] = Coord.add(origin, direction);

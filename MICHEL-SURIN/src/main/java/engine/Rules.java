@@ -77,7 +77,7 @@ public class Rules {
             // we need to simulate the placement of the wall and then check if it blocks the game.
 
             //first we create a copy of the board that and we add the supposed wall to it we already know it its spot is empty
-            Board tempBoard = new Board(ctrl.getBoard().getSize());
+            Board tempBoard = new Board(ctrl.getBoard().getSize(), ctrl.getBoard().getPawnCoord());
             for (Coord[] wall : ctrl.getBoard().getWallList()) {
                 tempBoard.addToWallList(wall);
             }
@@ -90,7 +90,7 @@ public class Rules {
             for (PawnController controller : playerArray) {
                 //we create a copy of the actual controller (will be done for each controller in the game)
                 //with the tempBoard instead of the real board
-                PawnController tempCtrl = new PawnController(controller.isAI(), (Pawn) controller.getDependency(), tempBoard, "tempPlayer");
+                PawnController tempCtrl = new PawnController(controller.getType(), (Pawn) controller.getDependency(), tempBoard, 55);
 
                 //and now we can proceed to the path check
                 if ( !(pathOrNot(controller)) ) {

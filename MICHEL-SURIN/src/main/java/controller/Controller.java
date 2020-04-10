@@ -8,28 +8,23 @@ import world.Board;
  */
 public abstract class Controller {
 
-    private boolean AI;
+    private String type;
     private MOAI dependency;
     private Board board;
 
     /**
-     *
-     * @param AI true : controlled by an AI, false for a human
-     * @param dependency refers to the items the controller is controlling
-     * @param board the board in which the controller is evolving
+     *  @param type define the type of the controller. Used to determined it's action.
+     * @param dependency refers to the items the controller is controlling.
+     * @param board the board in which the controller is evolving.
      */
-    public Controller(boolean AI, MOAI dependency, Board board) {
-        this.AI = AI;
+    public Controller(String type, MOAI dependency, Board board) {
+        this.type = type;
         this.dependency = dependency;
         this.board = board;
     }
 
-    /**
-     *
-     * @return true if the controller is handled by an AI, false otherwise.
-     */
-    public boolean isAI() {
-        return AI;
+    public String getType() {
+        return type;
     }
 
     public MOAI getDependency() {

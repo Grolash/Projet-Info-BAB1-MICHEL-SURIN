@@ -71,7 +71,7 @@ public class Game {
                 //TODO add parameters : can change numbWall
                 //this for will add the player and their pawn to the game
                 pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
-                playerArray[i] = new PawnController(false, pawnArray[i], this.board, i); //default wall numb set = 10
+                playerArray[i] = new PawnController("Human", pawnArray[i], this.board, i); //default wall numb set = 10
             }
 
         }
