@@ -11,7 +11,7 @@ public class Action {
 
 
     /**
-     * Given a controller, it will, depending on its type (Humain, AI, etc)
+     * Given a controller, it will, depending on its type (Human, AI, etc)
      * call the correct method that will do an action.
      *
      * @param ctrl the controller

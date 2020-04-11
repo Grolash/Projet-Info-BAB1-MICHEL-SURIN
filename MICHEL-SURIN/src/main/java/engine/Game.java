@@ -76,4 +76,7 @@ public class Game {
 
         }
 
+    public PawnController[] getPlayerArray() {
+        return playerArray;
+    }
 }

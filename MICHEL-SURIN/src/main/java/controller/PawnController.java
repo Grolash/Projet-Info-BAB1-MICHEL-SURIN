@@ -101,7 +101,7 @@ public class PawnController extends Controller {
             Wall wall = new Wall(origin, direction);
 
         } else
-            throw new InvalidParameterException("Misuse direction, should ba UP or RIGHT");
+            throw new InvalidParameterException("Misuse direction, should be UP or RIGHT");
     }
 
     /**

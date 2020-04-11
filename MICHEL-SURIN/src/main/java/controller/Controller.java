@@ -4,7 +4,7 @@ import items.MOAI;
 import world.Board;
 
 /**
- * tha base of all controller type with the minimum requirement.
+ * the base of all controller type with the minimum requirement.
  */
 public abstract class Controller {
 
