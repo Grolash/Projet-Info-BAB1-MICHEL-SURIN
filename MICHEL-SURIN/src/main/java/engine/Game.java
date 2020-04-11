@@ -1,5 +1,6 @@
 package engine;
 
+import controller.Action;
 import controller.PawnController;
 import items.Pawn;
 import tools.Coord;
@@ -13,10 +14,13 @@ import java.util.Hashtable;
  */
 public class Game {
 
-    int playerNumber;
-    PawnController[] playerArray;
-    Pawn[] pawnArray;
-    Board board;
+    private int playerNumber;
+    private PawnController[] playerArray;
+    private Pawn[] pawnArray;
+    private Board board;
+    private Hashtable<String, Integer> winTable;
+
+
     /**
      * contains all the possible directions (basically UP, DOWN, LEFT and RIGHT). Won't change.
      * Needs to be accessible for everyone
@@ -73,8 +77,62 @@ public class Game {
                 pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
                 playerArray[i] = new PawnController("Human", pawnArray[i], this.board, i); //default wall numb set = 10
             }
+            //run the GUI ?
+        }
+
+    public Game(String type1, String type2) {
+
+        String[] typeArray = new String[2];
+        typeArray[0] = type1;
+        typeArray[1] = type2;
+
+
+
+        this.playerNumber = 2;
+        this.pawnArray = new Pawn[playerNumber];
+
+        this.playerArray = new PawnController[playerNumber];
+
+
+        Coord[] startCoordArray = new Coord[playerNumber];
+        int[] goalRowArray = new int[playerNumber];
+
+        //create the two basics starting coordinates for a 2 player game
+        //and the associated goalRow
+        startCoordArray[0] = new Coord(0,4);
+        goalRowArray[0] = 8;
+        startCoordArray[1] = new Coord(8,4);
+        goalRowArray[1] = 0;
+
+        this.board = new Board(8, startCoordArray);
+
+        for (int i=0; i<playerNumber; i++) {
+            pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
+
+
+            playerArray[i] = new PawnController(typeArray[i], pawnArray[i], this.board, i);
 
         }
+
+        //everything is set-up
+        //we run one game
+
+
+    }
+
+    public void statLoop(Hashtable<String, Integer> winTable) {
+        int i = 0;
+        do {
+            Action.getAction(this, playerArray[i]);
+            i++;
+            i %= playerNumber;
+
+        } while ( !(playerArray[i].hasWon()) );
+        Integer numbOfVictory = winTable.get(playerArray[i].getType());
+        numbOfVictory += 1;
+        winTable.put(playerArray[i].getType(), numbOfVictory);
+    }
+
 
     public PawnController[] getPlayerArray() {
         return playerArray;

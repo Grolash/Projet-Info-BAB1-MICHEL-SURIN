@@ -2,13 +2,13 @@ package engine;
 
 import controller.PawnController;
 import items.Pawn;
-import items.Wall;
 import tools.Coord;
 import world.Board;
 import world.Cell;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 
 /**
  * this class contains the main logic of the game as well as all the rules.
@@ -194,9 +194,9 @@ public class Rules {
      * @return an Hashtable, if there is a path, it contains the startMark and the goalMark
      * and all the coordinates that have been explored. It needs to be translated into a path.
      * If there is no path, it's a one key one value Hashtable where the key is the noPathMark.
-     * @version 1.2.0
+     * @version 1.3
      */
-    public static Hashtable<Coord, Coord> finAPath(PawnController ctrl) {
+    public static Hashtable<Coord, Coord> findAPath(PawnController ctrl) {
         Coord startCoord = ctrl.getDependency().getCoord();
 
         Hashtable<Coord, Coord> exploredTable = new Hashtable<Coord, Coord>();
@@ -251,7 +251,7 @@ public class Rules {
             //now we explore its surrounding
             for (Coord dir : directions) {
                 Coord nextCell = Coord.add(current, dir);
-                if (canMove(ctrl, dir, current) && !(exploredCoord.contains(nextCell))) {
+                if (canMove(ctrl, dir, current) && !contains(exploredCoord, nextCell)) {
                     if (nextCell.getY() == pawnDependency.getGoalRow()) {
                         //if the next cell is the goal we mark it
                         exploredTable.put(nextCell, current);
@@ -265,9 +265,11 @@ public class Rules {
 
             if (exploredTable.containsKey(goalMark)) {
                 return 1; //there is a path to the goal and we found it.
-            } else {
-                return 0; //path not found yet.
             }
+            /*
+            else {
+                return 0; //path not found yet.
+            } */
         }
         return 2; //no more cells to explore and no path found. There is no path to victory.
     }
@@ -282,7 +284,7 @@ public class Rules {
      * @return true if there is a path from the controller's position to its objective, false otherwise.
      */
     public static boolean pathOrNot(PawnController ctrl) {
-        Hashtable<Coord, Coord> exploredTable = finAPath(ctrl);
+        Hashtable<Coord, Coord> exploredTable = findAPath(ctrl);
         if (exploredTable.containsKey(goalMark)) {
             return true;
         } else {
@@ -298,15 +300,35 @@ public class Rules {
      * @return a list containing the path to follow.
      */
     public static ArrayList<Coord> path(PawnController ctrl) {
-        Hashtable<Coord, Coord> exploredTable = finAPath(ctrl);
-        Coord key = new Coord(goalMark.getY(), goalMark.getX()); //at the beginning key = goalCoordMark
+        Hashtable<Coord, Coord> exploredTable = findAPath(ctrl);
+        Coord key = goalMark; //at the beginning key = goalCoordMark
         ArrayList<Coord> path = new ArrayList<Coord>();
-        while ( !(key.equals(startMark)) ) {
+
+        while ( key.compareTo(startMark) != 0 ) {
             Coord value = exploredTable.get(key);
             path.add(value);
             key = value;
         }
+
         path.remove(path.size()-1); //remove the last Coord that is the startMark, we don't need it.
+        path.remove(path.size()-1); //remove the last coord where the controller is, we don't need it.
         return path;
     }
+
+    /**
+     * method used to check if a Coord object is already inside an ArrayList or not.
+     *
+     * @param exploredCoord the ArrayList we are looking in.
+     * @param c the Coord object whe are looking for in the list.
+     * @return true if it is in the list.
+     */
+    public static boolean contains(ArrayList<Coord> exploredCoord, Coord c) {
+        for (int i=0; i<exploredCoord.size(); i++) {
+            if (exploredCoord.get(i).compareTo(c) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -1,11 +1,6 @@
 package controller;
 
 import engine.Game;
-import items.Wall;
-import tools.Coord;
-import world.Board;
-
-import java.security.InvalidParameterException;
 
 public class Action {
 
@@ -14,28 +9,30 @@ public class Action {
      * Given a controller, it will, depending on its type (Human, AI, etc)
      * call the correct method that will do an action.
      *
+     *
+     * @param playerArray
      * @param ctrl the controller
      * @throws IllegalArgumentException is thrown when a controller as an invalid type.
      */
-    public static void getAction(Game game, PawnController ctrl) throws IllegalArgumentException {
+    public static void getAction(Game playerArray, PawnController ctrl) throws IllegalArgumentException {
         if (ctrl.getType() == "Human") {
             //call HumanActionHandler
         }
         switch (ctrl.getType()) {
             case "Human" :
-                humanActionHandler(game, ctrl);
+                humanActionHandler(playerArray, ctrl);
                 break;
 
             case "Debilus" :
-                debilusActionHandler(game, ctrl);
+                debilusActionHandler(playerArray, ctrl);
                 break;
 
             case "Smart" :
-                smartActionHandler(game, ctrl);
+                smartActionHandler(playerArray, ctrl);
                 break;
 
             case "Smarted" :
-                smartedActionHandler(game, ctrl);
+                smartedActionHandler(playerArray, ctrl);
                 break;
 
             default :
@@ -44,13 +41,13 @@ public class Action {
 
     }
 
-    private static void smartedActionHandler(Game game, PawnController ctrl) {
+    private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) {
     }
 
-    private static void smartActionHandler(Game game, PawnController ctrl) {
+    private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
     }
 
-    private static void debilusActionHandler(Game game, PawnController ctrl) {
+    private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
     }
 
     /**
@@ -59,7 +56,7 @@ public class Action {
      * @param ctrl the controller for which we are picking an action
      * @return an action
      */
-    private static void humanActionHandler(Game game, PawnController ctrl) {
+    private static void humanActionHandler(PawnController[] playerArray, PawnController ctrl) {
         //TODO implement it
     }
 }
