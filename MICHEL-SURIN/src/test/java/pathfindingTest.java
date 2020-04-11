@@ -1,9 +1,7 @@
 import controller.PawnController;
-import engine.Game;
 import engine.Rules;
 import items.Pawn;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tools.Coord;
 import world.Board;
@@ -24,7 +22,6 @@ public class pathfindingTest {
         ArrayList<Coord> pathToGoal = Rules.path(pc1);
         int pathLength = pathToGoal.size();
         Assertions.assertEquals(8, pathLength);
-        Assertions.fail("Got a length of " + pathLength + ". Expected 8");
     }
 
 
