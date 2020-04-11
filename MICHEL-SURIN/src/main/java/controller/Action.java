@@ -56,7 +56,7 @@ public class Action {
      * @param ctrl the controller for which we are picking an action
      * @return an action
      */
-    private static void humanActionHandler(Game game, PawnController ctrl) {
+    private static void humanActionHandler(PawnController[] playerArray, PawnController ctrl) {
         //TODO implement it
     }
 }
