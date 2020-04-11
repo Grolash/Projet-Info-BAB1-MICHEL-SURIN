@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="13">
+    <bytecodeTargetLevel>
       <module name="MICHEL-SURIN.MICHEL-SURIN.main" target="1.8" />
       <module name="MICHEL-SURIN.MICHEL-SURIN.test" target="1.8" />
     </bytecodeTargetLevel>

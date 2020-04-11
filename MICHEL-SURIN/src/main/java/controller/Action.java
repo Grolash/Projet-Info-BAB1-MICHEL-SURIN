@@ -1,7 +1,5 @@
 package controller;
 
-import engine.Game;
-
 public class Action {
 
 
@@ -14,7 +12,7 @@ public class Action {
      * @param ctrl the controller
      * @throws IllegalArgumentException is thrown when a controller as an invalid type.
      */
-    public static void getAction(Game playerArray, PawnController ctrl) throws IllegalArgumentException {
+    public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         if (ctrl.getType() == "Human") {
             //call HumanActionHandler
         }
