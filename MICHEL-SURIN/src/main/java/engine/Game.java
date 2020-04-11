@@ -123,7 +123,7 @@ public class Game {
     public void statLoop(Hashtable<String, Integer> winTable) {
         int i = 0;
         do {
-            Action.getAction(this, playerArray[i]);
+            Action.getAction(playerArray, playerArray[i]);
             i++;
             i %= playerNumber;
 

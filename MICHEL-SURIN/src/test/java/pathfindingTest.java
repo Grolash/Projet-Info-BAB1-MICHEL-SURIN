@@ -62,5 +62,31 @@ public class pathfindingTest {
         Assertions.assertEquals(14, pathLength);
     }
 
+    @Test
+    public void twoSamSizePath() {
+        //init
+        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Coord[] pawnCoord = new Coord[1];
+        pawnCoord[0] = p1.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        //set-up
+        Coord[] wall1 = new Coord[2];
+        wall1[0] = new Coord(1,3);
+        wall1[1] = new Coord(1,4);
+
+        Coord[] wall2 = new Coord[2];
+        wall2[0] = new Coord(2,4);
+        wall2[1] = new Coord(2,5);
+
+        board.addToWallList(wall1);
+        board.addToWallList(wall2);
+
+        PawnController pc1 = new PawnController("Human", p1, board, 0,10);
+        ArrayList<Coord> pathToGoal = Rules.path(pc1);
+        int pathLength = pathToGoal.size();
+        Assertions.assertEquals(10, pathLength);
+    }
+
 
 }
