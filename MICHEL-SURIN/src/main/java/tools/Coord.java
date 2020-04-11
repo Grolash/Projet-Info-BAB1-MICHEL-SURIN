@@ -3,7 +3,7 @@ package tools;
 /**
  * class that represents a coord within a board with (ordinate, absciss) format.
  */
-public class Coord {
+public class Coord implements Comparable<Coord> {
 
     private int y;
     private int x;
@@ -58,5 +58,16 @@ public class Coord {
     }
 
 
+    @Override
+    public int compareTo(Coord o) {
+        if ( this.getY() == o.getY() && this.getX() == o.getX() ) {
+            return 0;
+        } else if (this.getY() > o.getY()) {
+            return 1;
+        } else {
+            return -1;
+        }
+
+    }
 }
 

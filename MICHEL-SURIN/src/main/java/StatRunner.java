@@ -21,6 +21,10 @@ public class StatRunner {
             Game game = new Game(firstAI, secondAI);
             game.statLoop(winTable);
         }
+        double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;
+        double ratioAI2 = winTable.get(secondAI).floatValue() / numbGame;
+        System.out.println(firstAI + " ratio : " + ratioAI1);
+        System.out.println(secondAI + " ratio : " + ratioAI2);
 
     }
 
