@@ -2,6 +2,7 @@ package controller;
 
 import engine.Game;
 import engine.Rules;
+import items.Pawn;
 import tools.Coord;
 
 import java.util.Random;
@@ -21,7 +22,7 @@ public class Action {
 
     private static Random random = new Random();
 
-    public static void getAction(Game playerArray, PawnController ctrl) throws IllegalArgumentException {
+    public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         if (ctrl.getType() == "Human") {
             //call HumanActionHandler
         }
