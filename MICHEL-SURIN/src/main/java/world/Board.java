@@ -1,5 +1,6 @@
 package world;
 
+import engine.Game;
 import items.Pawn;
 import items.Wall;
 import tools.Coord;
@@ -101,10 +102,24 @@ public class Board {
             getCell(wallOrigin).setWallOnSide("UP");
             getCell(wallSecondPart).setWallOnSide("UP");
 
+            //wall on the DOWN side of the cells
+            Coord UpOriginCell = Coord.add(wallOrigin, Game.directions.get("UP"));
+            Coord UpSecondCell = Coord.add(wallSecondPart, Game.directions.get("UP"));
+            getCell(UpOriginCell).setWallOnSide("DOWN");
+            getCell(UpSecondCell).setWallOnSide("DOWN");
+
+
         } else if (wallOrigin.getX() == wallSecondPart.getX() && wallOrigin.getY() == wallSecondPart.getY()+1) {
             //wall is on the RIGHT side of the cells
             getCell(wallOrigin).setWallOnSide("RIGHT");
             getCell(wallSecondPart).setWallOnSide("RIGHT");
+
+            //wall is on the LEFT side of the cells
+            Coord UpOriginCell = Coord.add(wallOrigin, Game.directions.get("RIGHT"));
+            Coord UpSecondCell = Coord.add(wallSecondPart, Game.directions.get("RIGHT"));
+            getCell(UpOriginCell).setWallOnSide("LEFT");
+            getCell(UpSecondCell).setWallOnSide("LEFT");
+
         }
 
     }
