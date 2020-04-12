@@ -95,10 +95,10 @@ public class Action {
      * @param ctrl
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) {
-        if (smartedActionChangelog > 1)
+        if (smartedActionChangelog > 1) //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
 
-        if (smartedActionChangelog ==0){ //Move action.
+        if (smartedActionChangelog == 0){ //Tries and move.
             // Almost same as Debilus but does not go the opposite direction of the goal
             //(except to do diagonal moves which might be necessary).
             Coord direction;
@@ -223,6 +223,8 @@ public class Action {
                 Action.smartedActionHandler(playerArray, ctrl);
 
         }
+
+        smartedActionChangelog += 1;
     }
 
 
