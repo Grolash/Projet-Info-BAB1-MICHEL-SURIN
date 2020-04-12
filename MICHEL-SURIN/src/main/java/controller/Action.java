@@ -34,6 +34,9 @@ public class Action {
             case "Debilus" :
                 debilusActionHandler(playerArray, ctrl);
                 break;
+            case "Dabilus" :
+                debilusActionHandler(playerArray, ctrl);
+                break;
 
             case "Smart" :
                 smartActionHandler(playerArray, ctrl);
@@ -42,11 +45,36 @@ public class Action {
             case "Smarted" :
                 smartedActionHandler(playerArray, ctrl);
                 break;
+            case "DebugDOWN" :
+                debugDOWNActionHandler(playerArray, ctrl);
+                break;
+            case "DebugUP" :
+                debugUPActionHandler(playerArray, ctrl);
+                break;
 
             default :
                 throw new IllegalArgumentException("the controller has an incorrect type");
         }
 
+    }
+
+    /**
+     * a purely debugging AI. It must be initialized at the bottom of the board. It will move forward even if there are walls
+     * it will get trough it. Used to test other AI.
+     *
+     * @param playerArray -
+     * @param ctrl -
+     */
+    private static void debugDOWNActionHandler(PawnController[] playerArray, PawnController ctrl) {
+        if (Rules.canMove(ctrl, Game.directions.get("DOWN"))) {
+            ctrl.move(Game.directions.get("DOWN"));
+        } else {
+
+        }
+
+    }
+    private static void debugUPActionHandler(PawnController[] playerArray, PawnController ctrl) {
+        ctrl.move(Game.directions.get("DOWN"));
     }
 
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) {
@@ -59,7 +87,7 @@ public class Action {
 
         int action = random.nextInt(1); //Choose randomly between move and placing a wall.
 
-        if (action == 1){ //Tries and moves.
+        if (action == 0){ //Tries and moves.
             Coord direction;
             int randint;
 
@@ -70,18 +98,18 @@ public class Action {
             while (!(Rules.canMove(ctrl, direction))); //Does so until it can move.
 
             Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction); //Coordinates of the intended move cell
-
-            if(ctrl.getBoard().getCell(ctrl.getDependency().getCoord()).hasPawn()){
+            
+            if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
                 //If there is a pawn in "front" of itself, tries to bypass it.
 
-                if(!(Rules.canMove(ctrl, direction, forwardCell))){
+                if (!(Rules.canMove(ctrl, direction, forwardCell))) {
                     //If it can not go behind, tries to move diagonally (actually it makes moves forward then on the chosen side).
                     int tries = 0; //The number of tried moves.
                     //Coordinates of the would-be cell it will use to move "diagonally".
                     int choice = random.nextInt(1); //choose random diagonal option.
                     Coord directionBis;
 
-                    if (choice == 0){
+                    if (choice == 0) {
                         //Choose the non-clockwise option.
                         int randintBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
@@ -93,18 +121,15 @@ public class Action {
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
-                        }
-                        else{
+                        } else {
                             if (tries == 0) {
                                 //The chosen option (non-clockwise) was not possible, changes choice.
                                 choice = 1;
                                 tries += 1;
-                            }
-                            else action = 2;
+                            } else action = 2;
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
-                    }
-                    else if (choice == 1){
+                    } else if (choice == 1) {
                         //Choose the clockwise option
                         int randintBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
@@ -115,32 +140,29 @@ public class Action {
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
-                        }
-                        else{
+                        } else {
                             if (tries == 0) {
                                 //The chosen option (non-clockwise) was not possible, changes choice.
                                 choice = 0;
                                 tries += 1;
-                            }
-                            else action = 2;
+                            } else action = 2;
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
                     }
-                }
-                else{
+                } else {
                     //If it can go behind.
                     ctrl.move(direction); //moves on the same cell as the other pawn
                     ctrl.move(direction); //moves on the cell behind the other pawn
                 }
-            }
-            else{
+            } else {
                 //If there is no special condition like a pawn in front of itself
                 ctrl.move(direction);
             }
 
+
         }
 
-        else if (action == 2){ //Tries and place a wall
+        else if (action == 1){ //Tries and place a wall
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
