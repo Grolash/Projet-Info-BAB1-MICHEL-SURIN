@@ -4,6 +4,7 @@
 package controller;
 
 import engine.Game;
+import items.MOAI;
 import items.Pawn;
 import items.Wall;
 import tools.Coord;
@@ -55,6 +56,7 @@ public class PawnController extends Controller {
     public void addToNumbWall(int x) {
         numbWall += x;
     }
+
 
     //NOTE ABOUT ACTIONS : THESE METHODS DO NOT TEST THE VALIDATION OF THE ACTION !
     //validation is handled by the Rules class and nothing else
@@ -117,5 +119,7 @@ public class PawnController extends Controller {
             return false;
         }
     }
+
+
 
 }
