@@ -85,7 +85,7 @@ public class Action {
 
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
-        int action = random.nextInt(1); //Choose randomly between move and placing a wall.
+        int action = random.nextInt(1); //Choose randomly between moving and placing a wall.
 
         if (action == 0){ //Tries and moves.
             Coord direction;
@@ -98,7 +98,7 @@ public class Action {
             while (!(Rules.canMove(ctrl, direction))); //Does so until it can move.
 
             Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction); //Coordinates of the intended move cell
-            
+
             if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
                 //If there is a pawn in "front" of itself, tries to bypass it.
 
@@ -126,7 +126,7 @@ public class Action {
                                 //The chosen option (non-clockwise) was not possible, changes choice.
                                 choice = 1;
                                 tries += 1;
-                            } else action = 2;
+                            } else action = 1;
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
                     } else if (choice == 1) {
@@ -145,7 +145,7 @@ public class Action {
                                 //The chosen option (non-clockwise) was not possible, changes choice.
                                 choice = 0;
                                 tries += 1;
-                            } else action = 2;
+                            } else action = 1;
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
                     }
