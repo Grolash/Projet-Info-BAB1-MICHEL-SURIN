@@ -199,7 +199,11 @@ public class Action {
                 Coord placeCoord;
                 Coord placeDir;
                 do {
-                    int ordinate = random.nextInt(ctrl.getDependency().getCoord().getY());
+                    int ordinate;
+                    if (ctrl.getDependency().getCoord().getY() == 0)
+                        ordinate = random.nextInt(1);
+                    else
+                        ordinate = random.nextInt(ctrl.getDependency().getCoord().getY());
                     //Does not place a wall further than itself.
                     int absciss = random.nextInt(ctrl.getBoard().getSize());
 
