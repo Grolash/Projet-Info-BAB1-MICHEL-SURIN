@@ -104,7 +104,7 @@ public class Game {
         startCoordArray[1] = new Coord(8,4);
         goalRowArray[1] = 0;
 
-        this.board = new Board(8, startCoordArray);
+        this.board = new Board(9, startCoordArray);
 
         for (int i=0; i<playerNumber; i++) {
             pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
@@ -123,7 +123,7 @@ public class Game {
     public void statLoop(Hashtable<String, Integer> winTable) {
         int i = 0;
         do {
-            Action.getAction(this, playerArray[i]);
+            Action.getAction(playerArray, playerArray[i]);
             i++;
             i %= playerNumber;
 

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class StatRunner {
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello, welcome to the Quoridor's statistic mode");
         int numbGame = readInt("Please choose how many games you want to run : ", scanner);
@@ -17,9 +17,11 @@ public class StatRunner {
         Hashtable<String, Integer> winTable = new Hashtable<String, Integer>();
         winTable.put(firstAI,0);
         winTable.put(secondAI,0);
+        System.out.println("Start running games");
         for (int i=0; i<numbGame; i++) {
             Game game = new Game(firstAI, secondAI);
             game.statLoop(winTable);
+            System.out.println("--game played--");
         }
         double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;
         double ratioAI2 = winTable.get(secondAI).floatValue() / numbGame;

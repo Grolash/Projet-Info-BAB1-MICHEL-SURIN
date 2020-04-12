@@ -84,6 +84,7 @@ public class Board {
     public Cell getCell(Coord coord) {
         int y = coord.getY();
         int x = coord.getX();
+        //System.out.println("y: "+ y + " | " + "x: "+ x);
         return cellArray[y][x];
     }
 
