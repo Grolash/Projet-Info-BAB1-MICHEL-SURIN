@@ -77,7 +77,6 @@ public class Action {
                 if(!(Rules.canMove(ctrl, direction, forwardCell))){
                     //If it can not go behind, tries to move diagonally (actually it makes moves forward then on the chosen side).
                     int tries = 0; //The number of tried moves.
-                    Coord forwardForwardCell = Coord.add(forwardCell, direction);
                     //Coordinates of the would-be cell it will use to move "diagonally".
                     int choice = random.nextInt(1); //choose random diagonal option.
                     Coord directionBis;
@@ -91,9 +90,8 @@ public class Action {
                         else
                             randintBis = randint - 1;
                         directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardForwardCell)){
+                        if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(direction); //moves on the cell behind the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
                         }
                         else{
@@ -114,9 +112,8 @@ public class Action {
                         if (randintBis == 4)
                             randintBis = 0;
                         directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardForwardCell)){
+                        if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(direction); //moves on the cell behind the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
                         }
                         else{
