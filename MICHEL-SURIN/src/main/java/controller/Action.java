@@ -6,6 +6,7 @@ import engine.Rules;
 import items.Pawn;
 import tools.Coord;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -94,7 +95,7 @@ public class Action {
      * @param playerArray
      * @param ctrl
      */
-    private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) {
+    private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         if (smartedActionChangelog > 1) //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
 
@@ -102,31 +103,48 @@ public class Action {
             // Almost same as Debilus but does not go the opposite direction of the goal
             //(except to do diagonal moves which might be necessary).
             Coord direction;
-            int randint;
+            int randInt;
             Pawn pawned = (Pawn) ctrl.getDependency();
 
-            do {
-                randint = randomizeDirection();
-                if(pawned.getStart().getY() == 0){ //If the pawn comes from the top...
-                    if (randint == 0) //...does not go up...
-                        randint = 2; //...but down instead!
-                }
-                else if(pawned.getStart().getY() == ctrl.getBoard().getSize()){ //If the pawn comes from the bottom...
-                    if (randint == 2) //...does not go down...
-                        randint = 0; //...but up instead!
-                }
-                else if(pawned.getStart().getX() == 0){ //If the pawn comes from the left...
-                    if (randint == 1) //...does not go left...
-                        randint = 3; //...but right instead!
-                }
-                else if(pawned.getStart().getX() == ctrl.getBoard().getSize()){ //If the pawn comes from the right...
-                    if (randint == 3) //...does not go right...
-                        randint = 1; //...but left instead!
-                }
-                //REDIRECTION HANDLED
-                direction = getDirection(randint); //Choose a random direction
+            ArrayList<Coord> path = Rules.path(ctrl);
+            Coord next = path.remove(path.size()-1);
+            int deltaY = next.getY() - ctrl.getDependency().getCoord().getY();
+            int deltaX = next.getX() - ctrl.getDependency().getCoord().getX();
+
+            switch (deltaY){
+                case 1:
+                    direction = getDirection(2);
+                    randInt = 2;
+                    break;
+
+                case -1:
+                    direction = getDirection(0);
+                    randInt = 0;
+                    break;
+
+                case 0:
+                    switch (deltaX){
+                        case 1:
+                            direction = getDirection(3);
+                            randInt = 3;
+                            break;
+
+                        case -1:
+                            direction = getDirection(1);
+                            randInt = 1;
+                            break;
+
+                        default:
+                            throw new IllegalArgumentException("deltaX should be 1 or -1.");
+
+                    }
+
+                default:
+                    throw new IllegalArgumentException("deltaY should be 1 or -1.");
             }
-            while (!(Rules.canMove(ctrl, direction))); //Does so until it can move.
+
+
+
 
             Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction);
             //Coordinates of the intended move cell
@@ -144,13 +162,13 @@ public class Action {
 
                     if (choice == 0) {
                         //Choose the non-clockwise option.
-                        int randintBis;
+                        int randIntBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
-                        if (randint == 0)
-                            randintBis = 3;
+                        if (randInt == 0)
+                            randIntBis = 3;
                         else
-                            randintBis = randint - 1;
-                        directionBis = getDirection(randintBis);
+                            randIntBis = randInt - 1;
+                        directionBis = getDirection(randIntBis);
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
@@ -166,7 +184,7 @@ public class Action {
                         //Choose the clockwise option
                         int randintBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
-                        randintBis = randint + 1;
+                        randintBis = randInt + 1;
                         if (randintBis == 4)
                             randintBis = 0;
                         directionBis = getDirection(randintBis);
