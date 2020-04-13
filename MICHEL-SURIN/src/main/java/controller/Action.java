@@ -139,6 +139,7 @@ public class Action {
                             throw new IllegalArgumentException("deltaX should be 1 or -1.");
 
                     }
+                    break;
 
                 default:
                     throw new IllegalArgumentException("deltaY should be 1 or -1.");

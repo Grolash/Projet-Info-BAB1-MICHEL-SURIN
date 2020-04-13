@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="pathfindingTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-04-12T13:36:42" hostname="DESKTOP-D7RGT2P" time="0.038">
+<testsuite name="pathfindingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-04-13T15:57:18" hostname="DESKTOP-D7RGT2P" time="0.033">
   <properties/>
-  <testcase name="twoSamSizePath()" classname="pathfindingTest" time="0.024"/>
-  <testcase name="indirectPath1()" classname="pathfindingTest" time="0.005"/>
-  <testcase name="directPath()" classname="pathfindingTest" time="0.005"/>
+  <testcase name="twoSamSizePath()" classname="pathfindingTest" time="0.021"/>
+  <testcase name="indirectPath1()" classname="pathfindingTest" time="0.003"/>
+  <testcase name="alreadyWon()" classname="pathfindingTest" time="0.001"/>
+  <testcase name="directPath()" classname="pathfindingTest" time="0.003"/>
+  <testcase name="oneStepToVictory()" classname="pathfindingTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

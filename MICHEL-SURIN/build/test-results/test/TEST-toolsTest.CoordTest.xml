@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="toolsTest.CoordTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-12T13:36:42" hostname="DESKTOP-D7RGT2P" time="0.001">
+<testsuite name="toolsTest.CoordTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-13T15:57:18" hostname="DESKTOP-D7RGT2P" time="0.002">
   <properties/>
-  <testcase name="addition()" classname="toolsTest.CoordTest" time="0.001"/>
+  <testcase name="addition()" classname="toolsTest.CoordTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

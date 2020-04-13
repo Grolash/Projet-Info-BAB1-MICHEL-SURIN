@@ -88,5 +88,35 @@ public class pathfindingTest {
         Assertions.assertEquals(10, pathLength);
     }
 
+    @Test
+    public void oneStepToVictory() {
+        //init
+        Pawn p1 = new Pawn(new Coord(7,4),8);
+        Coord[] pawnCoord = new Coord[1];
+        pawnCoord[0] = p1.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        //test
+        PawnController pc1 = new PawnController("Human", p1, board, 0,10);
+        ArrayList<Coord> pathToGoal = Rules.path(pc1);
+        int pathLength = pathToGoal.size();
+        Assertions.assertEquals(1, pathLength);
+    }
+
+    @Test
+    public void alreadyWon() {
+        //init
+        Pawn p1 = new Pawn(new Coord(8,4),8);
+        Coord[] pawnCoord = new Coord[1];
+        pawnCoord[0] = p1.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        //test
+        PawnController pc1 = new PawnController("Human", p1, board, 0,10);
+        ArrayList<Coord> pathToGoal = Rules.path(pc1); //should only contain a cell on left or right of the pawn.
+        int pathLength = pathToGoal.size();
+        Assertions.assertEquals(1, pathLength);
+    }
+
 
 }
