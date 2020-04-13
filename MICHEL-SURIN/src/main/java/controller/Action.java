@@ -223,8 +223,9 @@ public class Action {
                 ctrl.placeWall(placeCoord, placeDir);
             }
             else
-                Action.smartedActionHandler(playerArray, ctrl);
                 smartedActionChangelog += 1;
+                Action.smartedActionHandler(playerArray, ctrl);
+
 
         }
 
