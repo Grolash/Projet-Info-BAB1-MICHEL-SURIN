@@ -88,7 +88,7 @@ public class Action {
     /**
      * Smarted AI:
      * A slightly less random AI, with a bit of strategy taken in consideration:
-     * Smarted does not go the opposite way of the gaol (should noticeably enhance it's ability to find it).
+     * Smarted follows a path defined by pathfinding tool.
      * Also, we figured out placing a wall between one's start and one's current
      * position (included) leads to better situations, so Smarted place walls accordingly.
      * Nevertheless it does never place a wall between itself and the goal, it moves it one cell further right.
@@ -100,10 +100,9 @@ public class Action {
             smartedActionChangelog = 0; //Just a reinitialisation.
 
         if (smartedActionChangelog == 0){ //Tries and move.
-            // Almost same as Debilus but does not go the opposite direction of the goal
-            //(except to do diagonal moves which might be necessary).
+            // Almost same as Debilus but follows a path
             Coord direction;
-            int randInt;
+            int randint;
             Pawn pawned = (Pawn) ctrl.getDependency();
 
             ArrayList<Coord> path = Rules.path(ctrl);
@@ -114,24 +113,24 @@ public class Action {
             switch (deltaY){
                 case 1:
                     direction = getDirection(2);
-                    randInt = 2;
+                    randint = 2;
                     break;
 
                 case -1:
                     direction = getDirection(0);
-                    randInt = 0;
+                    randint = 0;
                     break;
 
                 case 0:
                     switch (deltaX){
                         case 1:
                             direction = getDirection(3);
-                            randInt = 3;
+                            randint = 3;
                             break;
 
                         case -1:
                             direction = getDirection(1);
-                            randInt = 1;
+                            randint = 1;
                             break;
 
                         default:
@@ -162,13 +161,13 @@ public class Action {
 
                     if (choice == 0) {
                         //Choose the non-clockwise option.
-                        int randIntBis;
+                        int randintBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
-                        if (randInt == 0)
-                            randIntBis = 3;
+                        if (randint == 0)
+                            randintBis = 3;
                         else
-                            randIntBis = randInt - 1;
-                        directionBis = getDirection(randIntBis);
+                            randintBis = randint - 1;
+                        directionBis = getDirection(randintBis);
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
@@ -184,7 +183,7 @@ public class Action {
                         //Choose the clockwise option
                         int randintBis;
                         //Changes its direction accordingly taking in account the bounds of the array.
-                        randintBis = randInt + 1;
+                        randintBis = randint + 1;
                         if (randintBis == 4)
                             randintBis = 0;
                         directionBis = getDirection(randintBis);
@@ -219,9 +218,11 @@ public class Action {
                 do {
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0)
-                        ordinate = random.nextInt(1);
+                        ordinate = random.nextInt(2);
                     else
                         ordinate = random.nextInt(ctrl.getDependency().getCoord().getY());
+                    if (ordinate == 0)
+                        ordinate = 2;
                     //Does not place a wall further than itself.
                     int absciss = random.nextInt(ctrl.getBoard().getSize());
 
