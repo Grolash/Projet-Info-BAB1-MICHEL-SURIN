@@ -104,7 +104,7 @@ public class Action {
         if (smartedActionChangelog == 0){ //Tries and move.
             // Almost same as Debilus but follows a path
             Coord direction;
-            int randint;
+            int randint; //Was a random tool, moved to be a direction indicator
             Pawn pawned = (Pawn) ctrl.getDependency();
 
             ArrayList<Coord> path = Rules.path(ctrl);
@@ -158,7 +158,7 @@ public class Action {
                     // (actually it makes moves forward then on the chosen side).
                     int tries = 0; //The number of tried moves.
                     //Coordinates of the would-be cell it will use to move "diagonally".
-                    int choice = random.nextInt(1); //choose random diagonal option.
+                    int choice = 0; //choose diagonal option (was random, is not anymore).
                     Coord directionBis;
 
                     if (choice == 0) {
@@ -173,12 +173,10 @@ public class Action {
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
-                        } else {
-                            if (tries == 0) {
-                                //The chosen option (non-clockwise) was not possible, changes choice.
-                                choice = 1;
-                                tries += 1;
-                            } else smartedActionChangelog = 1;
+                        }
+                        else {
+                            //The chosen option (non-clockwise) was not possible, changes choice.
+                            choice = 1;
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
                     } else if (choice == 1) {
@@ -192,12 +190,33 @@ public class Action {
                         if (Rules.canMove(ctrl, directionBis, forwardCell)){
                             ctrl.move(direction); //moves on the same cell as the other pawn
                             ctrl.move(directionBis); //moves to the side not to end in the wall
-                        } else {
-                            if (tries == 0) {
-                                //The chosen option (non-clockwise) was not possible, changes choice.
-                                choice = 0;
-                                tries += 1;
-                            } else smartedActionChangelog = 1;
+                        }
+                        else {
+                            //The chosen option (non-clockwise) was not possible either, tries to move side or back
+                            if (Rules.canMove(ctrl,getDirection(randint - 1))) {
+                                ctrl.move(getDirection(randint - 1));
+                            }
+                            else if (Rules.canMove(ctrl, getDirection(randint + 1))){
+                                ctrl.move(getDirection(randint + 1));
+                            }
+                            else {
+                                if(randint == 0){
+                                    randint = 2;
+                                    ctrl.move(getDirection(randint));
+                                }
+                                else if (randint == 1){
+                                    randint = 3;
+                                    ctrl.move(getDirection(randint));
+                                }
+                                else if (randint == 2){
+                                    randint = 0;
+                                    ctrl.move(getDirection(randint));
+                                }
+                                else if (randint == 3){
+                                    randint = 1;
+                                    ctrl.move(getDirection(randint));
+                                }
+                            }
                         }
                         //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
                     }
