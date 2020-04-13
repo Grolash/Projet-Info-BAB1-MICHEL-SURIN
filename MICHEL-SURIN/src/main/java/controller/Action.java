@@ -96,8 +96,9 @@ public class Action {
      * @param ctrl
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
-        if (smartedActionChangelog > 1) //See above the method.
+        if (smartedActionChangelog > 1) { //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
+        }
 
         if (smartedActionChangelog == 0){ //Tries and move.
             // Almost same as Debilus but follows a path
@@ -226,7 +227,7 @@ public class Action {
                     //Does not place a wall further than itself.
                     int absciss = random.nextInt(ctrl.getBoard().getSize());
 
-                    int intDir = random.nextInt(1);
+                    int intDir = random.nextInt(2);
                     if (intDir == 1)
                         intDir = 3;
 
@@ -241,10 +242,10 @@ public class Action {
 
                 ctrl.placeWall(placeCoord, placeDir);
             }
-            else
+            else {
                 smartedActionChangelog += 1;
                 Action.smartedActionHandler(playerArray, ctrl);
-
+            }
 
         }
 
