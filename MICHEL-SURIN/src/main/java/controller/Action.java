@@ -237,7 +237,12 @@ public class Action {
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
+                int triesWalls = 0;
                 do {
+                    if (triesWalls == 50){
+                        smartedActionChangelog += 1;
+                        Action.smartedActionHandler(playerArray, ctrl);
+                    }
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0)
                         ordinate = random.nextInt(2);
@@ -258,6 +263,8 @@ public class Action {
 
                     placeCoord = new Coord(ordinate, absciss);
                     placeDir = getDirection(intDir);
+
+                    triesWalls++;
                 }
                 while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)));
 
