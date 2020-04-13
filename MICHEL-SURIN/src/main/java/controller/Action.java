@@ -94,6 +94,7 @@ public class Action {
      * Nevertheless it does never place a wall between itself and the goal, it moves it one cell further right.
      * @param playerArray
      * @param ctrl
+     * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         if (smartedActionChangelog > 1) { //See above the method.
