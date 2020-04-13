@@ -373,7 +373,11 @@ public class Action {
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
+                int triesWalls = 0;
                 do {
+                    if (triesWalls == 50){
+                        Action.debilusActionHandler(playerArray, ctrl);
+                    }
                     int ordinate = random.nextInt(ctrl.getBoard().getSize());
                     int absciss = random.nextInt(ctrl.getBoard().getSize());
                     placeCoord = new Coord(ordinate, absciss);
@@ -382,6 +386,7 @@ public class Action {
                     if (intDir == 1)
                         intDir = 3;
                     placeDir = getDirection(intDir);
+                    triesWalls++;
                 }
                 while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)));
 
