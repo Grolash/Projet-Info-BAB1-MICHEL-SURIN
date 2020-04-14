@@ -244,10 +244,13 @@ public class Action {
                         Action.smartedActionHandler(playerArray, ctrl);
                     }
                     int ordinate;
-                    if (ctrl.getDependency().getCoord().getY() == 0)
+                    if (ctrl.getDependency().getCoord().getY() == 0 ||
+                            ctrl.getDependency().getCoord().getY() - 1 == 0) {
                         ordinate = random.nextInt(2);
-                    else
+                    }
+                    else {
                         ordinate = random.nextInt(ctrl.getDependency().getCoord().getY() - 1);
+                    }
                     if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
                         ordinate = ctrl.getDependency().getCoord().getY();
                     }
