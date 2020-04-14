@@ -132,13 +132,13 @@ public class Rules {
                 possibleWall[1] = tempCoord;
 
 
-                Coord aboveOrigin = Coord.add(coord, Game.directions.get("RIGHT"));
-                Cell aboveOriginCell = board.getCell(aboveOrigin);
+                Coord nextToOrigin = Coord.add(coord, Game.directions.get("RIGHT"));
+                Cell nextToOriginCell = board.getCell(nextToOrigin);
                 //now the check
                 if (originCell.wallTo(Game.directions.get("RIGHT")) ||
                         secondCell.wallTo(Game.directions.get("RIGHT")) ||
                         (originCell.wallTo(Game.directions.get("UP")) &&
-                                aboveOriginCell.wallTo(Game.directions.get("UP")) ) || //case of cutting a perpendicular wall
+                                nextToOriginCell.wallTo(Game.directions.get("UP")) ) || //case of cutting a perpendicular wall
                         board.InWallList(possibleWall)) {
                         return false;
                 } else {
@@ -314,7 +314,7 @@ public class Rules {
         ArrayList<Coord> path = new ArrayList<Coord>();
 
         while ( key.compareTo(startMark) != 0 ) {
-            System.out.println(key.toString());
+            //System.out.println(key.toString());
             Coord value = exploredTable.get(key);
             path.add(value);
             key = value;

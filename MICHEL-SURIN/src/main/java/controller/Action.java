@@ -97,11 +97,13 @@ public class Action {
      * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
+
         if (smartedActionChangelog > 1) { //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
         }
 
         if (smartedActionChangelog == 0){ //Tries and move.
+            //System.out.println("I move");
             // Almost same as Debilus but follows a path
             Coord direction;
             int randint; //Was a random tool, moved to be a direction indicator
@@ -234,15 +236,20 @@ public class Action {
 
         }
         else if (smartedActionChangelog == 1){ //Tries and place a wall
+            //System.out.println("I place a wall");
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
+                    //TODO old recursive code
+                    //System.out.println("tries : " + triesWalls);
+                    /*
                     if (triesWalls == 50){
                         smartedActionChangelog += 1;
+                        triesWalls = 0;
                         Action.smartedActionHandler(playerArray, ctrl);
-                    }
+                    } */
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0 ||
                             ctrl.getDependency().getCoord().getY() - 1 == 0) {
@@ -272,10 +279,14 @@ public class Action {
                     placeDir = getDirection(intDir);
 
                     triesWalls++;
+                    //System.out.println("in the while");
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)));
-
-                ctrl.placeWall(placeCoord, placeDir);
+                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls <= 50);
+                //System.out.println("while passed");
+                if (triesWalls <= 50) {
+                    ctrl.placeWall(placeCoord, placeDir);
+                }
+                triesWalls = 0;
             }
             else {
                 smartedActionChangelog += 1;
