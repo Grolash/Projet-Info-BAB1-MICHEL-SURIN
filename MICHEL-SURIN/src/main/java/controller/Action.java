@@ -247,11 +247,15 @@ public class Action {
                     if (ctrl.getDependency().getCoord().getY() == 0)
                         ordinate = random.nextInt(2);
                     else
-                        ordinate = random.nextInt(ctrl.getDependency().getCoord().getY());
-                    if (ordinate == 0)
+                        ordinate = random.nextInt(ctrl.getDependency().getCoord().getY() - 1);
+                    if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
+                        ordinate = ctrl.getDependency().getCoord().getY();
+                    }
+                    else if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() == 0)){
                         ordinate = 2;
+                    }
                     //Does not place a wall further than itself.
-                    int absciss = random.nextInt(ctrl.getBoard().getSize());
+                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 1);
 
                     int intDir = random.nextInt(2);
                     if (intDir == 1)
@@ -378,8 +382,13 @@ public class Action {
                     if (triesWalls == 50){
                         Action.debilusActionHandler(playerArray, ctrl);
                     }
-                    int ordinate = random.nextInt(ctrl.getBoard().getSize());
-                    int absciss = random.nextInt(ctrl.getBoard().getSize());
+
+                    int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
+                    if (ordinate == 0){
+                        ordinate = ctrl.getBoard().getSize();
+                    }
+
+                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 1);
                     placeCoord = new Coord(ordinate, absciss);
 
                     int intDir = random.nextInt(1);
