@@ -138,4 +138,14 @@ public class Board {
         pawnCoord[playerNumber] = newCoord;
         getCell(newCoord).setPawn(true);
     }
+
+    public boolean InWallList(Coord[] wall) {
+        for (Coord[] c : getWallList()) {
+            if (c[0].compareTo(wall[0]) == 0 && c[1].compareTo(wall[1]) == 0) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }

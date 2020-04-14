@@ -123,7 +123,9 @@ public class Game {
     public void statLoop(Hashtable<String, Integer> winTable) {
         int i = 0;
         do {
+            System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
             Action.getAction(playerArray, playerArray[i]);
+            System.out.println("-----ACTION RESOLVED----"+ playerArray[i].getType());
             i++;
             i %= playerNumber;
 
