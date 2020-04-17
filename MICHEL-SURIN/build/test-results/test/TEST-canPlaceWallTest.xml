@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="canPlaceWallTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-04-16T15:29:06" hostname="DESKTOP-D7RGT2P" time="0.054">
-  <properties/>
-  <testcase name="isThereAPath()" classname="canPlaceWallTest" time="0.027"/>
-  <testcase name="wallOverlap1()" classname="canPlaceWallTest" time="0.001"/>
-  <testcase name="isThereAPath2()" classname="canPlaceWallTest" time="0.024"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

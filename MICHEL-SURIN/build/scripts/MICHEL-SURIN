@@ -44,7 +44,7 @@ APP_NAME="MICHEL-SURIN"
 APP_BASE_NAME=`basename "$0"`
 
 # Add default JVM options here. You can also use JAVA_OPTS and MICHEL_SURIN_OPTS to pass JVM options to this script.
-DEFAULT_JVM_OPTS=""
+DEFAULT_JVM_OPTS='"--module-path" "$APP_HOME/lib" "--module" "MICHEL.SURIN.main/gui.Menu"'
 
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD="maximum"
@@ -80,7 +80,7 @@ case "`uname`" in
     ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/MICHEL-SURIN.jar:$APP_HOME/lib/javafx-fxml-13-win.jar:$APP_HOME/lib/javafx-controls-13-win.jar:$APP_HOME/lib/javafx-controls-13.jar:$APP_HOME/lib/javafx-graphics-13-win.jar:$APP_HOME/lib/javafx-graphics-13.jar:$APP_HOME/lib/javafx-base-13-win.jar:$APP_HOME/lib/javafx-base-13.jar
+CLASSPATH=
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
@@ -178,6 +178,6 @@ save () {
 APP_ARGS=`save "$@"`
 
 # Collect all arguments for the java command, following the shell quoting and substitution rules
-eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $MICHEL_SURIN_OPTS -classpath "\"$CLASSPATH\"" gui.GameUI "$APP_ARGS"
+eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $MICHEL_SURIN_OPTS -classpath "\"$CLASSPATH\"" gui.Menu "$APP_ARGS"
 
 exec "$JAVACMD" "$@"
