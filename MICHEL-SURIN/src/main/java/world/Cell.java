@@ -8,6 +8,8 @@ import java.util.Hashtable;
  */
 public class Cell {
 
+
+
     /**
      * the coordinates of the cell in the board.
      */
@@ -87,4 +89,5 @@ public class Cell {
     public void setPawn(boolean pawn) {
         this.pawn = pawn;
     }
+
 }

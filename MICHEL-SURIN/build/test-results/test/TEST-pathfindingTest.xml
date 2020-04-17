@@ -1,55 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="pathfindingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-04-14T11:36:19" hostname="DESKTOP-D7RGT2P" time="0.029">
+<testsuite name="pathfindingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-04-16T15:29:07" hostname="DESKTOP-D7RGT2P" time="0.007">
   <properties/>
-  <testcase name="twoSamSizePath()" classname="pathfindingTest" time="0.013"/>
-  <testcase name="indirectPath1()" classname="pathfindingTest" time="0.005"/>
-  <testcase name="alreadyWon()" classname="pathfindingTest" time="0.004"/>
-  <testcase name="directPath()" classname="pathfindingTest" time="0.003"/>
+  <testcase name="twoSamSizePath()" classname="pathfindingTest" time="0.002"/>
+  <testcase name="indirectPath1()" classname="pathfindingTest" time="0.001"/>
+  <testcase name="alreadyWon()" classname="pathfindingTest" time="0.001"/>
+  <testcase name="directPath()" classname="pathfindingTest" time="0.001"/>
   <testcase name="oneStepToVictory()" classname="pathfindingTest" time="0.001"/>
-  <system-out><![CDATA[(-66, -66)
-(8, 2)
-(7, 2)
-(6, 2)
-(5, 2)
-(4, 2)
-(3, 2)
-(2, 2)
-(1, 2)
-(0, 2)
-(0, 3)
-(0, 4)
-(-66, -66)
-(8, 2)
-(7, 2)
-(6, 2)
-(6, 1)
-(6, 0)
-(5, 0)
-(4, 0)
-(3, 0)
-(2, 0)
-(1, 0)
-(0, 0)
-(0, 1)
-(0, 2)
-(0, 3)
-(0, 4)
-(-66, -66)
-(8, 5)
-(8, 4)
-(-66, -66)
-(8, 4)
-(7, 4)
-(6, 4)
-(5, 4)
-(4, 4)
-(3, 4)
-(2, 4)
-(1, 4)
-(0, 4)
-(-66, -66)
-(8, 4)
-(7, 4)
-]]></system-out>
+  <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
