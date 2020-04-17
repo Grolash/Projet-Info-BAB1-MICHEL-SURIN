@@ -5,7 +5,10 @@ module MICHEL.SURIN.main {
     requires javafx.graphics;
     requires java.desktop;
 
-    opens main;
-    opens test;
-
+    opens controller;
+    opens engine;
+    opens gui;
+    opens items;
+    opens tools;
+    opens world;
 }

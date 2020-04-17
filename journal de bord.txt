@@ -74,3 +74,8 @@ nombreux changements depuis la dernière entrée, incluants:
 		le problème etait une possibilité d'absence de capacité à placer un mur entrainant un trop grand nombre d'itérations et un crash; fixé entre autre en plaçant une limite d'itérations et un break vers le mouvement
 
     -----------    -----------    -----------
+
+16/04/2020:
+début du GUI
+
+    -----------    -----------    -----------
