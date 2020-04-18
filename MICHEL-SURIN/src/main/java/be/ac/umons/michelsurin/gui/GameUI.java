@@ -28,19 +28,29 @@ public class GameUI extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
 
-        Canvas canvas = new Canvas(1000,1000);
-        Image cellImg = new Image("midTile-shut-Corridor.png");
+        Canvas canvas = new Canvas(1000,500);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
+        Image[][] imagesArray = new Image[game.getBoard().getSize()][game.getBoard().getSize()];
         for (int i=0; i<game.getBoard().getSize(); i++) {
             for (int j=0; j< game.getBoard().getSize(); j++) {
-                gc.drawImage(cellImg, i*50, j*50);
+                if (game.getBoard().getCell(getCoordFromSprite(i%38, j%38)).hasPawn()) {
+                    gc.drawImage(new Image("pawn.png"), i*38, j*38);
+                } else {
+                    imagesArray[i][j] = new Image("midTile-shut.png");
+                    gc.drawImage(imagesArray[i][j], i * 38, j * 38);
+                }
             }
         }
-
-
         root.getChildren().add(canvas);
         primaryStage.show();
 
+    }
+
+
+    public Coord getCoordFromSprite(int y, int x) {
+        int new_y = y / 36;
+        int new_x = x / 36;
+        return new Coord(new_y, new_x);
     }
 }
