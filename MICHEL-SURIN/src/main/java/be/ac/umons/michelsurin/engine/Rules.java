@@ -186,7 +186,7 @@ public class Rules {
      * @return true if the coordinates correspond to the objective of the be.ac.umons.michelsurin.controller, false otherwise.
      */
     public static boolean hasWon(Coord coord, PawnController ctrl) {
-        if (coord.getY() == ((Pawn) ctrl.getDependency()).getGoalRow()) { //downcast dependency from MOAI to Pawn then compare
+        if (coord.getY() == ((Pawn) ctrl.getDependency()).getGoal()) { //downcast dependency from MOAI to Pawn then compare
             return true;
         } else {
             return false;
@@ -261,7 +261,8 @@ public class Rules {
             for (Coord dir : directions) {
                 Coord nextCell = Coord.add(current, dir);
                 if (canMove(ctrl, dir, current) && !contains(exploredCoord, nextCell)) {
-                    if (nextCell.getY() == pawnDependency.getGoalRow()) {
+                    if ( ( pawnDependency.doesGoalIsARow() && nextCell.getY() == pawnDependency.getGoal() ) ||
+                            ( !pawnDependency.doesGoalIsARow() && nextCell.getX() == pawnDependency.getGoal())) {
                         //if the next cell is the goal we mark it
                         exploredTable.put(nextCell, current);
                         exploredTable.put(goalMark, nextCell);

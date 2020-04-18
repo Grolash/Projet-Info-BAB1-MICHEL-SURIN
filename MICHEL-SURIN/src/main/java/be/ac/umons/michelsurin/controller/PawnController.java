@@ -112,7 +112,7 @@ public class PawnController extends Controller {
      */
     public boolean hasWon() {
         Pawn dep = (Pawn) getDependency(); //Downcast
-        if (dep.getCoord().getY() == dep.getGoalRow()) {
+        if (dep.getCoord().getY() == dep.getGoal()) {
             return true;
         } else {
             return false;

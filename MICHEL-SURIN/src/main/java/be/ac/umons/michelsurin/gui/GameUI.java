@@ -21,7 +21,8 @@ public class GameUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Game game = new Game(9,2);
+        String[] type = {"Human", "Human"};
+        Game game = new Game(9, type, 10);
 
         primaryStage.setTitle("Quoridor - by Virgil Surin & Simon Michel");
         Group root = new Group();

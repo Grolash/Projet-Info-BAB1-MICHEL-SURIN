@@ -40,45 +40,58 @@ public class Game {
     /**
      *
      * @param size the size of the board, should be 9.
-     * @param playerNumber the number of player playing, must be 2 (or 4).
+     * @param playerTypeArray an array of string containing the types of the player (Human, Smart...).
+     * @param numbOfWall the number of wall of each player.
      * @throws IllegalArgumentException raise exception if an invalid number of player is used.
      */
-    public Game(int size, int playerNumber) throws IllegalArgumentException {
-            if (playerNumber != 2 /*|| playerNumber != 4*/) {
-                throw new IllegalArgumentException("Invalid number of player. Should be 2");
+    public Game(int size, String[] playerTypeArray, int numbOfWall) throws IllegalArgumentException {
+
+            this.playerNumber = playerTypeArray.length;
+            System.out.println(playerNumber);
+            if ( (playerNumber != 2) && (playerNumber != 4) ) {
+                throw new IllegalArgumentException("Invalid number of player. Should be 2 or 4");
             }
 
-
-            this.playerNumber = playerNumber;
             this.pawnArray = new Pawn[playerNumber];
             this.playerArray = new PawnController[playerNumber];
 
             Coord[] startCoordArray = new Coord[playerNumber];
-            int[] goalRowArray = new int[playerNumber];
+            int[] goalArray = new int[playerNumber];
 
             if (playerNumber == 2) {
                 //create the two basics starting coordinates for a 2 player game
                 //and the associated goalRow
                 startCoordArray[0] = new Coord(0,4);
-                goalRowArray[0] = size-1;
+                goalArray[0] = size-1;
                 startCoordArray[1] = new Coord(size-1,4);
-                goalRowArray[1] = 0;
+                goalArray[1] = 0;
             }
             else {
-                if (playerNumber == 4) { //TODO add support for 4 player
+                if (playerNumber == 4) {
                     //set up for 4 player
-                    //not yet supported
+                    //player 0
+                    startCoordArray[0] = new Coord(0,4);
+                    goalArray[0] = size-1;
+                    //player 1
+                    startCoordArray[1] = new Coord(size-1,4);
+                    goalArray[1] = 0;
+                    //player 2
+                    startCoordArray[2] = new Coord(4,0);
+                    goalArray[2] = size-1;
+                    //player 3
+                    startCoordArray[2] = new Coord(4,size-1);
+                    goalArray[2] = 0;
+
                 }
             }
 
             this.board = new Board(size, startCoordArray);
 
             for (int i = 0; i < playerNumber; i++) {
-                //TODO add support for AI vs AI/ Human vs AI / Human vs Human
-                //TODO add parameters : can change numbWall
                 //this for will add the player and their pawn to the game
-                pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
-                playerArray[i] = new PawnController("Human", pawnArray[i], this.board, i); //default wall numb set = 10
+                boolean row = (i==2 || i==3) ? false : true;
+                pawnArray[i] = new Pawn(startCoordArray[i], goalArray[i], row);
+                playerArray[i] = new PawnController(playerTypeArray[i], pawnArray[i], this.board, i, numbOfWall);
             }
             //run the GUI ?
         }
@@ -110,7 +123,7 @@ public class Game {
         this.board = new Board(9, startCoordArray);
 
         for (int i=0; i<playerNumber; i++) {
-            pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i]);
+            pawnArray[i] = new Pawn(startCoordArray[i], goalRowArray[i], true);
 
 
             playerArray[i] = new PawnController(typeArray[i], pawnArray[i], this.board, i);

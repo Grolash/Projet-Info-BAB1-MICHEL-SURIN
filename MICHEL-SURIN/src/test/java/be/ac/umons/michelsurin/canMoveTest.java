@@ -15,7 +15,7 @@ public class canMoveTest {
     public void canMoveCornerLU() {
 
         //set-up
-        Pawn p1 = new Pawn(new Coord(0,0),8);
+        Pawn p1 = new Pawn(new Coord(0,0),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -35,7 +35,7 @@ public class canMoveTest {
     public void canMoveCornerRU() {
 
         //set-up
-        Pawn p1 = new Pawn(new Coord(0,8),8);
+        Pawn p1 = new Pawn(new Coord(0,8),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -52,7 +52,7 @@ public class canMoveTest {
     public void canMoveCornerRD() {
 
         //set-up
-        Pawn p1 = new Pawn(new Coord(8,8),8);
+        Pawn p1 = new Pawn(new Coord(8,8),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -69,7 +69,7 @@ public class canMoveTest {
     public void canMoveCornerLD() {
 
         //set-up
-        Pawn p1 = new Pawn(new Coord(8,0),8);
+        Pawn p1 = new Pawn(new Coord(8,0),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -86,7 +86,7 @@ public class canMoveTest {
     public void cantMove() {
 
         //set-up
-        Pawn p1 = new Pawn(new Coord(4,4),8);
+        Pawn p1 = new Pawn(new Coord(4,4),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
