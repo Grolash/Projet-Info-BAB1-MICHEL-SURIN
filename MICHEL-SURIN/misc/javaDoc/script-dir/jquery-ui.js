@@ -1438,7 +1438,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 				var actualTarget = $( event.target ).closest( ".ui-menu-item" ),
 					target = $( event.currentTarget );
 
-				// Ignore bubbled events on parent items, see #11641
+				// Ignore bubbled events on parent be.ac.umons.michelsurin.items, see #11641
 				if ( actualTarget[ 0 ] !== target[ 0 ] ) {
 					return;
 				}
@@ -1640,7 +1640,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 		menus = submenus.add( this.element );
 		items = menus.find( this.options.items );
 
-		// Initialize menu-items containing spaces and/or dashes only as dividers
+		// Initialize menu-be.ac.umons.michelsurin.items containing spaces and/or dashes only as dividers
 		items.not( ".ui-menu-item" ).each( function() {
 			var item = $( this );
 			if ( that._isDivider( item ) ) {
@@ -1648,7 +1648,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 			}
 		} );
 
-		// Don't refresh list items that are already adapted
+		// Don't refresh list be.ac.umons.michelsurin.items that are already adapted
 		newItems = items.not( ".ui-menu-item, .ui-menu-divider" );
 		newWrappers = newItems.children()
 			.not( ".ui-menu" )
@@ -1980,7 +1980,7 @@ var widgetsMenu = $.widget( "ui.menu", {
 		return this.activeMenu
 			.find( this.options.items )
 
-				// Only match on items, not dividers or other content (#10571)
+				// Only match on be.ac.umons.michelsurin.items, not dividers or other content (#10571)
 				.filter( ".ui-menu-item" )
 					.filter( function() {
 						return regex.test(
@@ -2210,7 +2210,7 @@ $.widget( "ui.autocomplete", {
 					delete this.cancelBlur;
 
 					// Support: IE 8 only
-					// Right clicking a menu item or selecting text from the menu items will
+					// Right clicking a menu item or selecting text from the menu be.ac.umons.michelsurin.items will
 					// result in focus moving out of the input. However, we've already received
 					// and ignored the blur event because of the cancelBlur flag set above. So
 					// we restore focus to ensure that the menu closes properly based on the user's
@@ -2224,7 +2224,7 @@ $.widget( "ui.autocomplete", {
 				var label, item;
 
 				// support: Firefox
-				// Prevent accidental activation of menu items in Firefox (#7024 #9118)
+				// Prevent accidental activation of menu be.ac.umons.michelsurin.items in Firefox (#7024 #9118)
 				if ( this.isNewMenu ) {
 					this.isNewMenu = false;
 					if ( event.originalEvent && /^mouse/.test( event.originalEvent.type ) ) {
@@ -2486,7 +2486,7 @@ $.widget( "ui.autocomplete", {
 
 	_normalize: function( items ) {
 
-		// assume all items have the right format when the first item is complete
+		// assume all be.ac.umons.michelsurin.items have the right format when the first item is complete
 		if ( items.length && items[ 0 ].label && items[ 0 ].value ) {
 			return items;
 		}

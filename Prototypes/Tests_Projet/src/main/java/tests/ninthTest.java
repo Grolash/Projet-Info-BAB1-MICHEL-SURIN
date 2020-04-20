@@ -36,6 +36,7 @@ public class ninthTest extends Application{
 
         Label nameLabel = new Label("Username:");
         GridPane.setConstraints(nameLabel, 0, 0);
+        nameLabel.setId("bold-label");
         TextField nameInput = new TextField("John Smith");
         GridPane.setConstraints(nameInput, 1, 0);
 
@@ -46,12 +47,22 @@ public class ninthTest extends Application{
         GridPane.setConstraints(passwordInput, 1, 1);
 
         Button loginButton = new Button("Log in");
+        loginButton.setOnAction(e -> {
+            setUserAgentStylesheet(STYLESHEET_CASPIAN);
+        });
+
         GridPane.setConstraints(loginButton, 1, 2);
 
-        gridPane.getChildren().addAll(nameLabel, nameInput, passwordLabel, passwordInput, loginButton);
+        //sign up
+        Button signupButton = new Button("Sign up");
+        gridPane.setConstraints(signupButton, 1, 3);
+        signupButton.getStyleClass().add("button-blue");
+
+        gridPane.getChildren().addAll(nameLabel, nameInput, passwordLabel, passwordInput, loginButton, signupButton);
 
 
         Scene scene = new Scene(gridPane, 400, 300);
+        scene.getStylesheets().add("Viper.css");
         window.setScene(scene);
         window.show();
 
