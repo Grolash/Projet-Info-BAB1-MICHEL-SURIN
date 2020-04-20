@@ -16,7 +16,7 @@ public class pathfindingTest {
     @Test
     public void directPath() {
 
-        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -30,7 +30,7 @@ public class pathfindingTest {
     public void indirectPath1() {
 
         //init
-        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -67,7 +67,7 @@ public class pathfindingTest {
     @Test
     public void twoSamSizePath() {
         //init
-        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -93,7 +93,7 @@ public class pathfindingTest {
     @Test
     public void oneStepToVictory() {
         //init
-        Pawn p1 = new Pawn(new Coord(7,4),8);
+        Pawn p1 = new Pawn(new Coord(7,4),8,true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -108,7 +108,7 @@ public class pathfindingTest {
     @Test
     public void alreadyWon() {
         //init
-        Pawn p1 = new Pawn(new Coord(8,4),8);
+        Pawn p1 = new Pawn(new Coord(8,4),8, true);
         Coord[] pawnCoord = new Coord[1];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);

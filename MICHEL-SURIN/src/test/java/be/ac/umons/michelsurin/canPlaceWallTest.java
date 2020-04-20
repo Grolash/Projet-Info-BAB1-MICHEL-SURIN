@@ -14,8 +14,8 @@ public class canPlaceWallTest {
     @Test
     public void wallOverlap1() {
         //init
-        Pawn p1 = new Pawn(new Coord(0,4),8);
-        Pawn p2 = new Pawn(new Coord(8,4),0);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
+        Pawn p2 = new Pawn(new Coord(8,4),0, true);
         Coord[] pawnCoord = new Coord[2];
         pawnCoord[0] = p1.getStart();
         pawnCoord[1] = p2.getStart();
@@ -47,7 +47,7 @@ public class canPlaceWallTest {
     @Test
     public void isThereAPath() {
         //init
-        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Coord[] pawnCoord = new Coord[2];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
@@ -81,7 +81,7 @@ public class canPlaceWallTest {
     public void isThereAPath2() {
 
         //init
-        Pawn p1 = new Pawn(new Coord(0,4),8);
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Coord[] pawnCoord = new Coord[2];
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
