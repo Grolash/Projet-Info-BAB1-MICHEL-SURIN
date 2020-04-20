@@ -33,7 +33,7 @@ set APP_HOME=%DIRNAME%..
 for %%i in ("%APP_HOME%") do set APP_HOME=%%~fi
 
 @rem Add default JVM options here. You can also use JAVA_OPTS and MICHEL_SURIN_OPTS to pass JVM options to this script.
-set DEFAULT_JVM_OPTS="--module-path" "%APP_HOME%\lib" "--module" "MICHEL.SURIN.main/gui.Menu"
+set DEFAULT_JVM_OPTS=
 
 @rem Find java.exe
 if defined JAVA_HOME goto findJavaFromJavaHome
@@ -82,10 +82,10 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=
+set CLASSPATH=%APP_HOME%\lib\MICHEL-SURIN.jar;%APP_HOME%\lib\javafx-fxml-13-win.jar;%APP_HOME%\lib\javafx-controls-13-win.jar;%APP_HOME%\lib\javafx-controls-13.jar;%APP_HOME%\lib\javafx-graphics-13-win.jar;%APP_HOME%\lib\javafx-graphics-13.jar;%APP_HOME%\lib\javafx-base-13-win.jar;%APP_HOME%\lib\javafx-base-13.jar
 
 @rem Execute MICHEL-SURIN
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MICHEL_SURIN_OPTS%  -classpath "%CLASSPATH%" gui.Menu %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MICHEL_SURIN_OPTS%  -classpath "%CLASSPATH%" be.ac.umons.michelsurin.gui.GameUI %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell

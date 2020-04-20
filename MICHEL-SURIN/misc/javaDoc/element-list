@@ -1,6 +1,6 @@
 unnamed package
-controller
-engine
-items
-tools
-world
+be.ac.umons.michelsurin.controller
+be.ac.umons.michelsurin.engine
+be.ac.umons.michelsurin.items
+be.ac.umons.michelsurin.tools
+be.ac.umons.michelsurin.world

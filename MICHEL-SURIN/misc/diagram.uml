@@ -3,121 +3,126 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="121.83828571428575" y="1607.0">engine.Game</node>
-    <node x="117.75" y="1035.0">controller.Controller</node>
-    <node x="345.80799999999994" y="749.0">items.MOAI</node>
-    <node x="348.85828571428544" y="0.0">tools.Coord</node>
-    <node x="659.75" y="307.0">engine.Rules</node>
-    <node x="367.75" y="1121.0">items.Wall</node>
-    <node x="10.5" y="672.0">world.Board</node>
-    <node x="84.25" y="1332.0">controller.PawnController</node>
-    <node x="542.75" y="1068.0">items.Pawn</node>
-    <node x="64.75" y="341.0">world.Cell</node>
+    <node x="776.7234285714287" y="1477.0">engine.Game</node>
+    <node x="46.0" y="285.0">engine.Rules</node>
+    <node x="0.0" y="1811.0">gui.ConfirmBox</node>
+    <node x="254.0" y="1811.0">engine.StatRunner</node>
+    <node x="489.0" y="1811.0">gui.GameUI</node>
+    <node x="786.082" y="672.0">world.Board</node>
+    <node x="653.832" y="1180.0">controller.PawnController</node>
+    <node x="1093.7234285714287" y="0.0">controller.Action</node>
+    <node x="683.0" y="1811.0">gui.AlertBox</node>
+    <node x="687.332" y="991.0">controller.Controller</node>
+    <node x="537.5" y="759.0">items.MOAI</node>
+    <node x="738.0017142857143" y="0.0">tools.Coord</node>
+    <node x="512.332" y="1023.0">items.Wall</node>
+    <node x="1547.7234285714287" y="0.0">gui.Menu</node>
+    <node x="0.0" y="1002.0">items.Pawn</node>
+    <node x="699.832" y="331.0">world.Cell</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="world.Cell" target="tools.Coord">
-      <point x="0.0" y="-123.5" />
-      <point x="194.75" y="287.0" />
-      <point x="414.929714285714" y="287.0" />
-      <point x="-26.428571428571445" y="123.5" />
-    </edge>
-    <edge source="items.Pawn" target="tools.Coord">
-      <point x="35.5" y="-90.5" />
-      <point x="649.25" y="287.0" />
-      <point x="467.7868571428569" y="287.0" />
-      <point x="26.428571428571445" y="123.5" />
-    </edge>
-    <edge source="controller.Controller" target="items.MOAI">
-      <point x="57.5" y="-123.5" />
-      <point x="290.25" y="1010.0" />
-      <point x="373.14133333333325" y="1010.0" />
-      <point x="-54.666666666666686" y="79.5" />
-    </edge>
-    <edge source="engine.Game" target="items.Pawn">
-      <point x="48.60000000000002" y="-91.5" />
-      <point x="291.93828571428577" y="1577.0" />
-      <point x="613.75" y="1577.0" />
-      <point x="0.0" y="90.5" />
-    </edge>
-    <edge source="engine.Game" target="controller.PawnController">
-      <point x="0.0" y="-91.5" />
-      <point x="243.33828571428575" y="1587.0" />
-      <point x="232.75" y="1587.0" />
-      <point x="0.0" y="112.5" />
-    </edge>
-    <edge source="world.Board" target="tools.Coord">
-      <point x="-57.0" y="-156.5" />
-      <point x="67.5" y="647.0" />
-      <point x="54.25" y="647.0" />
-      <point x="54.25" y="277.0" />
-      <point x="388.5011428571426" y="277.0" />
-      <point x="-52.85714285714283" y="123.5" />
-    </edge>
-    <edge source="engine.Game" target="tools.Coord">
-      <point x="97.19999999999999" y="-91.5" />
-      <point x="340.53828571428573" y="1587.0" />
-      <point x="1213.25" y="1587.0" />
-      <point x="1213.25" y="267.0" />
-      <point x="520.6439999999997" y="267.0" />
-      <point x="79.28571428571422" y="123.5" />
-    </edge>
     <edge source="items.Wall" target="items.MOAI">
       <point x="0.0" y="-37.5" />
-      <point x="445.25" y="1010.0" />
-      <point x="427.80799999999994" y="1010.0" />
-      <point x="0.0" y="79.5" />
+      <point x="589.832" y="966.0" />
+      <point x="599.5" y="966.0" />
+      <point x="0.0" y="47.5" />
     </edge>
     <edge source="engine.Game" target="world.Board">
-      <point x="-48.599999999999966" y="-91.5" />
-      <point x="194.73828571428578" y="1577.0" />
-      <point x="73.75" y="1577.0" />
-      <point x="73.75" y="1010.0" />
-      <point x="67.5" y="1010.0" />
-      <point x="-57.0" y="156.5" />
+      <point x="0.0" y="-144.5" />
+      <point x="912.7234285714287" y="1457.0" />
+      <point x="949.332" y="1457.0" />
+      <point x="949.332" y="966.0" />
+      <point x="957.082" y="966.0" />
+      <point x="57.0" y="134.5" />
+    </edge>
+    <edge source="world.Cell" target="tools.Coord">
+      <point x="0.0" y="-122.5" />
+      <point x="0.0" y="112.5" />
+    </edge>
+    <edge source="items.Pawn" target="tools.Coord">
+      <point x="-35.5" y="-58.5" />
+      <point x="35.5" y="245.0" />
+      <point x="751.2160000000001" y="245.0" />
+      <point x="-79.28571428571422" y="112.5" />
     </edge>
     <edge source="world.Board" target="world.Cell">
-      <point x="57.0" y="-156.5" />
-      <point x="181.5" y="647.0" />
-      <point x="194.75" y="647.0" />
-      <point x="0.0" y="123.5" />
+      <point x="-57.0" y="-134.5" />
+      <point x="843.082" y="647.0" />
+      <point x="829.832" y="647.0" />
+      <point x="0.0" y="122.5" />
     </edge>
     <edge source="controller.PawnController" target="controller.Controller">
-      <point x="0.0" y="-112.5" />
+      <point x="0.0" y="-123.5" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="controller.Controller" target="items.MOAI">
+      <point x="-54.5" y="-69.5" />
+      <point x="741.832" y="966.0" />
+      <point x="640.8333333333333" y="966.0" />
+      <point x="41.333333333333314" y="47.5" />
+    </edge>
+    <edge source="engine.Game" target="items.Pawn">
+      <point x="-108.80000000000001" y="-144.5" />
+      <point x="803.9234285714288" y="1457.0" />
+      <point x="71.0" y="1457.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="engine.Game" target="controller.PawnController">
+      <point x="-54.39999999999998" y="-144.5" />
+      <point x="858.3234285714287" y="1447.0" />
+      <point x="796.332" y="1447.0" />
       <point x="0.0" y="123.5" />
+    </edge>
+    <edge source="world.Board" target="tools.Coord">
+      <point x="57.0" y="-134.5" />
+      <point x="957.082" y="647.0" />
+      <point x="970.332" y="647.0" />
+      <point x="970.332" y="265.0" />
+      <point x="856.9302857142858" y="265.0" />
+      <point x="26.428571428571445" y="112.5" />
     </edge>
     <edge source="items.Pawn" target="items.MOAI">
-      <point x="-35.5" y="-90.5" />
-      <point x="578.25" y="1010.0" />
-      <point x="482.47466666666656" y="1010.0" />
-      <point x="54.66666666666663" y="79.5" />
+      <point x="35.5" y="-58.5" />
+      <point x="106.5" y="966.0" />
+      <point x="558.1666666666666" y="966.0" />
+      <point x="-41.333333333333314" y="47.5" />
     </edge>
-    <edge source="engine.Rules" target="tools.Coord">
-      <point x="0.0" y="-157.5" />
-      <point x="931.25" y="277.0" />
-      <point x="494.21542857142833" y="277.0" />
-      <point x="52.85714285714289" y="123.5" />
+    <edge source="engine.Game" target="tools.Coord">
+      <point x="54.39999999999998" y="-144.5" />
+      <point x="967.1234285714287" y="1447.0" />
+      <point x="1024.5819999999999" y="1447.0" />
+      <point x="1024.5819999999999" y="255.0" />
+      <point x="883.3588571428572" y="255.0" />
+      <point x="52.85714285714289" y="112.5" />
     </edge>
     <edge source="controller.Controller" target="world.Board">
-      <point x="-57.5" y="-123.5" />
-      <point x="175.25" y="1010.0" />
-      <point x="181.5" y="1010.0" />
-      <point x="57.0" y="156.5" />
+      <point x="54.5" y="-69.5" />
+      <point x="850.832" y="966.0" />
+      <point x="843.082" y="966.0" />
+      <point x="-57.0" y="134.5" />
+    </edge>
+    <edge source="engine.Rules" target="tools.Coord">
+      <point x="0.0" y="-168.5" />
+      <point x="317.5" y="255.0" />
+      <point x="777.6445714285715" y="255.0" />
+      <point x="-52.85714285714289" y="112.5" />
     </edge>
     <edge source="items.MOAI" target="tools.Coord">
-      <point x="0.0" y="-79.5" />
-      <point x="427.80799999999994" y="287.0" />
-      <point x="441.35828571428544" y="287.0" />
-      <point x="0.0" y="123.5" />
+      <point x="0.0" y="-47.5" />
+      <point x="599.5" y="265.0" />
+      <point x="804.0731428571429" y="265.0" />
+      <point x="-26.428571428571445" y="112.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7090271691498685" x="653.4579728059333" y="604.7997527812114" />
+  <settings layout="Hierarchic Group" zoom="0.20000000000000015" x="991.7142857142853" y="330.9999999999999" />
   <SelectedNodes />
   <Categories>
+    <Category>Fields</Category>
     <Category>Constructors</Category>
     <Category>Methods</Category>
+    <Category>Properties</Category>
     <Category>Inner Classes</Category>
-    <Category>Fields</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

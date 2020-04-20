@@ -4,7 +4,7 @@
 !includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
 
 note "upgrade that shit" as N2
-package tools {
+package be.ac.umons.michelsurin.tools {
     class Coord {
         -x: int
         -y: int
@@ -17,10 +17,10 @@ package tools {
     }
 }
 
-package controller {
+package be.ac.umons.michelsurin.controller {
 }
 
-package engine {
+package be.ac.umons.michelsurin.engine {
     class Rules {
     }
     class Game {
@@ -28,7 +28,7 @@ package engine {
 }
 
 
-package items {
+package be.ac.umons.michelsurin.items {
     abstract MOAI {
     -coord: Coord
     --method--
@@ -51,7 +51,7 @@ package items {
     N1 .. Wall
 }
 
-package world {
+package be.ac.umons.michelsurin.world {
 
     class Board {
         -size: int
@@ -77,7 +77,7 @@ package world {
 
 }
 
-tools -right-> world
-tools -down-> items
+be.ac.umons.michelsurin.tools -right-> be.ac.umons.michelsurin.world
+be.ac.umons.michelsurin.tools -down-> be.ac.umons.michelsurin.items
 
 @enduml
