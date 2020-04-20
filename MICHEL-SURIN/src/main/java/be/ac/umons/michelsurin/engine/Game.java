@@ -47,7 +47,6 @@ public class Game {
     public Game(int size, String[] playerTypeArray, int numbOfWall) throws IllegalArgumentException {
 
             this.playerNumber = playerTypeArray.length;
-            System.out.println(playerNumber);
             if ( (playerNumber != 2) && (playerNumber != 4) ) {
                 throw new IllegalArgumentException("Invalid number of player. Should be 2 or 4");
             }
@@ -139,9 +138,9 @@ public class Game {
     public void statLoop(Hashtable<String, Integer> winTable) {
         int i = 0;
         do {
-            System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
+            //System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
             Action.getAction(playerArray, playerArray[i]);
-            System.out.println("-----ACTION RESOLVED----"+ playerArray[i].getType());
+            //System.out.println("-----ACTION RESOLVED----"+ playerArray[i].getType());
             i++;
             i %= playerNumber;
 
