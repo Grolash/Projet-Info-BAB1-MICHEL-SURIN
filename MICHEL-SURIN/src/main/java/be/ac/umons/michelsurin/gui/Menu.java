@@ -19,10 +19,18 @@ public class Menu extends Application {
     private ChoiceBox<String> secondAIDifficultyMenu;
     private ChoiceBox<String> thirdAIDifficultyMenu;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     *
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         window = new Stage();
@@ -45,7 +53,7 @@ public class Menu extends Application {
         Label settings = new Label("Settings:");
 
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
-        // TODO link listeners values to game values replace sout in lambda fuction.
+        // TODO link listeners values to game values replace sout in lambda function.
         firstAIDifficultyMenu = new ChoiceBox<>();
         firstAIDifficultyMenu.getItems().addAll("Random AI", "Easy", "Harder");
         firstAIDifficultyMenu.setValue("Random AI"); //set a default value.
@@ -65,7 +73,7 @@ public class Menu extends Application {
         playerNumber = new ChoiceBox<>();
         playerNumber.getItems().addAll( "2 Players", "2 Players (1 AI)",
                 "4 Players", "4 Players (1 AI)", "4 Players (2 AI)", "4 Players (3 AI)");
-        playerNumber.setValue("2 Players"); //set a default value.
+        playerNumber.setValue("2 Players (1 AI)"); //set a default value.
         playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             if (newValue.equals("2 Players (1 AI)")){
                 Label difficulty = new Label("AI difficulty:");
