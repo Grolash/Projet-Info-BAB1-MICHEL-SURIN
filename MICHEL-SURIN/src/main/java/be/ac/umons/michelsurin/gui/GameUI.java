@@ -28,8 +28,10 @@ import java.awt.*;
 public class GameUI extends Application {
 
     private Image cellImg = new Image("tile.png");
-    private Image playerPawnImg = new Image("pawn.png");
+    private Image playerPawnImg = new Image("neo.png");
     private Image AIPawnImg = new Image("agent.png");
+    private Image wallHImg = new Image("wallH.png");
+    private Image wallVImg = new Image("wallV.png");
     public static final int HSpace = 34;
     public static final int Vspace = 50;
 
@@ -42,6 +44,13 @@ public class GameUI extends Application {
     public void start(Stage primaryStage) {
         String[] type = {"Human", "Debilus"};
         Game game = new Game(9, type, 10);
+
+        //wall set-up for testing
+        Coord[] wall1 = new Coord[2];
+        wall1[0] = new Coord(2,2);
+        wall1[1] = new Coord(2,3);
+        game.getBoard().addToWallList(wall1);
+
 
         primaryStage.setTitle("Quoridor - by Virgil Surin & Simon Michel");
         Group root = new Group();
@@ -58,6 +67,9 @@ public class GameUI extends Application {
         Canvas pawnCanvas = new Canvas(500,500);
         GraphicsContext pawnGC = pawnCanvas.getGraphicsContext2D();
 
+        Canvas wallCanvas = new Canvas(500, 500);
+        GraphicsContext wallGC = wallCanvas.getGraphicsContext2D();
+
         //board drawing
         for (int i=0; i<game.getBoard().getSize(); i++) {
             for (int j=0; j<game.getBoard().getSize(); j++){
@@ -69,7 +81,8 @@ public class GameUI extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                update(pawnCanvas, pawnGC, game);
+                updatePawn(pawnCanvas, pawnGC, game);
+                updateWall(wallCanvas, wallGC, game);
             }
         }));
         timeline.play();
@@ -84,11 +97,11 @@ public class GameUI extends Application {
         });
 
 
-        root.getChildren().addAll(cellCanvas, pawnCanvas);
+        root.getChildren().addAll(cellCanvas, wallCanvas, pawnCanvas);
         primaryStage.show();
     }
 
-    public void update(Canvas canvas, GraphicsContext gc, Game game) {
+    public void updatePawn(Canvas canvas, GraphicsContext gc, Game game) {
         //take the game state
         Board board = game.getBoard();
         gc.clearRect(0,0, canvas.getHeight(), canvas.getWidth());
@@ -99,6 +112,14 @@ public class GameUI extends Application {
             } else {
                 gc.drawImage(AIPawnImg, coord.getX()*HSpace, coord.getY()*Vspace);
             }
+        }
+    }
+    public void updateWall(Canvas canvas, GraphicsContext gc, Game game) {
+        Board board = game.getBoard();
+        gc.clearRect(0,0, canvas.getHeight(), canvas.getWidth());
+        for (Coord[] wall : board.getWallList()) {
+            gc.drawImage(wallHImg, wall[0].getX()*HSpace, wall[0].getY()*Vspace);
+            gc.drawImage(wallHImg, wall[1].getX()*HSpace, wall[1].getY()*Vspace);
         }
     }
 
