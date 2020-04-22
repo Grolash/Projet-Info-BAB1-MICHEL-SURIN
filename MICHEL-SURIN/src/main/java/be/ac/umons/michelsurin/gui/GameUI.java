@@ -1,5 +1,6 @@
 package be.ac.umons.michelsurin.gui;
 
+import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +22,7 @@ import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.util.Duration;
 import java.lang.Math;
+import java.security.cert.CertificateParsingException;
 
 
 public class GameUI extends Application {
@@ -29,8 +32,9 @@ public class GameUI extends Application {
     private Image AIPawnImg = new Image("agent.png");
     private Image wallHImg = new Image("wallH.png");
     private Image wallVImg = new Image("wallV.png");
-    public static final int Hspace = 34;
+    public static final int Hspace = 50;
     public static final int Vspace = 50;
+    private static Glow glowingLevel = new Glow(0.9);
 
 
     public static void main(String[] args) {
@@ -53,7 +57,7 @@ public class GameUI extends Application {
         Group root = new Group();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        scene.setFill(Color.DARKGREEN);
+        scene.setFill(Color.BLACK);
 
 
         ImageView[][] cellView = new ImageView[game.getBoard().getSize()][game.getBoard().getSize()];
@@ -78,6 +82,7 @@ public class GameUI extends Application {
                 cellView[i][j].setImage(new Image("tile.png"));
                 cellView[i][j].setY(i*Vspace);
                 cellView[i][j].setX(j*Hspace);
+                cellView[i][j].setEffect(new Glow(0));
 
                 /*
                 ImageView imageView = new ImageView();
@@ -88,30 +93,64 @@ public class GameUI extends Application {
                 root.getChildren().add(cellView[i][j]);
             }
         }
-
         updatePawn(pawnCanvas, pawnGC, game);
         updateWall(wallCanvas, wallGC, game);
-        //adjacentCellHighlight(0, game, scene, cellCanvas);
 
-        Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
+        //CLICK HANDLING ---------------------------------------------------------
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                PawnController ctrl = game.getPlayerArray()[0];
+                int boardSize = game.getBoard().getSize();
+
+                Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
+                Coord[] possibleCell = game.whereCanIGo(0);
+                Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
+
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                    ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX()+ boardSize*clickedCell.getY());
+                    if (playerCoord.compareTo(clickedCell) == 0) {
+                        //click on pawn --> we make the reachable cell glowing
+                        for (Coord coord : possibleCell) {
+                            root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(glowingLevel);
+                        }
+                    } else if ( clickedCell.isIn(possibleCell)
+                                && clickedCellImage.getEffect().equals(glowingLevel)) {
+                        //if click on a glowing cell (a cell where the player can go), we mote the player to it
+                        int deltaY = clickedCell.getY() - playerCoord.getY();
+                        int deltaX = clickedCell.getX() - playerCoord.getX();
+                        Coord dir = new Coord(deltaY, deltaX);
+                        ctrl.move(dir);
+                        updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
+                        resetGlowing(root, game);
+                    } else {
+                        resetGlowing(root, game);
+                    }
+                }
+
+                //old ------------------------------------------------------------------------------------------
+                /*
                 if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 &&
                         playerCoord.compareTo(getCoordFromPos(event.getX(), event.getY())) == 0 ) {
-                    Coord[] possibleCell = game.whereCanIGo(0);
+
                     for (Coord coord : possibleCell) {
                         root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(new Glow(0.8));
                         System.out.println(coord);
                     }
                 } else {
-                    for (int i=0; i< (int) Math.pow(game.getBoard().getSize(), 2); i++) {
-                        root.getChildren().get(i).setEffect(new Glow(0));
+                    if (event.getButton().compareTo(MouseButton.PRIMARY) == 0
+                            && cellClickIsInArray(event, possibleCell) != null ) {
+
+                        int deltaY = pointingCell.getY() - playerCoord.getY();
+                        int deltaX = pointingCell.getX() - playerCoord.getX();
+                        Coord dir = new Coord(deltaY, deltaX);
+                        ctrl.move(dir);
+                        updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
                     }
-                }
+
+                } */
             }
         });
-
 
         //root.getChildren().add(cellView[0][1]);
         root.getChildren().add(wallCanvas);
@@ -132,6 +171,12 @@ public class GameUI extends Application {
             }
         }));
         timeline.play();
+    }
+
+    private void resetGlowing(Group root, Game game) {
+        for (int i=0; i< (int) Math.pow(game.getBoard().getSize(), 2); i++) {
+            root.getChildren().get(i).setEffect(new Glow(0));
+        }
     }
 
     public void updatePawn(Canvas canvas, GraphicsContext gc, Game game) {
@@ -169,22 +214,23 @@ public class GameUI extends Application {
         return new Coord(game_y,game_x);
     }
 
-    public void adjacentCellHighlight(int player, Game game, Scene scene, Canvas cellCanvas) {
-        //the player must be human
-        Coord playerCoord = game.getPlayerArray()[player].getDependency().getCoord();
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 &&
-                        playerCoord.compareTo(getCoordFromPos(event.getX(), event.getY())) == 0 ) {
-                    Coord[] possibleCell = game.whereCanIGo(player);
-                    for (Coord coord : possibleCell) {
-                        cellCanvas.getGraphicsContext2D().setEffect(new Glow(0.9));
-                        System.out.println(coord);
-                        }
-                    }
-                }
-        });
+    /**
+     * given an array of coordinates and a mouse click event. It will check if one of the coordinates corresponds
+     * to the click position and if one is found, it returns it.
+     *
+     * @param mouseClick the click event we are looking the position from.
+     * @param cellArray the coordinates we are comparing.
+     * @return the corresponding coordinates. Null if iit has not been found.
+     */
+    public static Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
+        for (Coord coord : cellArray) {
+            if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
+                return coord;
+            }
+        }
+        return null;
     }
+
+
 
 }
