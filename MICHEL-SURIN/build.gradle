@@ -26,5 +26,5 @@ javafx {
 
 
 application {
-    mainClassName = 'be.ac.umons.michelsurin.gui.Menu'
+    mainClassName = 'be.ac.umons.michelsurin.gui.GameUI'
 }

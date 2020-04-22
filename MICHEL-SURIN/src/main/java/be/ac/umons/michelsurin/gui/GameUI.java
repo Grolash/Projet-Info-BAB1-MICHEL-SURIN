@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.util.Duration;
+import java.lang.Math;
 
 
 public class GameUI extends Application {
@@ -102,6 +103,10 @@ public class GameUI extends Application {
                     for (Coord coord : possibleCell) {
                         root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(new Glow(0.8));
                         System.out.println(coord);
+                    }
+                } else {
+                    for (int i=0; i< (int) Math.pow(game.getBoard().getSize(), 2); i++) {
+                        root.getChildren().get(i).setEffect(new Glow(0));
                     }
                 }
             }
