@@ -12,10 +12,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import be.ac.umons.michelsurin.tools.Coord;
@@ -56,9 +61,12 @@ public class GameUI extends Application {
         Group root = new Group();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        scene.setFill(Color.DARKGREEN);
 
 
+        ImageView[][] cellView = new ImageView[game.getBoard().getSize()][game.getBoard().getSize()];
 
+        //TODO canvas
         //canvas + GC
         Canvas cellCanvas = new Canvas(500,500);
         cellCanvas.autosize();
@@ -73,32 +81,35 @@ public class GameUI extends Application {
         //board drawing
         for (int i=0; i<game.getBoard().getSize(); i++) {
             for (int j=0; j<game.getBoard().getSize(); j++){
-                cellGC.drawImage(cellImg, j*HSpace, i*Vspace);
+                //cellGC.drawImage(cellImg, j*HSpace, i*Vspace);
+                cellView[i][j] = new ImageView();
+                cellView[i][j].setImage(new Image("tile.png"));
             }
         }
-        //TODO code from https://stackoverflow.com/questions/49881109/how-to-properly-execute-thread-sleep-in-javafx
-        //this code call the update method with a delay.
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>() {
+        updatePawn(pawnCanvas, pawnGC, game);
+        updateWall(wallCanvas, wallGC, game);
+        adjacentCellHighlight(0, game, scene, cellCanvas);
+
+
+        root.getChildren().add(cellView[0][1]);
+        root.getChildren().add(wallCanvas);
+        root.getChildren().add(pawnCanvas);
+        primaryStage.show();
+    }
+
+    /**
+     * This method make the GUI sleeping for a given duration.
+     * Source : https://stackoverflow.com/questions/49881109/how-to-properly-execute-thread-sleep-in-javafx
+     *
+     * @param millis the sleeping time in millisecond.
+     */
+    public static void sleep(int millis, Scene scene) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(millis), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                updatePawn(pawnCanvas, pawnGC, game);
-                updateWall(wallCanvas, wallGC, game);
             }
         }));
         timeline.play();
-
-        //mouse action handling
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Coord eventCoord = getCoordFromPos(event.getX(), event.getY());
-                System.out.println(" x : " + eventCoord.getX() + " | " + "y : " + eventCoord.getY());
-            }
-        });
-
-
-        root.getChildren().addAll(cellCanvas, wallCanvas, pawnCanvas);
-        primaryStage.show();
     }
 
     public void updatePawn(Canvas canvas, GraphicsContext gc, Game game) {
@@ -134,6 +145,25 @@ public class GameUI extends Application {
         int game_y = (int) y / Vspace;
         int game_x = (int) x / HSpace;
         return new Coord(game_y,game_x);
+    }
+
+    public void adjacentCellHighlight(int player, Game game, Scene scene, Canvas cellCanvas) {
+        //the player must be human
+        Coord playerCoord = game.getPlayerArray()[player].getDependency().getCoord();
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 &&
+                        playerCoord.compareTo(getCoordFromPos(event.getX(), event.getY())) == 0 ) {
+                    Coord[] possibleCell = game.whereCanIGo(player);
+                    for (Coord coord : possibleCell) {
+                        cellCanvas.getGraphicsContext2D().setEffect(new Glow(0.9));
+                        System.out.println(coord);
+                        }
+                    }
+                }
+        });
+
     }
 
 }
