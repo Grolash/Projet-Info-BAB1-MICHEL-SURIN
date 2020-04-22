@@ -2,7 +2,6 @@ package be.ac.umons.michelsurin.gui;
 
 import be.ac.umons.michelsurin.engine.Game;
 import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -10,24 +9,16 @@ import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.util.Duration;
-
-import java.awt.*;
 
 
 public class GameUI extends Application {
@@ -37,7 +28,7 @@ public class GameUI extends Application {
     private Image AIPawnImg = new Image("agent.png");
     private Image wallHImg = new Image("wallH.png");
     private Image wallVImg = new Image("wallV.png");
-    public static final int HSpace = 34;
+    public static final int Hspace = 34;
     public static final int Vspace = 50;
 
 
@@ -84,14 +75,40 @@ public class GameUI extends Application {
                 //cellGC.drawImage(cellImg, j*HSpace, i*Vspace);
                 cellView[i][j] = new ImageView();
                 cellView[i][j].setImage(new Image("tile.png"));
+                cellView[i][j].setY(i*Vspace);
+                cellView[i][j].setX(j*Hspace);
+
+                /*
+                ImageView imageView = new ImageView();
+                imageView.setImage(cellImg);
+                imageView.setY(i*Vspace);
+                imageView.setX(j*Hspace);
+                 */
+                root.getChildren().add(cellView[i][j]);
             }
         }
+
         updatePawn(pawnCanvas, pawnGC, game);
         updateWall(wallCanvas, wallGC, game);
-        adjacentCellHighlight(0, game, scene, cellCanvas);
+        //adjacentCellHighlight(0, game, scene, cellCanvas);
+
+        Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 &&
+                        playerCoord.compareTo(getCoordFromPos(event.getX(), event.getY())) == 0 ) {
+                    Coord[] possibleCell = game.whereCanIGo(0);
+                    for (Coord coord : possibleCell) {
+                        root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(new Glow(0.8));
+                        System.out.println(coord);
+                    }
+                }
+            }
+        });
 
 
-        root.getChildren().add(cellView[0][1]);
+        //root.getChildren().add(cellView[0][1]);
         root.getChildren().add(wallCanvas);
         root.getChildren().add(pawnCanvas);
         primaryStage.show();
@@ -119,9 +136,9 @@ public class GameUI extends Application {
         for (int i=0; i<game.getPlayerArray().length; i++) {
             Coord coord = game.getPlayerArray()[i].getDependency().getCoord();
             if (game.getPlayerArray()[i].getType() == "Human") {
-                gc.drawImage(playerPawnImg, coord.getX()*HSpace, coord.getY()*Vspace);
+                gc.drawImage(playerPawnImg, coord.getX()* Hspace, coord.getY()*Vspace);
             } else {
-                gc.drawImage(AIPawnImg, coord.getX()*HSpace, coord.getY()*Vspace);
+                gc.drawImage(AIPawnImg, coord.getX()* Hspace, coord.getY()*Vspace);
             }
         }
     }
@@ -129,8 +146,8 @@ public class GameUI extends Application {
         Board board = game.getBoard();
         gc.clearRect(0,0, canvas.getHeight(), canvas.getWidth());
         for (Coord[] wall : board.getWallList()) {
-            gc.drawImage(wallHImg, wall[0].getX()*HSpace, wall[0].getY()*Vspace);
-            gc.drawImage(wallHImg, wall[1].getX()*HSpace, wall[1].getY()*Vspace);
+            gc.drawImage(wallHImg, wall[0].getX()* Hspace, wall[0].getY()*Vspace);
+            gc.drawImage(wallHImg, wall[1].getX()* Hspace, wall[1].getY()*Vspace);
         }
     }
 
@@ -143,7 +160,7 @@ public class GameUI extends Application {
      */
     public static Coord getCoordFromPos(double x, double y) {
         int game_y = (int) y / Vspace;
-        int game_x = (int) x / HSpace;
+        int game_x = (int) x / Hspace;
         return new Coord(game_y,game_x);
     }
 
@@ -163,7 +180,6 @@ public class GameUI extends Application {
                     }
                 }
         });
-
     }
 
 }
