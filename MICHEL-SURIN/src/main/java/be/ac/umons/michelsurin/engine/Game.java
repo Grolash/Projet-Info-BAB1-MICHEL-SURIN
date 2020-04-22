@@ -6,7 +6,9 @@ import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * @version v0.1
@@ -20,7 +22,6 @@ public class Game {
     private Board board;
 
     private Hashtable<String, Integer> winTable;
-
 
     /**
      * contains all the possible directions (basically UP, DOWN, LEFT and RIGHT). Won't change.
@@ -150,12 +151,33 @@ public class Game {
         winTable.put(playerArray[i].getType(), numbOfVictory);
     }
 
-
     public PawnController[] getPlayerArray() {
         return playerArray;
     }
 
     public Board getBoard() {
         return board;
+    }
+
+
+    /**
+     * given a player number. It will check all the cell around its position and return an array
+     * containing all the cells where the player can go from it's position.
+     * /!\ a cell with a pawn is considered as a cell where the player can go.
+     *
+     * @param player the player.
+     * @return an array with all the cell reachable from the player's position.
+     */
+    public Coord[] whereCanIGo(int player) {
+        ArrayList<Coord> list = new ArrayList<Coord>();
+        PawnController ctrl = playerArray[player];
+        Set<String> keys = directions.keySet();
+        for (String key : keys) {
+            if (Rules.canMove(ctrl, directions.get(key))) {
+                list.add(Coord.add(ctrl.getDependency().getCoord(), directions.get(key)));
+            }
+        }
+        Coord[] array = list.toArray(Coord[]::new);
+        return  array;
     }
 }
