@@ -76,47 +76,50 @@ public class Menu extends Application {
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
         firstAIDifficultyMenu = new ChoiceBox<>();
         firstAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        firstAIDifficultyMenu.setValue("Human"); //set a default value.
         firstAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             firstPlayerType = getPlayerType(newValue);
         });
 
         secondAIDifficultyMenu = new ChoiceBox<>();
         secondAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        secondAIDifficultyMenu.setValue("Random AI"); //set a default value.
         secondAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             secondPlayerType = getPlayerType(newValue);
         });
 
         thirdAIDifficultyMenu = new ChoiceBox<>();
         thirdAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        thirdAIDifficultyMenu.setValue("Human"); //set a default value.
         thirdAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             thirdPlayerType = getPlayerType(newValue);
         });
 
         fourthAIDifficultyMenu = new ChoiceBox<>();
         fourthAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        fourthAIDifficultyMenu.setValue("Random AI"); //set a default value.
         fourthAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             fourthPlayerType  = getPlayerType(newValue);
         });
 
+        Label players = new Label("Players:");
+        layout.getChildren().add(players);
         //Player number menus, will define which difficulty options are enabled.
         playerNumber = new ChoiceBox<>();
         playerNumber.getItems().addAll( "2 Players",
                 "4 Players");
-        playerNumber.setValue("2 Players"); //set a default value.
         layout.getChildren().add(playerNumber);
+        Label difficulty = new Label("AI difficulty:");
+        layout.getChildren().add(difficulty);
         playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             if (newValue.equals("2 Players")){
                 playerNumberInt = 2;
-                Label difficulty = new Label("AI difficulty:");
+                layout.getChildren().remove(firstAIDifficultyMenu);
+                layout.getChildren().remove(secondAIDifficultyMenu);
+                layout.getChildren().remove(thirdAIDifficultyMenu);
+                layout.getChildren().remove(fourthAIDifficultyMenu);
                 layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
             }
-            if (newValue.equals("4 Players")){
+            else if (newValue.equals("4 Players")){
                 playerNumberInt = 4;
-                Label difficulty = new Label("AI difficulty:");
+                layout.getChildren().remove(firstAIDifficultyMenu);
+                layout.getChildren().remove(secondAIDifficultyMenu);
                 layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
             }
         });
