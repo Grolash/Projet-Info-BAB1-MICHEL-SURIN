@@ -74,7 +74,6 @@ public class Menu extends Application {
         layout.getChildren().add(settings);
 
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
-        // TODO link listeners values to game values replace sout in lambda function.
         firstAIDifficultyMenu = new ChoiceBox<>();
         firstAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
         firstAIDifficultyMenu.setValue("Human"); //set a default value.
@@ -122,8 +121,10 @@ public class Menu extends Application {
             }
         });
 
+        layout.getChildren().add(closeButton);
 
-
+        scene = new Scene(layout);
+        window.setScene(scene);
         window.show();
 
 
@@ -137,21 +138,24 @@ public class Menu extends Application {
         }
     }
 
+    /**
+     * Convert string to valid player type.
+     * @param string
+     * @return
+     * @throws IllegalArgumentException
+     */
     private String getPlayerType(String string) throws IllegalArgumentException{
-        if (string.equals("Human")){
-            return string;
-        }
-        else if(string.equals("Random AI")){
-            return "Debilus";
-        }
-        else if(string.equals("Easy")){
-            return "Smarted";
-        }
-        else if(string.equals("Harder")){
-            return "Smart";
-        }
-        else {
-            throw new IllegalArgumentException("Wrong player type!");
+        switch (string) {
+            case "Human":
+                return string;
+            case "Random AI":
+                return "Debilus";
+            case "Easy":
+                return "Smarted";
+            case "Harder":
+                return "Smart";
+            default:
+                throw new IllegalArgumentException("Wrong player type!");
         }
     }
 
