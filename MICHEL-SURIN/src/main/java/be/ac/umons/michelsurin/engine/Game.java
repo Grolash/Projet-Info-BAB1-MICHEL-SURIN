@@ -136,7 +136,7 @@ public class Game {
 
     }
 
-    public void statLoop(Hashtable<String, Integer> winTable) {
+    public void statLoop(Hashtable<String, Integer> winTable) throws InterruptedException {
         int i = 0;
         do {
             //System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());

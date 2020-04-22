@@ -308,7 +308,7 @@ public class Action {
      */
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
-        int action = random.nextInt(1); //Choose randomly between moving and placing a wall.
+        int action = random.nextInt(2); //Choose randomly between moving and placing a wall.
 
         if (action == 0){ //Tries and moves.
             Coord direction;
@@ -385,9 +385,8 @@ public class Action {
             }
 
 
-        }
+        } else if (action == 1){ //Tries and place a wall
 
-        else if (action == 1){ //Tries and place a wall
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
@@ -399,13 +398,13 @@ public class Action {
 
                     int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
                     if (ordinate == 0){
-                        ordinate = ctrl.getBoard().getSize();
+                        ordinate = ctrl.getBoard().getSize()-1;
                     }
 
                     int absciss = random.nextInt(ctrl.getBoard().getSize() - 1);
                     placeCoord = new Coord(ordinate, absciss);
 
-                    int intDir = random.nextInt(1);
+                    int intDir = random.nextInt(2);
                     if (intDir == 1)
                         intDir = 3;
                     placeDir = getDirection(intDir);

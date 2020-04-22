@@ -1,8 +1,11 @@
 package be.ac.umons.michelsurin.gui;
 
+import be.ac.umons.michelsurin.controller.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
@@ -43,15 +47,18 @@ public class GameUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        String[] type = {"Human", "Debilus"};
+        String[] type = {"Debilus", "Debilus"};
         Game game = new Game(9, type, 10);
 
         //wall set-up for testing
+        /*
         Coord[] wall1 = new Coord[2];
         wall1[0] = new Coord(2,2);
         wall1[1] = new Coord(2,3);
         game.getBoard().addToWallList(wall1);
-
+         */
+        int currentPlayer = 0;
+        int playerTotal = game.getPlayerArray().length;
 
         primaryStage.setTitle("Quoridor - by Virgil Surin & Simon Michel");
         Group root = new Group();
@@ -63,11 +70,6 @@ public class GameUI extends Application {
         ImageView[][] cellView = new ImageView[game.getBoard().getSize()][game.getBoard().getSize()];
 
         //TODO canvas
-        //canvas + GC
-        Canvas cellCanvas = new Canvas(500,500);
-        cellCanvas.autosize();
-        GraphicsContext cellGC = cellCanvas.getGraphicsContext2D();
-
         Canvas pawnCanvas = new Canvas(500,500);
         GraphicsContext pawnGC = pawnCanvas.getGraphicsContext2D();
 
@@ -96,7 +98,10 @@ public class GameUI extends Application {
         updatePawn(pawnCanvas, pawnGC, game);
         updateWall(wallCanvas, wallGC, game);
 
+
+
         //CLICK HANDLING ---------------------------------------------------------
+
         scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -107,7 +112,7 @@ public class GameUI extends Application {
                 Coord[] possibleCell = game.whereCanIGo(0);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
 
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize) {
                     ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX()+ boardSize*clickedCell.getY());
                     if (playerCoord.compareTo(clickedCell) == 0) {
                         //click on pawn --> we make the reachable cell glowing
@@ -127,58 +132,31 @@ public class GameUI extends Application {
                         resetGlowing(root, game);
                     }
                 }
-
-                //old ------------------------------------------------------------------------------------------
-                /*
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 &&
-                        playerCoord.compareTo(getCoordFromPos(event.getX(), event.getY())) == 0 ) {
-
-                    for (Coord coord : possibleCell) {
-                        root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(new Glow(0.8));
-                        System.out.println(coord);
-                    }
-                } else {
-                    if (event.getButton().compareTo(MouseButton.PRIMARY) == 0
-                            && cellClickIsInArray(event, possibleCell) != null ) {
-
-                        int deltaY = pointingCell.getY() - playerCoord.getY();
-                        int deltaX = pointingCell.getX() - playerCoord.getX();
-                        Coord dir = new Coord(deltaY, deltaX);
-                        ctrl.move(dir);
-                        updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
-                    }
-
-                } */
             }
         });
+
 
         //root.getChildren().add(cellView[0][1]);
         root.getChildren().add(wallCanvas);
         root.getChildren().add(pawnCanvas);
         primaryStage.show();
+        action(currentPlayer, playerTotal, game, wallCanvas, pawnCanvas, primaryStage, root);
     }
+    /*
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
 
-    /**
-     * This method make the GUI sleeping for a given duration.
-     * Source : https://stackoverflow.com/questions/49881109/how-to-properly-execute-thread-sleep-in-javafx
-     *
-     * @param millis the sleeping time in millisecond.
+                }
+            }));
+            timeline.play();
      */
-    public static void sleep(int millis, Scene scene) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(millis), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            }
-        }));
-        timeline.play();
-    }
 
     private void resetGlowing(Group root, Game game) {
         for (int i=0; i< (int) Math.pow(game.getBoard().getSize(), 2); i++) {
             root.getChildren().get(i).setEffect(new Glow(0));
         }
     }
-
     public void updatePawn(Canvas canvas, GraphicsContext gc, Game game) {
         //take the game state
         Board board = game.getBoard();
@@ -200,7 +178,6 @@ public class GameUI extends Application {
             gc.drawImage(wallHImg, wall[1].getX()* Hspace, wall[1].getY()*Vspace);
         }
     }
-
     /**
      * Given a position in the canvas, will return the coordinates of the sprite the position is pointing to.
      * It's used to make a transition from the GUI to the game logic system.
@@ -213,7 +190,6 @@ public class GameUI extends Application {
         int game_x = (int) x / Hspace;
         return new Coord(game_y,game_x);
     }
-
     /**
      * given an array of coordinates and a mouse click event. It will check if one of the coordinates corresponds
      * to the click position and if one is found, it returns it.
@@ -229,6 +205,66 @@ public class GameUI extends Application {
             }
         }
         return null;
+    }
+
+    private void action(int currentPlayer, int playerTotal, Game game, Canvas wallCanvas, Canvas pawnCanvas, Stage stage, Group root) {
+        PawnController[] playerArray = game.getPlayerArray();
+        if (playerArray[currentPlayer].getType() == "Human") {
+            //Human action handling
+            root.getOnMouseClicked();
+            stage.getScene().setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    PawnController ctrl = game.getPlayerArray()[0];
+                    int boardSize = game.getBoard().getSize();
+
+                    Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
+                    Coord[] possibleCell = game.whereCanIGo(0);
+                    Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
+
+                    if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize) {
+                        ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX()+ boardSize*clickedCell.getY());
+                        if (playerCoord.compareTo(clickedCell) == 0) {
+                            //click on pawn --> we make the reachable cell glowing
+                            for (Coord coord : possibleCell) {
+                                root.getChildren().get(coord.getX()+ (9*coord.getY())).setEffect(glowingLevel);
+                            }
+                        } else if ( clickedCell.isIn(possibleCell)
+                                && clickedCellImage.getEffect().equals(glowingLevel)) {
+                            //if click on a glowing cell (a cell where the player can go), we mote the player to it
+                            int deltaY = clickedCell.getY() - playerCoord.getY();
+                            int deltaX = clickedCell.getX() - playerCoord.getX();
+                            Coord dir = new Coord(deltaY, deltaX);
+                            ctrl.move(dir);
+                            updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
+                            resetGlowing(root, game);
+                        } else {
+                            resetGlowing(root, game);
+                        }
+                    }
+                }
+            });
+        } else {
+            //AI action handling
+            int finalCurrentPlayer = currentPlayer;
+            Action.getAction(playerArray, playerArray[finalCurrentPlayer]);
+        }
+        //no matter what we update the pawns and walls.
+        updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
+        updateWall(wallCanvas, wallCanvas.getGraphicsContext2D(), game);
+        if (playerArray[currentPlayer].hasWon()) {
+            //code to end the game
+            System.out.println("YEAH ! Player " + currentPlayer + " has won !");
+            System.out.println(game.getBoard().getWallList().size());
+            for (Coord[] wall: game.getBoard().getWallList()) {
+                System.out.println(wall[0] + " | " + wall[1]);
+            }
+            //stage.close();
+        } else {
+            //we ask for an other turn
+            currentPlayer = (currentPlayer + 1)% playerTotal; //keeps the current player into bounds
+            action(currentPlayer, playerTotal, game, wallCanvas, pawnCanvas, stage, root);
+        }
     }
 
 
