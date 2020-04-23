@@ -106,7 +106,7 @@ public class Action {
             //System.out.println("I move");
             // Almost same as Debilus but follows a path
             Coord direction;
-            int randint; //Was a random tool, moved to be a direction indicator
+            int randint; //   /!\    Was a random tool, moved to be a direction indicator
             Pawn pawned = (Pawn) ctrl.getDependency();
 
             ArrayList<Coord> path = Rules.path(ctrl);
@@ -286,11 +286,11 @@ public class Action {
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
                 }
-                triesWalls = 0;
+
             }
             else {
                 smartedActionChangelog += 1;
-                Action.smartedActionHandler(playerArray, ctrl);
+                smartedActionHandler(playerArray, ctrl);
             }
 
         }
@@ -392,16 +392,14 @@ public class Action {
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    if (triesWalls == 50){
-                        Action.debilusActionHandler(playerArray, ctrl);
-                    }
 
                     int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
-                    if (ordinate == 0){
+                    if (ordinate == 0){ //We want ordinates 1 to 8
                         ordinate = ctrl.getBoard().getSize()-1;
                     }
 
-                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 1);
+                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 2);
+                    //We want abcisses 0 to 7
                     placeCoord = new Coord(ordinate, absciss);
 
                     int intDir = random.nextInt(2);
@@ -410,14 +408,16 @@ public class Action {
                     placeDir = getDirection(intDir);
                     triesWalls++;
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)));
+                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls <= 50);
 
-                ctrl.placeWall(placeCoord, placeDir);
+                if (triesWalls <= 50) {
+                    ctrl.placeWall(placeCoord, placeDir);
+                }
             }
 
-            else
-                Action.debilusActionHandler(playerArray, ctrl);
-
+            else {
+                debilusActionHandler(playerArray, ctrl);
+            }
         }
 
 

@@ -1,0 +1,99 @@
+Index: src/main/java/be/ac/umons/michelsurin/gui/Menu.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package be.ac.umons.michelsurin.gui;\r\n\r\nimport javafx.application.Application;\r\nimport javafx.geometry.Pos;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.ChoiceBox;\r\nimport javafx.scene.control.Label;\r\nimport javafx.scene.control.Separator;\r\nimport javafx.scene.layout.VBox;\r\nimport javafx.stage.Stage;\r\n\r\npublic class Menu extends Application {\r\n\r\n    private Scene scene;\r\n    private Button launchButton;\r\n    private Button closeButton;\r\n    private Stage window;\r\n    private VBox layout;\r\n\r\n    private ChoiceBox<String> playerNumber;\r\n    private ChoiceBox<String> firstAIDifficultyMenu;\r\n    private ChoiceBox<String> secondAIDifficultyMenu;\r\n    private ChoiceBox<String> thirdAIDifficultyMenu;\r\n    private ChoiceBox<String> fourthAIDifficultyMenu;\r\n\r\n    private int playerNumberInt;\r\n    private String firstPlayerType;\r\n    private String secondPlayerType;\r\n    private String thirdPlayerType;\r\n    private String fourthPlayerType;\r\n\r\n    /**\r\n     *\r\n     * @param args\r\n     */\r\n    public static void main(String[] args) {\r\n        launch(args);\r\n    }\r\n\r\n    /**\r\n     *\r\n     * @param primaryStage\r\n     */\r\n    @Override\r\n    public void start(Stage primaryStage) {\r\n        window = new Stage();\r\n\r\n        window.setOnCloseRequest(e -> {\r\n            e.consume(); //Say to Java \"Hey, we're handling this ourselves.\"\r\n            closeProgram();\r\n        });\r\n\r\n        closeButton = new Button(\"Close the game\");\r\n        closeButton.setOnAction(e -> closeProgram());\r\n\r\n        window.setTitle(\"Main Menu\");\r\n        window.setMinWidth(600);\r\n        window.setMinHeight(600);\r\n\r\n        layout = new VBox();\r\n        layout.setAlignment(Pos.CENTER);\r\n        layout.setSpacing(20);\r\n\r\n\r\n        launchButton = new Button(\"Launch game!\");\r\n        launchButton.setOnAction(e -> launchGame());\r\n        layout.getChildren().add(launchButton);\r\n\r\n        Separator separator = new Separator();\r\n        layout.getChildren().add(separator);\r\n\r\n        Label settings = new Label(\"Settings:\");\r\n        layout.getChildren().add(settings);\r\n\r\n        //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.\r\n        firstAIDifficultyMenu = new ChoiceBox<>();\r\n        firstAIDifficultyMenu.getItems().addAll(\"Human\", \"Random AI\", \"Easy\", \"Harder\");\r\n        firstAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {\r\n            firstPlayerType = getPlayerType(newValue);\r\n        });\r\n\r\n        secondAIDifficultyMenu = new ChoiceBox<>();\r\n        secondAIDifficultyMenu.getItems().addAll(\"Human\", \"Random AI\", \"Easy\", \"Harder\");\r\n        secondAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {\r\n            secondPlayerType = getPlayerType(newValue);\r\n        });\r\n\r\n        thirdAIDifficultyMenu = new ChoiceBox<>();\r\n        thirdAIDifficultyMenu.getItems().addAll(\"Human\", \"Random AI\", \"Easy\", \"Harder\");\r\n        thirdAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {\r\n            thirdPlayerType = getPlayerType(newValue);\r\n        });\r\n\r\n        fourthAIDifficultyMenu = new ChoiceBox<>();\r\n        fourthAIDifficultyMenu.getItems().addAll(\"Human\", \"Random AI\", \"Easy\", \"Harder\");\r\n        fourthAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {\r\n            fourthPlayerType  = getPlayerType(newValue);\r\n        });\r\n\r\n        Label players = new Label(\"Players:\");\r\n        layout.getChildren().add(players);\r\n        //Player number menus, will define which difficulty options are enabled.\r\n        playerNumber = new ChoiceBox<>();\r\n        playerNumber.getItems().addAll( \"2 Players\",\r\n                \"4 Players\");\r\n        layout.getChildren().add(playerNumber);\r\n        Label difficulty = new Label(\"AI difficulty:\");\r\n        layout.getChildren().add(difficulty);\r\n        playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {\r\n            if (newValue.equals(\"2 Players\")){\r\n                playerNumberInt = 2;\r\n                layout.getChildren().remove(firstAIDifficultyMenu);\r\n                layout.getChildren().remove(secondAIDifficultyMenu);\r\n                layout.getChildren().remove(thirdAIDifficultyMenu);\r\n                layout.getChildren().remove(fourthAIDifficultyMenu);\r\n                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);\r\n            }\r\n            else if (newValue.equals(\"4 Players\")){\r\n                playerNumberInt = 4;\r\n                layout.getChildren().remove(firstAIDifficultyMenu);\r\n                layout.getChildren().remove(secondAIDifficultyMenu);\r\n                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);\r\n            }\r\n        });\r\n\r\n        layout.getChildren().add(closeButton);\r\n\r\n        scene = new Scene(layout);\r\n        window.setScene(scene);\r\n        window.show();\r\n\r\n\r\n    }\r\n\r\n    private void closeProgram(){\r\n        boolean answer = ConfirmBox.Display(\"Quit confirmation\",\r\n                \"Are your really sure you want to quit? You might want to save first.\");\r\n        if (answer) {\r\n            window.close();\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Convert string to valid player type.\r\n     * @param string\r\n     * @return\r\n     * @throws IllegalArgumentException\r\n     */\r\n    private String getPlayerType(String string) throws IllegalArgumentException{\r\n        switch (string) {\r\n            case \"Human\":\r\n                return string;\r\n            case \"Random AI\":\r\n                return \"Debilus\";\r\n            case \"Easy\":\r\n                return \"Smarted\";\r\n            case \"Harder\":\r\n                return \"Smart\";\r\n            default:\r\n                throw new IllegalArgumentException(\"Wrong player type!\");\r\n        }\r\n    }\r\n\r\n    public int getPlayerNumberInt() {\r\n        return playerNumberInt;\r\n    }\r\n\r\n    public String getFirstPlayerType() {\r\n        return firstPlayerType;\r\n    }\r\n\r\n    public String getSecondPlayerType() {\r\n        return secondPlayerType;\r\n    }\r\n\r\n    public String getThirdPlayerType() {\r\n        return thirdPlayerType;\r\n    }\r\n\r\n    public String getFourthPlayerType() {\r\n        return fourthPlayerType;\r\n    }\r\n\r\n    private void launchGame(){\r\n        boolean answer = ConfirmBox.Display(\"Launch confirmation\",\r\n                \"Are you sure you want to launch the game? Be sure you selected the right settings.\");\r\n        if (answer){\r\n            // TODO implement game launch!\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/be/ac/umons/michelsurin/gui/Menu.java	(revision 5f816fc824ea53850e45886e89e0b63af6a11794)
++++ src/main/java/be/ac/umons/michelsurin/gui/Menu.java	(date 1587550168413)
+@@ -67,6 +67,8 @@
+         launchButton.setOnAction(e -> launchGame());
+         layout.getChildren().add(launchButton);
+ 
++        layout.getChildren().add(closeButton);
++
+         Separator separator = new Separator();
+         layout.getChildren().add(separator);
+ 
+@@ -124,8 +126,6 @@
+             }
+         });
+ 
+-        layout.getChildren().add(closeButton);
+-
+         scene = new Scene(layout);
+         window.setScene(scene);
+         window.show();
+Index: ../.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"92cc1e85-bc48-4bd5-8782-282ae464b5d5\" name=\"Default Changelist\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/Product.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/SeventeenthTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/SixteenthTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/fifteenthTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/fourteenthTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/thirteenthTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/classAnalysis.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/classAnalysis.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/javaCompile.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/javaCompile.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/taskHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/taskHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/outputFiles.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/outputFiles.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/build/classes/java/main/tests/firstTest.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/build/classes/java/main/tests/firstTest.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/twelvthTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/twelvthTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1aHPRFSg42TZXscYU46bsU3tOwI\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showExcludedFiles\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n  </component>\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"92cc1e85-bc48-4bd5-8782-282ae464b5d5\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1586389535654</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1586389535654</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"COLUMN_ORDER\" />\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"WindowStateProjectService\">\r\n    <state x=\"465\" y=\"236\" key=\"com.intellij.ide.util.TipDialog\" timestamp=\"1586433689416\">\r\n      <screen x=\"0\" y=\"0\" width=\"1536\" height=\"824\" />\r\n    </state>\r\n    <state x=\"465\" y=\"236\" key=\"com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824\" timestamp=\"1586433689416\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../.idea/workspace.xml	(revision 5f816fc824ea53850e45886e89e0b63af6a11794)
++++ ../.idea/workspace.xml	(date 1587626096408)
+@@ -2,23 +2,7 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="92cc1e85-bc48-4bd5-8782-282ae464b5d5" name="Default Changelist" comment="">
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/Product.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/SeventeenthTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/SixteenthTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/fifteenthTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/fourteenthTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/thirteenthTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/5.2.1/javaCompile/taskHistory.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/build/classes/java/main/tests/firstTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/build/classes/java/main/tests/firstTest.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/twelvthTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Prototypes/Tests_Projet/src/main/java/tests/twelvthTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/MICHEL-SURIN/src/main/java/be/ac/umons/michelsurin/gui/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/MICHEL-SURIN/src/main/java/be/ac/umons/michelsurin/gui/Menu.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -31,11 +15,12 @@
+   <component name="ProjectId" id="1aHPRFSg42TZXscYU46bsU3tOwI" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+-    <option name="showExcludedFiles" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent">
+     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
++    <property name="WebServerToolWindowFactoryState" value="false" />
++    <property name="aspect.path.notification.shown" value="true" />
+   </component>
+   <component name="SvnConfiguration">
+     <configuration />
+@@ -47,6 +32,7 @@
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1586389535654</updated>
++      <workItem from="1587626083178" duration="7000" />
+     </task>
+     <servers />
+   </component>
+@@ -55,13 +41,12 @@
+       <map>
+         <entry key="MAIN">
+           <value>
+-            <State>
+-              <option name="COLUMN_ORDER" />
+-            </State>
++            <State />
+           </value>
+         </entry>
+       </map>
+     </option>
++    <option name="oldMeFiltersMigrated" value="true" />
+   </component>
+   <component name="WindowStateProjectService">
+     <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1586433689416">
