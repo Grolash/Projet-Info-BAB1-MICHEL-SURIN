@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-04-25T15:01:01" hostname="DESKTOP-D7RGT2P" time="0.032">
+<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-04-25T18:32:41" hostname="DESKTOP-D7RGT2P" time="0.057">
   <properties/>
-  <testcase name="isThereAPath()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.007"/>
+  <testcase name="isThereAPath()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.008"/>
   <testcase name="wallOverlap1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.001"/>
-  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.024"/>
+  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.045"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
