@@ -308,7 +308,7 @@ public class Action {
      */
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
-        int action = random.nextInt(2); //Choose randomly between moving and placing a wall.
+        int action = random.nextInt(1); //Choose randomly between moving and placing a wall.
 
         if (action == 0){ //Tries and moves.
             Coord direction;
