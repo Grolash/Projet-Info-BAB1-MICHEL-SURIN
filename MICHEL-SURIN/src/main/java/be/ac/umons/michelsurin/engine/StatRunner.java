@@ -23,7 +23,7 @@ public class StatRunner {
         for (int i=0; i<numbGame; i++) {
             Game game = new Game(firstAI, secondAI);
             game.statLoop(winTable);
-            System.out.println(game.getBoard().getWallList().size());
+            //System.out.println(game.getBoard().getWallList().size());
             System.out.println("--game played--");
         }
         double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;

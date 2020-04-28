@@ -93,7 +93,7 @@ public class Rules {
                 PawnController tempCtrl = new PawnController(controller.getType(), (Pawn) controller.getDependency(), tempBoard, 55);
 
                 //and now we can proceed to the path check
-                if ( !(pathOrNot(controller)) ) {
+                if ( !(pathOrNot(tempCtrl)) ) {
                     return false;
                 }
             }
