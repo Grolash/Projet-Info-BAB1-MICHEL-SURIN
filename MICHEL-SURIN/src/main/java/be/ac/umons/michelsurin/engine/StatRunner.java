@@ -1,12 +1,14 @@
 package be.ac.umons.michelsurin.engine;
 
+import be.ac.umons.michelsurin.tools.Coord;
+
 import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StatRunner {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello, welcome to the Quoridor's statistic mode");
         int numbGame = readInt("Please choose how many games you want to run : ", scanner);
@@ -21,6 +23,7 @@ public class StatRunner {
         for (int i=0; i<numbGame; i++) {
             Game game = new Game(firstAI, secondAI);
             game.statLoop(winTable);
+            //System.out.println(game.getBoard().getWallList().size());
             System.out.println("--game played--");
         }
         double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;

@@ -67,7 +67,21 @@ public class Coord implements Comparable<Coord> {
         } else {
             return -1;
         }
+    }
 
+    /**
+     * checks whether if an equals Coord is in a given array or not.
+     *
+     * @param array the Coord array we are looking in.
+     * @return true if it is in, false otherwise.
+     */
+    public boolean isIn(Coord[] array) {
+        for (Coord c : array) {
+            if (this.compareTo(c) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

@@ -99,19 +99,16 @@ public class Board {
             //wall is on the UP side of the cells
             getCell(wallOrigin).setWallOnSide("UP");
             getCell(wallSecondPart).setWallOnSide("UP");
-
             //wall on the DOWN side of the cells
             Coord UpOriginCell = Coord.add(wallOrigin, Game.directions.get("UP"));
             Coord UpSecondCell = Coord.add(wallSecondPart, Game.directions.get("UP"));
             getCell(UpOriginCell).setWallOnSide("DOWN");
             getCell(UpSecondCell).setWallOnSide("DOWN");
 
-
         } else if (wallOrigin.getX() == wallSecondPart.getX() && wallOrigin.getY() == wallSecondPart.getY()+1) {
             //wall is on the RIGHT side of the cells
             getCell(wallOrigin).setWallOnSide("RIGHT");
             getCell(wallSecondPart).setWallOnSide("RIGHT");
-
             //wall is on the LEFT side of the cells
             Coord UpOriginCell = Coord.add(wallOrigin, Game.directions.get("RIGHT"));
             Coord UpSecondCell = Coord.add(wallSecondPart, Game.directions.get("RIGHT"));

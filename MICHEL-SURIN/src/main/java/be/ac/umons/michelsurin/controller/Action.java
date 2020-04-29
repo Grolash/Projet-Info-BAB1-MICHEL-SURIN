@@ -106,7 +106,7 @@ public class Action {
             //System.out.println("I move");
             // Almost same as Debilus but follows a path
             Coord direction;
-            int randint; //Was a random tool, moved to be a direction indicator
+            int randint; //   /!\    Was a random tool, moved to be a direction indicator
             Pawn pawned = (Pawn) ctrl.getDependency();
 
             ArrayList<Coord> path = Rules.path(ctrl);
@@ -281,16 +281,20 @@ public class Action {
                     triesWalls++;
                     //System.out.println("in the while");
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls <= 50);
+                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
                 //System.out.println("while passed");
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
+                    //System.out.println(ctrl.getPlayerNumber() + " placed a wall :)");
+                } else {
+                    smartedActionChangelog += 1;
+                    smartedActionHandler(playerArray, ctrl);
                 }
-                triesWalls = 0;
+
             }
             else {
                 smartedActionChangelog += 1;
-                Action.smartedActionHandler(playerArray, ctrl);
+                smartedActionHandler(playerArray, ctrl);
             }
 
         }
@@ -308,7 +312,7 @@ public class Action {
      */
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
-        int action = random.nextInt(1); //Choose randomly between moving and placing a wall.
+        int action = random.nextInt(2); //Choose randomly between moving and placing a wall.
 
         if (action == 0){ //Tries and moves.
             Coord direction;
@@ -385,40 +389,40 @@ public class Action {
             }
 
 
-        }
+        } else if (action == 1){ //Tries and place a wall
 
-        else if (action == 1){ //Tries and place a wall
             if (ctrl.getNumbWall() > 0) {
+                //System.out.println("wall");
                 Coord placeCoord;
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    if (triesWalls == 50){
-                        Action.debilusActionHandler(playerArray, ctrl);
-                    }
-
+                    //System.out.println(triesWalls);
                     int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
-                    if (ordinate == 0){
-                        ordinate = ctrl.getBoard().getSize();
+                    if (ordinate == 0){ //We want ordinates 1 to 8
+                        ordinate = ctrl.getBoard().getSize()-1;
                     }
 
-                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 1);
+                    int absciss = random.nextInt(ctrl.getBoard().getSize() - 2);
+                    //We want abcisses 0 to 7
                     placeCoord = new Coord(ordinate, absciss);
 
-                    int intDir = random.nextInt(1);
+                    int intDir = random.nextInt(2);
                     if (intDir == 1)
                         intDir = 3;
                     placeDir = getDirection(intDir);
                     triesWalls++;
+                    //System.out.println(placeCoord + " | " + placeDir);
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)));
-
-                ctrl.placeWall(placeCoord, placeDir);
+                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
+                if (triesWalls <= 50) {
+                    ctrl.placeWall(placeCoord, placeDir);
+                } else {
+                    debilusActionHandler(playerArray, ctrl);
+                }
+            } else {
+                debilusActionHandler(playerArray, ctrl);
             }
-
-            else
-                Action.debilusActionHandler(playerArray, ctrl);
-
         }
 
 

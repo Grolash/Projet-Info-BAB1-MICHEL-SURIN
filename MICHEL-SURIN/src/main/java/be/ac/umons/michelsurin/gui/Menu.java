@@ -67,6 +67,8 @@ public class Menu extends Application {
         launchButton.setOnAction(e -> launchGame());
         layout.getChildren().add(launchButton);
 
+        layout.getChildren().add(closeButton);
+
         Separator separator = new Separator();
         layout.getChildren().add(separator);
 
@@ -123,8 +125,6 @@ public class Menu extends Application {
                 layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
             }
         });
-
-        layout.getChildren().add(closeButton);
 
         scene = new Scene(layout);
         window.setScene(scene);
