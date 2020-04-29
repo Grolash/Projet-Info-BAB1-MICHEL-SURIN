@@ -127,54 +127,51 @@ public class GameUI extends Application {
         PawnController[] playerArray = game.getPlayerArray();
 
         //CLICK HANDLING ---------------------------------------------------------
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println(currentPlayer.intValue());
-                PawnController ctrl = game.getPlayerArray()[currentPlayer.intValue()];
-                int boardSize = game.getBoard().getSize();
-                Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
-                Coord[] possibleCell = game.whereCanIGo(0);
-                Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
-                int rightClickCount = 0;
+        scene.setOnMouseClicked(event -> {
+            System.out.println(currentPlayer.intValue());
+            PawnController ctrl = game.getPlayerArray()[currentPlayer.intValue()];
+            int boardSize = game.getBoard().getSize();
+            Coord playerCoord = game.getPlayerArray()[0].getDependency().getCoord();
+            Coord[] possibleCell = game.whereCanIGo(0);
+            Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
+            int rightClickCount = 0;
 
-                if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize) {
-                    ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
-                    if (playerCoord.compareTo(clickedCell) == 0) {
-                        //click on pawn --> we make the reachable cell glowing
-                        for (Coord coord : possibleCell) {
-                            root.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(glowingLevel);
-                        }
-                    } else if (clickedCell.isIn(possibleCell)
-                            && clickedCellImage.getEffect().equals(glowingLevel)) {
-                        //if click on a glowing cell (a cell where the player can go), we mote the player to it
-                        int deltaY = clickedCell.getY() - playerCoord.getY();
-                        int deltaX = clickedCell.getX() - playerCoord.getX();
-                        Coord dir = new Coord(deltaY, deltaX);
-                        ctrl.move(dir);
-                        updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
-                        resetGlowing(root, game);
-                    } else {
-                        resetGlowing(root, game);
+            if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize) {
+                ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
+                if (playerCoord.compareTo(clickedCell) == 0) {
+                    //click on pawn --> we make the reachable cell glowing
+                    for (Coord coord : possibleCell) {
+                        root.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(glowingLevel);
                     }
-                } else if (event.getButton().compareTo(MouseButton.SECONDARY) == 0 && clickedCell.getY() < boardSize
-                        && clickedCell.getY() != 0 && clickedCell.getX() < boardSize-1) {
-                    if (rightClickCount == 0) {
-                        if( Rules.canPlaceWall(playerArray, ctrl, clickedCell, Game.directions.get("RIGHT")) ){
-                            //H wall
-                            ImageView wall = new ImageView(wallHImg);
-                            wall.setX(clickedCell.getX()* Hspace-9);
-                            wall.setY(clickedCell.getY()* Vspace-18);
-                            wall.setEffect(new Shadow(10, Color.RED));
-                            root.getChildren().add(wall);
-                            rightClickCount += 1;
-                        } else if ( Rules.canPlaceWall(playerArray, ctrl, clickedCell, Game.directions.get("UP")) ) {
-                            //V wall
-                        }
+                } else if (clickedCell.isIn(possibleCell)
+                        && clickedCellImage.getEffect().equals(glowingLevel)) {
+                    //if click on a glowing cell (a cell where the player can go), we mote the player to it
+                    int deltaY = clickedCell.getY() - playerCoord.getY();
+                    int deltaX = clickedCell.getX() - playerCoord.getX();
+                    Coord dir = new Coord(deltaY, deltaX);
+                    ctrl.move(dir);
+                    updatePawn(pawnCanvas, pawnCanvas.getGraphicsContext2D(), game);
+                    resetGlowing(root, game);
+                } else {
+                    resetGlowing(root, game);
+                }
+            } else if (event.getButton().compareTo(MouseButton.SECONDARY) == 0 && clickedCell.getY() < boardSize
+                    && clickedCell.getY() != 0 && clickedCell.getX() < boardSize-1) {
+                if (rightClickCount == 0) {
+                    if( Rules.canPlaceWall(playerArray, ctrl, clickedCell, Game.directions.get("RIGHT")) ){
+                        //H wall
+                        ImageView wall = new ImageView(wallHImg);
+                        wall.setX(clickedCell.getX()* Hspace-9);
+                        wall.setY(clickedCell.getY()* Vspace-18);
+                        wall.setEffect(new Shadow(10, Color.RED));
+                        root.getChildren().add(wall);
+                        rightClickCount += 1;
+                    } else if ( Rules.canPlaceWall(playerArray, ctrl, clickedCell, Game.directions.get("UP")) ) {
+                        //V wall
                     }
                 }
             }
-            });
+        });
 
         root.getChildren().add(wallCanvas);
         root.getChildren().add(pawnCanvas);
