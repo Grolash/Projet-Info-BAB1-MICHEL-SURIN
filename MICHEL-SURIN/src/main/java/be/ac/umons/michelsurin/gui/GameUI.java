@@ -8,7 +8,9 @@ import be.ac.umons.michelsurin.world.Board;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
@@ -18,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -41,8 +44,9 @@ public class GameUI {
     private PawnController[] playerArray;
     private Board board;
     private int boardSize;
-    private Group root;
-    private Group victoryGroup;
+    private BorderPane mainPane;
+    private Group gameContent;
+    private BorderPane victoryPane;
     private Scene gameScene;
     private Scene victoryScene;
     private Scene menuScene;
@@ -50,6 +54,7 @@ public class GameUI {
     private final int numbOfWall;
 
     public GameUI(Stage appStage, Scene menuScene, int playerNumber, String[] types){
+        System.out.println("it's me");
         this.appStage = appStage;
 
         this.numbOfWall = 10;
@@ -59,11 +64,14 @@ public class GameUI {
         this.board = game.getBoard();
         this.boardSize = board.getSize();
 
-        this.root = new Group();
-        this.victoryGroup = new Group();
+        this.mainPane = new BorderPane();
+        this.victoryPane = new BorderPane();
+        this.gameContent = new Group();
+        mainPane.setBackground(Background.EMPTY);
+        victoryPane.setBackground(Background.EMPTY);
 
-        this.gameScene = new Scene(root);
-        this.victoryScene = new Scene(victoryGroup);
+        this.gameScene = new Scene(mainPane);
+        this.victoryScene = new Scene(victoryPane);
         this.menuScene = menuScene;
 
         this.appStage.setScene(gameScene);
@@ -76,9 +84,9 @@ public class GameUI {
                 appStage.setScene(menuScene);
             }
         });
-        victoryGroup.getChildren().add(backToMenu);
-
+        victoryPane.setCenter(backToMenu);
         //gameScene --------------------------------------
+        mainPane.setCenter(gameContent);
         gameScene.setFill(Color.BLACK);
         //board drawing
         for (int i = 0; i < boardSize; i++) {
@@ -88,12 +96,12 @@ public class GameUI {
                 cell.setY(i * Vspace);
                 cell.setX(j * Hspace);
                 cell.setEffect(new Glow(0));
-                root.getChildren().add(cell);
+                gameContent.getChildren().add(cell);
             }
         }
         //pawn initialization
         for (int i=0; i<playerTotal; i++) {
-            root.getChildren().add(new ImageView());
+            gameContent.getChildren().add(new ImageView());
         }
         updateWall();
         updatePawn();
@@ -101,7 +109,7 @@ public class GameUI {
         //TURN SYSTEM ------------------------------------------------------------------
         final int[] currentPlayer = {0}; //start with player 0
         //CLICK HANDLING
-        gameScene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 //System.out.println(currentPlayer[0]);
@@ -114,11 +122,11 @@ public class GameUI {
                 if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize
                         && ctrl.getType() == "Human") {
 
-                    ImageView clickedCellImage = (ImageView) root.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
+                    ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
                     if (playerCoord.compareTo(clickedCell) == 0) {
                         //click on pawn --> we make the reachable cell glowing
                         for (Coord coord : possibleCell) {
-                            root.getChildren().get( coord.getX()+(9*coord.getY()) ).setEffect(colorCell);
+                            gameContent.getChildren().get( coord.getX()+(9*coord.getY()) ).setEffect(colorCell);
                         }
                     } else if (clickedCell.isIn(possibleCell)
                             && clickedCellImage.getEffect().equals(colorCell)) {
@@ -161,20 +169,21 @@ public class GameUI {
                 }
             }
         }.start();
+
         appStage.show();
 
     }
 
     private void resetGlowing() {
         for (int i = 0; i < (int) Math.pow(game.getBoard().getSize(), 2); i++) {
-            root.getChildren().get(i).setEffect(new Glow(0));
+            gameContent.getChildren().get(i).setEffect(new Glow(0));
         }
     }
 
     public void updatePawn() {
         for (int i=0; i<playerTotal; i++) {
             //We know that all the pawns are in this interval [boardSize², boardSize²+playerTotal[
-            ImageView pawn = (ImageView) root.getChildren().get( (boardSize*boardSize)+i );
+            ImageView pawn = (ImageView) gameContent.getChildren().get( (boardSize*boardSize)+i );
             Coord playerCoord = playerArray[i].getDependency().getCoord();
             if (pawn.getImage() == null) { //if there is already an image set, it's not necessary to set it again
                 if (playerArray[i].getType() == "Human") {
@@ -204,7 +213,7 @@ public class GameUI {
                 wall.setY(wallCoord[0].getY() * Vspace - 54);
             }
         }
-        root.getChildren().add(wall);
+        gameContent.getChildren().add(wall);
     }
 
     /**
