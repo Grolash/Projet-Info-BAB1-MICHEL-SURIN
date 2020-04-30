@@ -3,7 +3,6 @@ package be.ac.umons.michelsurin.gui;
 import be.ac.umons.michelsurin.controller.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
-import be.ac.umons.michelsurin.engine.Rules;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.animation.AnimationTimer;
@@ -12,8 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
@@ -25,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -47,7 +43,7 @@ public class GameUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        String[] type = {"Human", "Human"};
+        String[] type = {"Human", "Debilus", "Smarted", "Debilus"};
         int numbOfWall = 10;
         Game game = new Game(9, type, numbOfWall);
         int playerTotal = game.getPlayerArray().length;

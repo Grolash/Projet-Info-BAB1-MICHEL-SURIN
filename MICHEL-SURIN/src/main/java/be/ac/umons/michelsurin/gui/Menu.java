@@ -1,6 +1,7 @@
 package be.ac.umons.michelsurin.gui;
 
 import javafx.application.Application;
+import javafx.collections.ObservableArray;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -78,24 +79,32 @@ public class Menu extends Application {
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
         firstAIDifficultyMenu = new ChoiceBox<>();
         firstAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
+        firstAIDifficultyMenu.setValue("Human");
+        firstPlayerType = getPlayerType(firstAIDifficultyMenu.getValue());
         firstAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             firstPlayerType = getPlayerType(newValue);
         });
 
         secondAIDifficultyMenu = new ChoiceBox<>();
         secondAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
+        secondAIDifficultyMenu.setValue("Human");
+        secondPlayerType = getPlayerType(secondAIDifficultyMenu.getValue());
         secondAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             secondPlayerType = getPlayerType(newValue);
         });
 
         thirdAIDifficultyMenu = new ChoiceBox<>();
         thirdAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
+        thirdAIDifficultyMenu.setValue("Human");
+        thirdPlayerType = getPlayerType(thirdAIDifficultyMenu.getValue());
         thirdAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             thirdPlayerType = getPlayerType(newValue);
         });
 
         fourthAIDifficultyMenu = new ChoiceBox<>();
         fourthAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
+        fourthAIDifficultyMenu.setValue("Human");
+        fourthPlayerType = getPlayerType(fourthAIDifficultyMenu.getValue());
         fourthAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             fourthPlayerType  = getPlayerType(newValue);
         });
@@ -106,9 +115,17 @@ public class Menu extends Application {
         playerNumber = new ChoiceBox<>();
         playerNumber.getItems().addAll( "2 Players",
                 "4 Players");
+        playerNumber.setValue("2 Players");
+        playerNumberInt = 2;
         layout.getChildren().add(playerNumber);
         Label difficulty = new Label("AI difficulty:");
         layout.getChildren().add(difficulty);
+        //default state
+        layout.getChildren().remove(firstAIDifficultyMenu);
+        layout.getChildren().remove(secondAIDifficultyMenu);
+        layout.getChildren().remove(thirdAIDifficultyMenu);
+        layout.getChildren().remove(fourthAIDifficultyMenu);
+        layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
         playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             if (newValue.equals("2 Players")){
                 playerNumberInt = 2;
@@ -183,6 +200,11 @@ public class Menu extends Application {
     }
 
     private void launchGame(){
+        System.out.println(getPlayerNumberInt());
+        System.out.println(getFirstPlayerType());
+        System.out.println(getSecondPlayerType());
+        System.out.println(getThirdPlayerType());
+        System.out.println(getFourthPlayerType());
         boolean answer = ConfirmBox.Display("Launch confirmation",
                 "Are you sure you want to launch the game? Be sure you selected the right settings.");
         if (answer){

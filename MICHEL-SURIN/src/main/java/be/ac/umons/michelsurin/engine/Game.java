@@ -79,8 +79,8 @@ public class Game {
                     startCoordArray[2] = new Coord(4,0);
                     goalArray[2] = size-1;
                     //player 3
-                    startCoordArray[2] = new Coord(4,size-1);
-                    goalArray[2] = 0;
+                    startCoordArray[3] = new Coord(4,size-1);
+                    goalArray[3] = 0;
 
                 }
             }
