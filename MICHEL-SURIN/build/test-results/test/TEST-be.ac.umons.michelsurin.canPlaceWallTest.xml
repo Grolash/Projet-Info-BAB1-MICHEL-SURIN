@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-04-29T15:53:57" hostname="DESKTOP-D7RGT2P" time="0.094">
+<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-04-30T11:13:24" hostname="DESKTOP-D7RGT2P" time="0.103">
   <properties/>
   <testcase name="isThereAPath()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.02"/>
-  <testcase name="wallOverlap1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.004"/>
-  <testcase name="canPlaceWall2P()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.033"/>
-  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.027"/>
+  <testcase name="wallOverlap1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.002"/>
+  <testcase name="canPlaceWall2P()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.028"/>
+  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.041"/>
   <testcase name="isThereAPath3()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

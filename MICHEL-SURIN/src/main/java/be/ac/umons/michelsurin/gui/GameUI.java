@@ -6,7 +6,6 @@ import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -25,55 +24,62 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 
-public class GameUI extends Application {
+public class GameUI {
 
-    private Image cellImg = new Image("tile.png");
-    private Image humanPawnImg = new Image("neo.png");
-    private Image AIPawnImg = new Image("agent.png");
-    private Image wallHImg = new Image("wallH.png");
-    private Image wallVImg = new Image("wallV.png");
-    public static final int Hspace = 50;
-    public static final int Vspace = 50;
-    private static ColorAdjust colorCell = new ColorAdjust(0.1, 0, 0.5, 0.5);
-    private static Shadow wallShadow = new Shadow(10, Color.RED);
+    private final Image cellImg = new Image("tile.png");
+    private final Image humanPawnImg = new Image("neo.png");
+    private final Image AIPawnImg = new Image("agent.png");
+    private final Image wallHImg = new Image("wallH.png");
+    private final Image wallVImg = new Image("wallV.png");
+    public final int Hspace = 50;
+    public final int Vspace = 50;
+    private final ColorAdjust colorCell = new ColorAdjust(0.1, 0, 0.5, 0.5);
+    private final Shadow wallShadow = new Shadow(10, Color.RED);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private Game game;
+    private int playerTotal;
+    private PawnController[] playerArray;
+    private Board board;
+    private int boardSize;
+    private Group root;
+    private Group victoryGroup;
+    private Scene gameScene;
+    private Scene victoryScene;
+    private Scene menuScene;
+    private Stage appStage;
+    private final int numbOfWall;
 
-    @Override
-    public void start(Stage primaryStage) {
-        String[] type = {"Human", "Debilus", "Smarted", "Debilus"};
-        int numbOfWall = 10;
-        Game game = new Game(9, type, numbOfWall);
-        int playerTotal = game.getPlayerArray().length;
-        int boardSize = game.getBoard().getSize();
-        PawnController[] playerArray = game.getPlayerArray();
-        Board board = game.getBoard();
+    public GameUI(Stage appStage, Scene menuScene, int playerNumber, String[] types){
+        this.appStage = appStage;
 
-        //game scene ------------------------------------------------------------------
-        primaryStage.setTitle("Quoridor - by Virgil Surin & Simon Michel");
-        primaryStage.setFullScreen(true);
-        Group root = new Group();
-        Scene scene = new Scene(root);
+        this.numbOfWall = 10;
+        this.game = new Game(9, types, numbOfWall);
+        this.playerArray = game.getPlayerArray();
+        this.playerTotal = playerNumber;
+        this.board = game.getBoard();
+        this.boardSize = board.getSize();
 
-        //victory scene ------------------------------------------------------------------
-        Group victory = new Group();
-        Scene victoryScene = new Scene(victory);
+        this.root = new Group();
+        this.victoryGroup = new Group();
+
+        this.gameScene = new Scene(root);
+        this.victoryScene = new Scene(victoryGroup);
+        this.menuScene = menuScene;
+
+        this.appStage.setScene(gameScene);
+
+        //victoryScene --------------------------------------
         Button backToMenu = new Button("BACK TO THE MENUUUUUUU");
         backToMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("back to the menu !");
-                System.out.println("*dolorean noise*");
-                primaryStage.close();
+                appStage.setScene(menuScene);
             }
         });
-        victory.getChildren().add(backToMenu);
+        victoryGroup.getChildren().add(backToMenu);
 
-        //game scene ------------------------------------------------------------------
-        primaryStage.setScene(scene);
-        scene.setFill(Color.BLACK);
+        //gameScene --------------------------------------
+        gameScene.setFill(Color.BLACK);
         //board drawing
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
@@ -89,19 +95,16 @@ public class GameUI extends Application {
         for (int i=0; i<playerTotal; i++) {
             root.getChildren().add(new ImageView());
         }
-        //display the current state
-        updatePawn(boardSize, playerTotal, playerArray, root);
-        updateWall(board.getWallList(), root);
+        updateWall();
+        updatePawn();
 
         //TURN SYSTEM ------------------------------------------------------------------
         final int[] currentPlayer = {0}; //start with player 0
         //CLICK HANDLING
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        gameScene.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 //System.out.println(currentPlayer[0]);
-
-                int boardSize = game.getBoard().getSize();
                 Coord[] possibleCell = game.whereCanIGo(currentPlayer[0]);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
                 PawnController ctrl = playerArray[currentPlayer[0]];
@@ -124,19 +127,19 @@ public class GameUI extends Application {
                         int deltaX = clickedCell.getX() - playerCoord.getX();
                         Coord dir = new Coord(deltaY, deltaX);
                         ctrl.move(dir);
-                        updatePawn(boardSize, playerTotal, playerArray, root);
-                        resetGlowing(root, game);
+                        updatePawn();
+                        resetGlowing();
                         //Check win
                         if (ctrl.hasWon()) {
-                            primaryStage.setScene(victoryScene);
+                            appStage.setScene(victoryScene);
                         } else {
                             currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                         }
                     } else {
-                        resetGlowing(root, game);
+                        resetGlowing();
                     }
 
-                //wall placing system
+                    //wall placing system
                 }
             }
         });
@@ -146,28 +149,29 @@ public class GameUI extends Application {
             public void handle(long now) {
                 if (playerArray[currentPlayer[0]].getType() != "Human") {
                     Action.getAction(playerArray, playerArray[currentPlayer[0]]);
-                    updatePawn(boardSize, playerTotal, playerArray, root);
-                    updateWall(board.getWallList(), root);
+                    updatePawn();
+                    updateWall();
                     if (playerArray[currentPlayer[0]].hasWon()) {
-                        System.out.println("player "+ currentPlayer[0] + " has won !");
+                        //System.out.println("player "+ currentPlayer[0] + " has won !");
                         this.stop();
-                        primaryStage.setScene(victoryScene);
+                        appStage.setScene(victoryScene);
                     } else {
                         currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                     }
                 }
             }
         }.start();
-        primaryStage.show();
+        appStage.show();
+
     }
 
-    private void resetGlowing(Group root, Game game) {
+    private void resetGlowing() {
         for (int i = 0; i < (int) Math.pow(game.getBoard().getSize(), 2); i++) {
             root.getChildren().get(i).setEffect(new Glow(0));
         }
     }
 
-    public void updatePawn(int boardSize, int playerTotal, PawnController[] playerArray, Group root) {
+    public void updatePawn() {
         for (int i=0; i<playerTotal; i++) {
             //We know that all the pawns are in this interval [boardSize², boardSize²+playerTotal[
             ImageView pawn = (ImageView) root.getChildren().get( (boardSize*boardSize)+i );
@@ -184,7 +188,8 @@ public class GameUI extends Application {
         }
     }
 
-    public void updateWall(ArrayList<Coord[]> wallList, Group root) {
+    public void updateWall() {
+        ArrayList<Coord[]> wallList = board.getWallList();
         ImageView wall = new ImageView();
         for (Coord[] wallCoord : wallList) {
             if (wallCoord[0].getY() == wallCoord[1].getY()) {
@@ -210,7 +215,7 @@ public class GameUI extends Application {
      * @param y
      * @return a coordinates instance for a Game object to use.
      */
-    public static Coord getCoordFromPos(double x, double y) {
+    public Coord getCoordFromPos(double x, double y) {
         int game_y = (int) y / Vspace;
         int game_x = (int) x / Hspace;
         return new Coord(game_y, game_x);
@@ -224,7 +229,7 @@ public class GameUI extends Application {
      * @param cellArray  the coordinates we are comparing.
      * @return the corresponding coordinates. Null if iit has not been found.
      */
-    public static Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
+    public Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
         for (Coord coord : cellArray) {
             if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
                 return coord;

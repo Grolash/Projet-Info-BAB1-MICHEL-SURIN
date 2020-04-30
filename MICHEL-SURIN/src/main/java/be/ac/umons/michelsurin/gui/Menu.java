@@ -65,7 +65,7 @@ public class Menu extends Application {
 
 
         launchButton = new Button("Launch game!");
-        launchButton.setOnAction(e -> launchGame());
+        launchButton.setOnAction(e -> launchGame(primaryStage));
         layout.getChildren().add(launchButton);
 
         layout.getChildren().add(closeButton);
@@ -199,7 +199,7 @@ public class Menu extends Application {
         return fourthPlayerType;
     }
 
-    private void launchGame(){
+    private void launchGame(Stage appStage){
         System.out.println(getPlayerNumberInt());
         System.out.println(getFirstPlayerType());
         System.out.println(getSecondPlayerType());
@@ -209,6 +209,16 @@ public class Menu extends Application {
                 "Are you sure you want to launch the game? Be sure you selected the right settings.");
         if (answer){
             // TODO implement game launch!
+            if (getPlayerNumberInt() == 2) {
+                String[] types = {getFirstPlayerType(), getSecondPlayerType()};
+                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types);
+            } else if (getPlayerNumberInt() == 4) {
+                String[] types = {getFirstPlayerType(), getSecondPlayerType(),
+                        getThirdPlayerType(), getFourthPlayerType()};
+                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types);
+            } else {
+                throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());
+            }
         }
     }
 }
