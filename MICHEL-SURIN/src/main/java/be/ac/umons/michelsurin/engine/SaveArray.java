@@ -7,16 +7,11 @@ import java.util.ArrayList;
 
 public class SaveArray {
 
-    private ArrayList<String> array;
-    private Path path = Paths.get("");
+    private Path path = Paths.get("Save.txt");
     private File file = path.toFile();
 
-    public SaveArray(ArrayList<String> array) {
-        this.array = array;
-    }
 
-
-    public void Save() throws IOException {
+    public void Save(ArrayList<String> array) throws IOException {
         File selectedFile = file;
         if (selectedFile != null) {
             FileOutputStream file = new FileOutputStream(selectedFile);
@@ -26,6 +21,9 @@ public class SaveArray {
             stream.close();  // Thanks Mr. Pierre HAUWEELE! :D
 
 
+        }
+        else {
+            throw new IllegalArgumentException("File does not exist!");
         }
     }
 }

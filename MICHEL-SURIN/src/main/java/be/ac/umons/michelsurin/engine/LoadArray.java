@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class LoadArray {
 
-    private ArrayList<String> arrayList = new ArrayList<>();
-    private Path path = Paths.get("");
+    private Path path = Paths.get("Save.txt");
     private File file = path.toFile();
 
     public ArrayList Load() throws IOException, ClassNotFoundException {
+        ArrayList<String> arrayList;
         File selectedFile = file;
         if (selectedFile != null) {
             FileInputStream file = new FileInputStream(selectedFile);
