@@ -28,34 +28,112 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-
+/**
+ * given game settings, run a GUI game.
+ */
 public class GameUI {
 
+    /**
+     * Standard cell sprite
+     */
     private final Image cellImg = new Image("tile.png");
+    /**
+     * Human player sprite
+     */
     private final Image humanPawnImg = new Image("neo.png");
+    /**
+     * AI player sprite
+     */
     private final Image AIPawnImg = new Image("agent.png");
+    /**
+     * Horizontal wall sprite
+     */
     private final Image wallHImg = new Image("wallH.png");
+    /**
+     * Vertical wall sprite
+     */
     private final Image wallVImg = new Image("wallV.png");
+    /**
+     * Empty sprite used to "hide" the shadow wall used to give player an indication of where they will place a wall
+     */
     private final Image empty = new Image("wallEmpty.png");
+    /**
+     * Horizontal gap between cell
+     */
     public final int Hspace = 50;
+    /**
+     * Vertical gap between cell
+     */
     public final int Vspace = 50;
+    /**
+     * Effect that highlight the sprite attach to it. Used to show possible move for players
+     */
     private final ColorAdjust colorCell = new ColorAdjust(0.1, 0, 0.5, 0.5);
-    private final Shadow wallShadow = new Shadow(10, Color.RED);
+    /**
+     * Effect used to show a preview of the wall a player might place
+     */
+    private final Shadow wallShadow = new Shadow(1, Color.DARKRED);
 
+    /**
+     * The game running
+     */
     private Game game;
+    /**
+     * Total of player in the game
+     */
     private int playerTotal;
+    /**
+     * Array containing all the PawnController in the game
+     */
     private PawnController[] playerArray;
+    /**
+     * The board
+     */
     private Board board;
+    /**
+     * Size of the board
+     */
     private int boardSize;
-    private BorderPane mainPane;
-    private Group gameContent;
-    private BorderPane victoryPane;
-    private Scene gameScene;
-    private Scene victoryScene;
-    private Scene menuScene;
-    private Stage appStage;
+    /**
+     * The number of wall for each player
+     */
     private final int numbOfWall;
+    /**
+     * The pane containing all the scene
+     */
+    private BorderPane mainPane;
+    /**
+     * Group containing all the game sprite
+     */
+    private Group gameContent;
+    /**
+     * Pane used for the victory screen
+     */
+    private BorderPane victoryPane;
+    /**
+     * Scene where the game takes place
+     */
+    private Scene gameScene;
+    /**
+     * Scene for the victory screen
+     */
+    private Scene victoryScene;
+    /**
+     * The stage of the application (the window)
+     */
+    private Stage appStage;
 
+
+    /**
+     * This constructor creates a game with the settings given by the menu and display it.
+     * Then it will start the game with the player 0 (1st player) and given it's type, will listen for mouse event if it's
+     * a human else, it will get through the AnimationTimer and call the actionHandler that will play according to the
+     * AI type.
+     * @param appStage {@link #appStage}
+     * @param menuScene The scene containing the main menu
+     * @param playerNumber {@link #playerTotal}
+     * @param types An array of String containing the types of each player, with the first type to be associated with the first player etc...
+     */
     public GameUI(Stage appStage, Scene menuScene, int playerNumber, String[] types){
         this.appStage = appStage;
 
@@ -76,7 +154,6 @@ public class GameUI {
 
         this.gameScene = new Scene(mainPane);
         this.victoryScene = new Scene(victoryPane);
-        this.menuScene = menuScene;
 
         this.appStage.setScene(gameScene);
 
@@ -109,8 +186,7 @@ public class GameUI {
         }
         //wall highlight
         ImageView wallHighlight = new ImageView();
-        Shadow wallShadow = new Shadow(1, Color.DARKRED);
-        wallHighlight.setEffect(wallShadow);
+        wallHighlight.setEffect(this.wallShadow);
         gameContent.getChildren().add(wallHighlight);
 
         updateWall();
@@ -124,7 +200,6 @@ public class GameUI {
         gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //System.out.println(currentPlayer[0]);
                 Coord[] possibleCell = game.whereCanIGo(currentPlayer[0]);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
                 PawnController ctrl = playerArray[currentPlayer[0]];
@@ -134,30 +209,32 @@ public class GameUI {
 
                 if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
                     //we are left-clicking on a ghost wall, we need to place it
+                    resetGlowing(); //if cells are glowing the need to be reset
                     if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
-                        //we want to place a wall there
+                        //it's a click on a ghost wall, it means that we want it to be placed
                         if (lastChild.getImage().equals(wallHImg)) {
+                            //Hwall
                             ctrl.placeWall(clickedCell, Game.directions.get("RIGHT"));
                             lastChild.setImage(empty);
                             updateWall();
                             currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                         } else {
+                            //Vwall
                             ctrl.placeWall(clickedCell, Game.directions.get("UP"));
                             lastChild.setImage(empty);
                             updateWall();
                             currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                         }
                     } else {
-                        //turn the highlight wall invisible
-                        System.out.println("vanish");
+                        //click somewhere else, we reset the ghost wall
                         lastChild.setImage(empty);
                     }
-                    dragActive[0] = false;
+                    dragActive[0] = false; //reset the drag
                 } else {
                     //we want to move
                     if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize
                             && ctrl.getType() == "Human") {
-
+                        //click is on the current player
                         ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
                         if (playerCoord.compareTo(clickedCell) == 0) {
                             //click on pawn --> we make the reachable cell glowing
@@ -180,13 +257,13 @@ public class GameUI {
                                 currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                             }
                         } else {
+                            //click is somewhere else, we reset the cell glow
                             resetGlowing();
                         }
                     }
                 }
             }
         });
-        //wall placing system
         //enter the wall highlight mode
         gameContent.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
@@ -201,7 +278,10 @@ public class GameUI {
                         && playerArray[currentPlayer[0]].getNumbWall() > 0) {
                     //we are at a correct place for a wall to be placed
                     //now check whether we are on top of the cell or on the bottom
-                    dragActive[0] = true;
+                    dragActive[0] = true; //tells that a drag has been triggered
+
+                    //the following lines will determines if the mouse is on the upper or lower half of the cell
+                    //if upper -> Hwall, if lower -> Vwall
                     if (event.getY() > currentCellCoord.getY()*(Vspace)
                             && event.getY() < (currentCellCoord.getY()*(Vspace))+(Vspace/2)
                             && Rules.canPlaceWall(playerArray, playerArray[currentPlayer[0]],
@@ -222,38 +302,41 @@ public class GameUI {
                 }
             }
         });
-
-        //place the wall at position if valid, do nothing otherwise
-
-
+        //AI handling
         new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (playerArray[currentPlayer[0]].getType() != "Human") {
+                    //current player is an AI, we call it's actionHandler
                     Action.getAction(playerArray, playerArray[currentPlayer[0]]);
                     updatePawn();
                     updateWall();
                     if (playerArray[currentPlayer[0]].hasWon()) {
-                        //System.out.println("player "+ currentPlayer[0] + " has won !");
+                        //we stop the "loop" and show victory screen
                         this.stop();
                         appStage.setScene(victoryScene);
                     } else {
+                        //next player
                         currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
                     }
                 }
             }
         }.start();
-
         appStage.show();
-
     }
 
+    /**
+     * will reset all the glowing effect of all cell in the board
+     */
     private void resetGlowing() {
         for (int i = 0; i < (int) Math.pow(game.getBoard().getSize(), 2); i++) {
             gameContent.getChildren().get(i).setEffect(new Glow(0));
         }
     }
 
+    /**
+     * will take each pawn sprite in the scene and update their position with their actual position
+     */
     public void updatePawn() {
         for (int i=0; i<playerTotal; i++) {
             //We know that all the pawns are in this interval [boardSize², boardSize²+playerTotal[
@@ -271,6 +354,9 @@ public class GameUI {
         }
     }
 
+    /**
+     * add the new wall to the display.
+     */
     public void updateWall() {
         ArrayList<Coord[]> wallList = board.getWallList();
         ImageView wall = new ImageView();
@@ -313,6 +399,7 @@ public class GameUI {
      * @param cellArray  the coordinates we are comparing.
      * @return the corresponding coordinates. Null if iit has not been found.
      */
+    @Deprecated
     public Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
         for (Coord coord : cellArray) {
             if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
