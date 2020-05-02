@@ -56,7 +56,7 @@ public class GameUI {
     /**
      * Empty sprite used to "hide" the shadow wall used to give player an indication of where they will place a wall
      */
-    private final Image empty = new Image("wallEmpty.png");
+    private final Image empty = new Image("emptyWall.png");
     /**
      * Horizontal gap between cell
      */
