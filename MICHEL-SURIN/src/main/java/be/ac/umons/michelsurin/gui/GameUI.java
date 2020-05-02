@@ -272,6 +272,7 @@ public class GameUI {
                 Coord currentCellCoord = getCoordFromPos(event.getX(), event.getY());
                 wantedWallCoord[0] = currentCellCoord;
                 System.out.println(currentCellCoord);
+                resetGlowing();
                 int size = gameContent.getChildren().size();
                 if (currentCellCoord.getY() < boardSize && currentCellCoord.getY() > 0 && currentCellCoord.getX() < boardSize-1
                         && event.getButton().compareTo(MouseButton.SECONDARY) == 0
