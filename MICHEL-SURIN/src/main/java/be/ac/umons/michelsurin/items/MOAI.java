@@ -2,6 +2,8 @@ package be.ac.umons.michelsurin.items;
 
 import be.ac.umons.michelsurin.tools.Coord;
 
+import java.io.Serializable;
+
 /**
  * defines the minimum requirements of an item.
  * An item is something in the game, like a wall, a pawn.
@@ -9,7 +11,9 @@ import be.ac.umons.michelsurin.tools.Coord;
  *
  * @author Simon MICHEL
  */
-public abstract class MOAI {
+public abstract class MOAI implements Serializable {
+
+    public static final long serialVersionUID = -4696500500864755130L;
 
     private Coord coord;
 

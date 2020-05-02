@@ -12,6 +12,8 @@ import be.ac.umons.michelsurin.tools.Coord;
  */
 public class Wall extends MOAI {
 
+    public static final long serialVersionUID = -3306060134013214821L;
+
     /**
      * @param origin the origin of the wall
      * @param direction the direction used to determinate the second part of the wall

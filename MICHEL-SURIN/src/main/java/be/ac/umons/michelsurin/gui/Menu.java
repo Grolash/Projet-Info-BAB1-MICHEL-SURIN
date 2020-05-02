@@ -1,5 +1,6 @@
 package be.ac.umons.michelsurin.gui;
 
+import be.ac.umons.michelsurin.engine.SaverLoader;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,11 +14,22 @@ import javafx.stage.Stage;
 
 public class Menu extends Application {
 
+
     private Scene scene;
     private Button launchButton;
     private Button closeButton;
     private Stage window;
     private VBox layout;
+
+    /**
+     * Load a game.
+     */
+    private Button loadButton;
+
+    /**
+     * Save and load games.
+     */
+    private SaverLoader saverLoader;
 
     private ChoiceBox<String> playerNumber;
     private ChoiceBox<String> firstAIDifficultyMenu;
@@ -66,6 +78,9 @@ public class Menu extends Application {
         launchButton = new Button("Launch game!");
         launchButton.setOnAction(e -> launchGame(window));
         layout.getChildren().add(launchButton);
+
+        loadButton = new Button("Load Game");
+
 
         layout.getChildren().add(closeButton);
 

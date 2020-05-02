@@ -6,12 +6,14 @@ import be.ac.umons.michelsurin.engine.Rules;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Action {
+public class Action implements Serializable {
 
+    public static final long serialVersionUID = -2571765794130091542L;
 
     private static Random random = new Random();
 

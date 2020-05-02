@@ -1,14 +1,16 @@
 package be.ac.umons.michelsurin.world;
 
 import be.ac.umons.michelsurin.tools.Coord;
+
+import java.io.Serializable;
 import java.util.Hashtable;
 
 /**
  * represents one cell of the board.
  */
-public class Cell {
+public class Cell implements Serializable {
 
-
+    public static final long serialVersionUID = 1617968115963162870L;
 
     /**
      * the coordinates of the cell in the board.

@@ -4,6 +4,7 @@ import be.ac.umons.michelsurin.controller.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.Rules;
+import be.ac.umons.michelsurin.engine.SaverLoader;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 import javafx.animation.AnimationTimer;
@@ -26,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -123,6 +125,17 @@ public class GameUI {
      */
     private Stage appStage;
 
+    /**
+     * Save the game.
+     */
+    private Button saveButton;
+
+
+
+    /**
+     * Save and load games.
+     */
+    private SaverLoader saverLoader = new SaverLoader();
 
     /**
      * This constructor creates a game with the settings given by the menu and display it.
@@ -180,6 +193,19 @@ public class GameUI {
                 gameContent.getChildren().add(cell);
             }
         }
+
+        saveButton = new Button("Save Game");
+        saveButton.setOnAction(e -> {
+            try {
+                saverLoader.Save(game);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        mainPane.setLeft(saveButton);
+
+
+
         //pawn initialization
         for (int i=0; i<playerTotal; i++) {
             gameContent.getChildren().add(new ImageView());

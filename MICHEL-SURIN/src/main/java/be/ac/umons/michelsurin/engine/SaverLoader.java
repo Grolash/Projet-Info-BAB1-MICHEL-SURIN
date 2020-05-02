@@ -4,9 +4,12 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Save and load games, has path in memory
+ */
 public class SaverLoader {
 
-    private Path path = Paths.get("Save.txt");
+    private Path path = Paths.get("./src/main/java/be/ac/umons/michelsurin/engine/Save.txt");
     private File file = path.toFile();
 
 

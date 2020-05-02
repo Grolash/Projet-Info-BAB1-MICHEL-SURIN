@@ -6,6 +6,7 @@ import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
@@ -14,7 +15,9 @@ import java.util.Set;
  * @version v1.0
  *
  */
-public class Game {
+public class Game implements Serializable {
+
+    public static final long serialVersionUID = -7739854031988438014L;
 
     /**
      * number of player in the current game, is 2 or 4
