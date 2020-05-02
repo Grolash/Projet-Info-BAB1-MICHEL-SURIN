@@ -85,7 +85,7 @@ set CMD_LINE_ARGS=%*
 set CLASSPATH=%APP_HOME%\lib\MICHEL-SURIN.jar;%APP_HOME%\lib\javafx-fxml-13-win.jar;%APP_HOME%\lib\javafx-controls-13-win.jar;%APP_HOME%\lib\javafx-controls-13.jar;%APP_HOME%\lib\javafx-graphics-13-win.jar;%APP_HOME%\lib\javafx-graphics-13.jar;%APP_HOME%\lib\javafx-base-13-win.jar;%APP_HOME%\lib\javafx-base-13.jar
 
 @rem Execute MICHEL-SURIN
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MICHEL_SURIN_OPTS%  -classpath "%CLASSPATH%" be.ac.umons.michelsurin.gui.GameUI %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MICHEL_SURIN_OPTS%  -classpath "%CLASSPATH%" be.ac.umons.michelsurin.gui.Menu %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell

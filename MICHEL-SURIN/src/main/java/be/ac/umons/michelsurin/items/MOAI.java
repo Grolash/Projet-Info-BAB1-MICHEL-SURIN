@@ -3,7 +3,9 @@ package be.ac.umons.michelsurin.items;
 import be.ac.umons.michelsurin.tools.Coord;
 
 /**
- * defines the minimum requirements of an item
+ * defines the minimum requirements of an item.
+ * An item is something in the game, like a wall, a pawn.
+ * It does not control itself.
  *
  * @author Simon MICHEL
  */

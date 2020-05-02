@@ -12,7 +12,7 @@ import be.ac.umons.michelsurin.world.Board;
 import java.security.InvalidParameterException;
 
 /**
- * a type of be.ac.umons.michelsurin.controller designed to control a Pawn instance. It is a player.
+ * a type of controller designed to control a Pawn instance. It is a player.
  */
 public class PawnController extends Controller {
 
@@ -20,9 +20,9 @@ public class PawnController extends Controller {
     private int numbWall;
 
     /**
-     * @param type define the type of the be.ac.umons.michelsurin.controller. Used to determined it's action.
-     * @param dependency refers to the be.ac.umons.michelsurin.items the be.ac.umons.michelsurin.controller is controlling.
-     * @param board the board in which the be.ac.umons.michelsurin.controller is evolving.
+     * @param type define the type of the controller. Used to determined it's action.
+     * @param dependency refers to the items the controller is controlling.
+     * @param board the board in which the controller is evolving.
      * @param playerNumber the number of the player.
      * @param numbWall the number of wall of the player. Default is 10.
      */
@@ -33,9 +33,9 @@ public class PawnController extends Controller {
     }
 
     /**
-     * @param type define the type of the be.ac.umons.michelsurin.controller. Used to determined it's action.
-     * @param dependency refers to the be.ac.umons.michelsurin.items the be.ac.umons.michelsurin.controller is controlling.
-     * @param board the board in which the be.ac.umons.michelsurin.controller is evolving.
+     * @param type define the type of the controller. Used to determined it's action.
+     * @param dependency refers to the items the controller is controlling.
+     * @param board the board in which the controller is evolving.
      * @param playerNumber the number of the player.
      */
     public PawnController(String type, Pawn dependency, Board board, int playerNumber) {
@@ -61,11 +61,11 @@ public class PawnController extends Controller {
     //validation is handled by the Rules class and nothing else
 
     /**
-     * Will move the be.ac.umons.michelsurin.controller's pawn into the given direction.
+     * Will move the controller's pawn into the given direction.
      * Does not care if there is a wall or not. It does it.
      * This kind of verification must be called before calling this method.
      *
-     * @param direction the direction the be.ac.umons.michelsurin.controller is moving
+     * @param direction the direction the controller is moving
      */
     public void move(Coord direction) {
         Coord depCoord = getDependency().getCoord();
@@ -106,13 +106,15 @@ public class PawnController extends Controller {
     }
 
     /**
-     * Tells if the be.ac.umons.michelsurin.controller's dependency (typically a Pawn) has reached its objective (his goal row in a 2P game)
+     * Tells if the controller's dependency (typically a Pawn) has reached its objective (his goal row in a 2P game)
      *
      * @return true if the pawn is at is objective, false otherwise.
      */
     public boolean hasWon() {
         Pawn dep = (Pawn) getDependency(); //Downcast
-        if (dep.getCoord().getY() == dep.getGoal()) {
+        if (dep.getCoord().getY() == dep.getGoal() && dep.doesGoalIsARow()) {
+            return true;
+        } else if (dep.getCoord().getX() == dep.getGoal() && !dep.doesGoalIsARow()) {
             return true;
         } else {
             return false;

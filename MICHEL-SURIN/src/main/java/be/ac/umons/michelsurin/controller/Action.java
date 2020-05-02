@@ -29,13 +29,13 @@ public class Action {
             //call HumanActionHandler
         }
         switch (ctrl.getType()) {
+            /* May be needed for a console mode.
+            Human actions are handled by the GUI
             case "Human" :
                 humanActionHandler(playerArray, ctrl);
                 break;
-
+            */
             case "Debilus" :
-                debilusActionHandler(playerArray, ctrl);
-                break;
             case "Dabilus" :
                 debilusActionHandler(playerArray, ctrl);
                 break;
@@ -55,7 +55,7 @@ public class Action {
                 break;
 
             default :
-                throw new IllegalArgumentException("the be.ac.umons.michelsurin.controller has an incorrect type");
+                throw new IllegalArgumentException("the controller has an incorrect type");
         }
 
     }
@@ -427,18 +427,6 @@ public class Action {
 
 
     }
-
-
-    /**
-     * The method where a human player will be able to choose his next action.
-     *
-     * @param ctrl the be.ac.umons.michelsurin.controller for which we are picking an action
-     * @return an action
-     */
-    private static void humanActionHandler(PawnController[] playerArray, PawnController ctrl) {
-        //TODO implement it
-    }
-
 
     public Random getRandom() {
         return random;

@@ -11,17 +11,27 @@ import java.util.Hashtable;
 import java.util.Set;
 
 /**
- * @version v0.1
+ * @version v1.0
  *
  */
 public class Game {
 
+    /**
+     * number of player in the current game, is 2 or 4
+     */
     private int playerNumber;
+    /**
+     * Array containing all the PawnController in the game, one per pawn
+     */
     private PawnController[] playerArray;
+    /**
+     * Array containing all the Pawn in the game, one per player
+     */
     private Pawn[] pawnArray;
+    /**
+     * the board of the actual game
+     */
     private Board board;
-
-    private Hashtable<String, Integer> winTable;
 
     /**
      * contains all the possible directions (basically UP, DOWN, LEFT and RIGHT). Won't change.
@@ -79,8 +89,8 @@ public class Game {
                     startCoordArray[2] = new Coord(4,0);
                     goalArray[2] = size-1;
                     //player 3
-                    startCoordArray[2] = new Coord(4,size-1);
-                    goalArray[2] = 0;
+                    startCoordArray[3] = new Coord(4,size-1);
+                    goalArray[3] = 0;
 
                 }
             }
@@ -96,6 +106,12 @@ public class Game {
             //run the GUI ?
         }
 
+    /**
+     * Game contructor used by the StatRunner. It can only create 1v1 on a 9x9 board with 10 walls per player.
+     * It is used to simulate games.
+     * @param type1 type of the first AI
+     * @param type2 type of the second AI
+     */
     public Game(String type1, String type2) {
 
         String[] typeArray = new String[2];
@@ -136,7 +152,13 @@ public class Game {
 
     }
 
-    public void statLoop(Hashtable<String, Integer> winTable) throws InterruptedException {
+    /**
+     * It is a loop that simulate a single game. The wintable is given by StatRunner to keep track of
+     * win statistics.
+     *
+     * @param winTable an Hashtable containing each type with their number of won game.
+     */
+    public void statLoop(Hashtable<String, Integer> winTable) {
         int i = 0;
         do {
             //System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
@@ -163,7 +185,7 @@ public class Game {
     /**
      * given a player number. It will check all the cell around its position and return an array
      * containing all the cells where the player can go from it's position.
-     * /!\ a cell with a pawn is considered as a cell where the player can go.
+     * It takes in consideration walls and pawns
      *
      * @param player the player.
      * @return an array with all the cell reachable from the player's position.
