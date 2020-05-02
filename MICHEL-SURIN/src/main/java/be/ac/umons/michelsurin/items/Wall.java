@@ -4,6 +4,9 @@ import be.ac.umons.michelsurin.tools.Coord;
 
 /**
  * represents a wall
+ * It has an origin and a second part. The second part is always whether at right or above the origin
+ * If the second part is above, it is a vertical wall (Vwall) if the second part is on the right,
+ * it is an horizontal wall (Hwall).
  *
  * @author Simon MICHEL
  */

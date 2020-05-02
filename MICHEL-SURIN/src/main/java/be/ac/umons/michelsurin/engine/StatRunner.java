@@ -1,11 +1,13 @@
 package be.ac.umons.michelsurin.engine;
 
-import be.ac.umons.michelsurin.tools.Coord;
-
 import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * class designed to run a given number of game between 2 AI and output their winning ratio.
+ *
+ */
 public class StatRunner {
 
     public static void main(String[] args) throws InterruptedException {
@@ -34,6 +36,7 @@ public class StatRunner {
     }
 
     public static int readInt(String prompt, Scanner scanner) {
+        //TODO known bug : if the exception is thrown, it doesn't ask again and display prompt to infinite
         System.out.println(prompt);
         try {
             return scanner.nextInt();

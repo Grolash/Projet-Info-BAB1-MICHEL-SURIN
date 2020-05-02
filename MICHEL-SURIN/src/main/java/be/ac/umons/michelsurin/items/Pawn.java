@@ -3,7 +3,7 @@ package be.ac.umons.michelsurin.items;
 import be.ac.umons.michelsurin.tools.Coord;
 
 /**
- * represents a pawn that may be be.ac.umons.michelsurin.controller later by a be.ac.umons.michelsurin.controller.
+ * represents a pawn that may be controlled later by a controller.
  *
  * @author Simon MICHEL
  */
