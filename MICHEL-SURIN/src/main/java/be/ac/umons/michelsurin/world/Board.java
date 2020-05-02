@@ -28,7 +28,7 @@ public class Board {
 
 
     /**
-     * initiate the board. Creating all the cell needed, all the directions, etc...
+     * initiate the board. Creating all the cell needed, an empty wall list and adding all the pawns.
      *
      * @param size the size of the board. Note that it's a square.
      */
@@ -133,12 +133,17 @@ public class Board {
         getCell(newCoord).setPawn(true);
     }
 
+    /**
+     * Checks if a wall is already in the wall list or not.
+     *
+     * @param wall the wall we are looking for in the list
+     * @return true if the wall is already in the list, false otherwise.
+     */
     public boolean InWallList(Coord[] wall) {
         for (Coord[] c : getWallList()) {
             if (c[0].compareTo(wall[0]) == 0 && c[1].compareTo(wall[1]) == 0) {
                 return true;
             }
-
         }
         return false;
     }

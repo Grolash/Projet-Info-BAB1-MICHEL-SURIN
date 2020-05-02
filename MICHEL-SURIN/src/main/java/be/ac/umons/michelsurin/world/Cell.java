@@ -19,12 +19,13 @@ public class Cell {
      */
     private boolean pawn;
     /**
-     * contains all the statement about the wall on side of the cell.
+     * contains all the statement about the wall around the cell.
+     * For each direction, tells if there is a wall or not.
      */
     private Hashtable<String, Boolean> wallOnSide;
 
     /**
-     * initiate a cell with his coordinates on the board and a wall if the cell is at board's boarder.
+     * initiate a cell with his coordinates on the board and a wall if the cell is at board's border (in the board direction)
      *
      * @param coord the coordinates of the cell in the board.
      * @param sizeOfBoard the total size of the board. Used to determines if a cell is at the border of the board.
@@ -82,10 +83,21 @@ public class Cell {
         else //direction is LEFT
             return wallOnSide.get("LEFT");
     }
+
+    /**
+     * Will set to true the {@link #wallOnSide} in the given direction
+     *
+     * @param side the side where a wall will be set.
+     */
     public void setWallOnSide(String side) {
         wallOnSide.put(side, true);
     }
 
+    /**
+     * Will change the state of {@link #pawn}
+     *
+     * @param pawn the state, true if there is a pawn on the cell, false otherwise
+     */
     public void setPawn(boolean pawn) {
         this.pawn = pawn;
     }

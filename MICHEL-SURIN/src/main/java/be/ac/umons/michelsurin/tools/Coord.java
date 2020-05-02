@@ -1,7 +1,7 @@
 package be.ac.umons.michelsurin.tools;
 
 /**
- * class that represents a coord within a board with (ordinate, absciss) format.
+ * class that represents a coordinate within a board with (ordinate, absciss) format.
  */
 public class Coord implements Comparable<Coord> {
 

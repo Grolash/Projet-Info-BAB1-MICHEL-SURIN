@@ -4,7 +4,9 @@ import be.ac.umons.michelsurin.items.MOAI;
 import be.ac.umons.michelsurin.world.Board;
 
 /**
- * the base of all be.ac.umons.michelsurin.controller type with the minimum requirement.
+ * the base of all controller type with the minimum requirement.
+ * A controller is something bound to a MOAI object. The controller knows the situation of the game through the board
+ * and give access to method that allow to input action.
  */
 public abstract class Controller {
 
@@ -13,9 +15,9 @@ public abstract class Controller {
     private Board board;
 
     /**
-     *  @param type define the type of the be.ac.umons.michelsurin.controller. Used to determined it's action.
-     * @param dependency refers to the be.ac.umons.michelsurin.items the be.ac.umons.michelsurin.controller is controlling.
-     * @param board the board in which the be.ac.umons.michelsurin.controller is evolving.
+     *  @param type define the type of the controller. Used to determined it's action.
+     * @param dependency refers to the items the controller is controlling.
+     * @param board the board in which the controller is evolving.
      */
     public Controller(String type, MOAI dependency, Board board) {
         this.type = type;

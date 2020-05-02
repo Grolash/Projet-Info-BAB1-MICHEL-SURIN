@@ -31,11 +31,11 @@ public class Rules {
     private static final Coord goalMark = new Coord(-66,-66);
 
     /**
-     * from the be.ac.umons.michelsurin.controller position, tells if it can move into the given direction.
+     * from the controller position, tells if it can move into the given direction.
      *
-     * @param ctrl the be.ac.umons.michelsurin.controller, take is current position to check.
+     * @param ctrl the controller, take is current position to check.
      * @param direction the direction we are checking with.
-     * @return true if there is no obstacle from the be.ac.umons.michelsurin.controller coordinates to the given direction, false otherwise.
+     * @return true if there is no obstacle from the controller coordinates to the given direction, false otherwise.
      */
     public static boolean canMove(PawnController ctrl, Coord direction) {
         Coord pawnCoord = ctrl.getDependency().getCoord();
@@ -44,9 +44,9 @@ public class Rules {
 
     /**
      * does the same as the 2 parameters canMove but
-     * it checks from a given coordinates instead of the be.ac.umons.michelsurin.controller's coordinates.
+     * it checks from a given coordinates instead of the controller's coordinates.
      *
-     * @param ctrl the be.ac.umons.michelsurin.controller, used to get the board in this case.
+     * @param ctrl the controller, used to get the board in this case.
      * @param direction the direction we are checking with.
      * @param currentCoord the coordinates from which we are looking.
      * @return true if there is no obstacle from the currentCoord in the given direction.
@@ -58,21 +58,21 @@ public class Rules {
 
     /**
      * is a global verification combining {@link #validPlacement(Coord, Coord, Board)} and {@link #pathOrNot(PawnController)}.
-     * It checks if the wall the be.ac.umons.michelsurin.controller wants to place does not get Out Of Bounds (OOB), does not cut or stacks up to
-     * an existing wall or if it does not prevent a be.ac.umons.michelsurin.controller from finding a path to it's objective.
+     * It checks if the wall the controller wants to place does not get Out Of Bounds (OOB), does not cut or stacks up to
+     * an existing wall or if it does not prevent a controller from finding a path to it's objective.
      *
      * @param playerArray array containing all the PawnController playing in the game.
-     * @param ctrl the be.ac.umons.michelsurin.controller who wants to place a wall.
-     * @param origin the coordinates where a be.ac.umons.michelsurin.controller wants to place a wall
-     * @param direction the direction the be.ac.umons.michelsurin.controller wants to give to the wall.
-     * @return true if the wall that the be.ac.umons.michelsurin.controller wants to place does not break any rules, false otherwise.
+     * @param ctrl the controller who wants to place a wall.
+     * @param origin the coordinates where a controller wants to place a wall
+     * @param direction the direction the controller wants to give to the wall.
+     * @return true if the wall that the controller wants to place does not break any rules, false otherwise.
      */
     public static boolean canPlaceWall(PawnController[] playerArray, PawnController ctrl, Coord origin, Coord direction) {
         //if the wall stacks up on an other wall or is OOB, return false
         if ( !( validPlacement(origin, direction, ctrl.getBoard()) ) ) {
             return false;
 
-        //the wall does not stacks up, cut or is OOB, checks if there is still a path for each player(be.ac.umons.michelsurin.controller)
+        //the wall does not stacks up, cut or is OOB, checks if there is still a path for each player(controller)
         } else {
             // we need to simulate the placement of the wall and then check if it blocks the game.
 
@@ -86,9 +86,9 @@ public class Rules {
             testedWall[1] = Coord.add(origin, direction);
             tempBoard.addToWallList(testedWall);
 
-            //now that the board is copied and the wall is added, we check for every be.ac.umons.michelsurin.controller
+            //now that the board is copied and the wall is added, we check for every controller
             for (PawnController controller : playerArray) {
-                //we create a copy of the actual be.ac.umons.michelsurin.controller (will be done for each be.ac.umons.michelsurin.controller in the game)
+                //we create a copy of the actual be.ac.umons.michelsurin.controller (will be done for each controller in the game)
                 //with the tempBoard instead of the real board
                 PawnController tempCtrl = new PawnController(controller.getType(), (Pawn) controller.getDependency(), tempBoard, 55);
 
@@ -98,14 +98,14 @@ public class Rules {
                 }
             }
             //if we get there, it means that the wall does not stacks up, get OOB or cut an existing wall
-            //and that it does not block the way of any be.ac.umons.michelsurin.controller to its own objective
+            //and that it does not block the way of any controller to its own objective
             //if we managed to get there, then the wall is valid.
             return true;
         }
     }
 
     /**
-     * This method will check if the wall a be.ac.umons.michelsurin.controller wants to place does not get Out Of Bounds (OOB), if it does not
+     * This method will check if the wall a controller wants to place does not get Out Of Bounds (OOB), if it does not
      * cut an already placed wall and if it does not stack up on an existing wall.
      *
      * @param coord the coordinates of the cell at which we want to place a wall.
@@ -182,8 +182,8 @@ public class Rules {
      * checks if the coord full-fill the winning condition.
      *
      * @param coord the coordinates we're comparing to.
-     * @param ctrl the be.ac.umons.michelsurin.controller we're looking at.
-     * @return true if the coordinates correspond to the objective of the be.ac.umons.michelsurin.controller, false otherwise.
+     * @param ctrl the controller we're looking at.
+     * @return true if the coordinates correspond to the objective of the controller, false otherwise.
      */
     public static boolean hasWon(Coord coord, PawnController ctrl) {
         if (coord.getY() == ((Pawn) ctrl.getDependency()).getGoal()) { //downcast dependency from MOAI to Pawn then compare
@@ -194,12 +194,12 @@ public class Rules {
     }
 
     /**
-     * It searches a path to the goal row of the be.ac.umons.michelsurin.controller's dependency starting from it's current coordinates.
-     * It starts to explore the surrounding of the be.ac.umons.michelsurin.controller's position in the board then it does the same for each
+     * It searches a path to the goal row of the controller's dependency starting from it's current coordinates.
+     * It starts to explore the surrounding of the controller's position in the board then it does the same for each
      * newly discovered position. The idea behind this algorithm is the breadth-first search
      *
 
-     * @param ctrl the be.ac.umons.michelsurin.controller for which we seek a path to victory if there is one.
+     * @param ctrl the controller for which we seek a path to victory if there is one.
      * @return an Hashtable, if there is a path, it contains the startMark and the goalMark
      * and all the coordinates that have been explored. It needs to be translated into a path.
      * If there is no path, it's a one key one value Hashtable where the key is the noPathMark.
@@ -235,7 +235,7 @@ public class Rules {
      * @param exploredTable the Hashtable containing all the explored positions.
      * @param exploredCoord contains all the coordinates that have been marked as explored.
      * @param toBeExplored the queue. All the positions that needs to be explored.
-     * @param ctrl the be.ac.umons.michelsurin.controller.
+     * @param ctrl the controller.
      * @return 1 if a path to the objective has been found. 0 if a path to the objective hasn't been found yet.
      * 2 if every possible positions have been explored but none of the is the objective, in other words, there is no path.s
      */
@@ -288,10 +288,10 @@ public class Rules {
 
     /**
      * Interprets the Hashtable given by findAPath into a boolean result depending if there is a path from the
-     * be.ac.umons.michelsurin.controller's position to its objective by checking the presence of goalMark or noPathMark.
+     * controller's position to its objective by checking the presence of goalMark or noPathMark.
      *
-     * @param ctrl the be.ac.umons.michelsurin.controller.
-     * @return true if there is a path from the be.ac.umons.michelsurin.controller's position to its objective, false otherwise.
+     * @param ctrl the controller.
+     * @return true if there is a path from the controller's position to its objective, false otherwise.
      */
     public static boolean pathOrNot(PawnController ctrl) {
         Hashtable<Coord, Coord> exploredTable = findAPath(ctrl);
@@ -306,7 +306,7 @@ public class Rules {
      * this method translate the exploredTab of findAPath into a list containing the path to follow.
      * It starts at the goalMark and go from key to value until it gets at the startMark.
      *
-     * @param ctrl the be.ac.umons.michelsurin.controller
+     * @param ctrl the controller
      * @return a list containing the path to follow.
      */
     public static ArrayList<Coord> path(PawnController ctrl) {
@@ -322,7 +322,7 @@ public class Rules {
         }
 
         path.remove(path.size()-1); //remove the last Coord that is the startMark, we don't need it.
-        path.remove(path.size()-1); //remove the last coord where the be.ac.umons.michelsurin.controller is, we don't need it.
+        path.remove(path.size()-1); //remove the last coord where the controller is, we don't need it.
         return path;
     }
 
