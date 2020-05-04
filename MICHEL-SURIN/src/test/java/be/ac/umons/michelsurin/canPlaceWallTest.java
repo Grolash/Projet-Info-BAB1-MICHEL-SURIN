@@ -46,6 +46,52 @@ public class canPlaceWallTest {
     }
 
     @Test
+    public void betweenWalls1() {
+        //init
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
+        Pawn p2 = new Pawn(new Coord(8,4),0, true);
+        Coord[] pawnCoord = new Coord[2];
+        pawnCoord[0] = p1.getStart();
+        pawnCoord[1] = p2.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        Coord[] testingWall = new Coord[2];
+        testingWall[0] = new Coord(4,1);
+        testingWall[1] = new Coord(4,2);
+        board.addToWallList(testingWall);
+
+        Coord[] testingWall2 = new Coord[2];
+        testingWall2[0] = new Coord(4,3);
+        testingWall2[1] = new Coord(4,4);
+        board.addToWallList(testingWall2);
+
+        Assertions.assertTrue(Rules.validPlacement(new Coord(4,2), Game.directions.get("UP"), board));
+    }
+
+    @Test
+    public void betweenWalls2() {
+        //init
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
+        Pawn p2 = new Pawn(new Coord(8,4),0, true);
+        Coord[] pawnCoord = new Coord[2];
+        pawnCoord[0] = p1.getStart();
+        pawnCoord[1] = p2.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        Coord[] testingWall = new Coord[2];
+        testingWall[0] = new Coord(6,2);
+        testingWall[1] = new Coord(5,2);
+        board.addToWallList(testingWall);
+
+        Coord[] testingWall2 = new Coord[2];
+        testingWall2[0] = new Coord(4,2);
+        testingWall2[1] = new Coord(3,2);
+        board.addToWallList(testingWall2);
+
+        Assertions.assertTrue(Rules.validPlacement(new Coord(5,2), Game.directions.get("RIGHT"), board));
+    }
+
+    @Test
     public void isThereAPath() {
         //init
         Pawn p1 = new Pawn(new Coord(0,4),8, true);

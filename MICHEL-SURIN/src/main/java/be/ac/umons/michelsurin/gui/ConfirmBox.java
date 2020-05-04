@@ -39,6 +39,7 @@ public class ConfirmBox {
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add("Viper.css");
         window.setScene(scene);
         window.showAndWait();
 

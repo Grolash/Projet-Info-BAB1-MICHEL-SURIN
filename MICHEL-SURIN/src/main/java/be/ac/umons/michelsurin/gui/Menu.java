@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -59,7 +60,7 @@ public class Menu extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        window = new Stage();
+        window = primaryStage;
         window.setOnCloseRequest(e -> {
             e.consume(); //Say to Java : "Hey, we're handling this ourselves."
             closeProgram();
@@ -75,6 +76,7 @@ public class Menu extends Application {
         layout = new VBox();
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
+        layout.setBackground(Background.EMPTY);
 
 
         launchButton = new Button("Launch game!");
@@ -88,6 +90,7 @@ public class Menu extends Application {
 
         Separator separator = new Separator();
         layout.getChildren().add(separator);
+
 
         Label settings = new Label("Settings:");
         layout.getChildren().add(settings);
@@ -182,7 +185,7 @@ public class Menu extends Application {
         });
         layout.setMinSize(600, 600);
         scene = new Scene(layout);
-        scene.setFill(Color.BLACK);
+        scene.getStylesheets().add("Viper.css");
         window.setScene(scene);
         window.show();
 
@@ -238,6 +241,10 @@ public class Menu extends Application {
         return fourthPlayerType;
     }
 
+    public int getWallNumber() {
+        return wallNumber;
+    }
+
     private void launchGame(Stage appStage){
         boolean answer = ConfirmBox.Display("Launch confirmation",
                 "Are you sure you want to launch the game? Be sure you selected the right settings.");
@@ -245,11 +252,11 @@ public class Menu extends Application {
             // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
-                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types);
+                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types, getWallNumber());
             } else if (getPlayerNumberInt() == 4) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType(),
                         getThirdPlayerType(), getFourthPlayerType()};
-                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types);
+                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types, getWallNumber());
             } else {
                 throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());
             }
