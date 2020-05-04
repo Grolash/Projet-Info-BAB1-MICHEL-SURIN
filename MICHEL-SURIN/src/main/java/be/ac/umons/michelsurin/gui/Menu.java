@@ -1,5 +1,6 @@
 package be.ac.umons.michelsurin.gui;
 
+import be.ac.umons.michelsurin.engine.SaverLoader;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,23 +14,36 @@ import javafx.stage.Stage;
 
 public class Menu extends Application {
 
+
     private Scene scene;
     private Button launchButton;
     private Button closeButton;
     private Stage window;
     private VBox layout;
 
+    /**
+     * Load a game.
+     */
+    private Button loadButton;
+
+    /**
+     * Save and load games.
+     */
+    private SaverLoader saverLoader;
+
     private ChoiceBox<String> playerNumber;
     private ChoiceBox<String> firstAIDifficultyMenu;
     private ChoiceBox<String> secondAIDifficultyMenu;
     private ChoiceBox<String> thirdAIDifficultyMenu;
     private ChoiceBox<String> fourthAIDifficultyMenu;
+    private ChoiceBox<String> wallOptions;
 
     private int playerNumberInt;
     private String firstPlayerType;
     private String secondPlayerType;
     private String thirdPlayerType;
     private String fourthPlayerType;
+    private int wallNumber;
 
     /**
      *
@@ -47,7 +61,7 @@ public class Menu extends Application {
     public void start(Stage primaryStage) {
         window = new Stage();
         window.setOnCloseRequest(e -> {
-            e.consume(); //Say to Java "Hey, we're handling this ourselves."
+            e.consume(); //Say to Java : "Hey, we're handling this ourselves."
             closeProgram();
         });
 
@@ -66,6 +80,9 @@ public class Menu extends Application {
         launchButton = new Button("Launch game!");
         launchButton.setOnAction(e -> launchGame(window));
         layout.getChildren().add(launchButton);
+
+        loadButton = new Button("Load Game");
+
 
         layout.getChildren().add(closeButton);
 
@@ -86,7 +103,7 @@ public class Menu extends Application {
 
         secondAIDifficultyMenu = new ChoiceBox<>();
         secondAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        secondAIDifficultyMenu.setValue("Human");
+        secondAIDifficultyMenu.setValue("Easy");
         secondPlayerType = getPlayerType(secondAIDifficultyMenu.getValue());
         secondAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             secondPlayerType = getPlayerType(newValue);
@@ -94,7 +111,7 @@ public class Menu extends Application {
 
         thirdAIDifficultyMenu = new ChoiceBox<>();
         thirdAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        thirdAIDifficultyMenu.setValue("Human");
+        thirdAIDifficultyMenu.setValue("Easy");
         thirdPlayerType = getPlayerType(thirdAIDifficultyMenu.getValue());
         thirdAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             thirdPlayerType = getPlayerType(newValue);
@@ -102,11 +119,33 @@ public class Menu extends Application {
 
         fourthAIDifficultyMenu = new ChoiceBox<>();
         fourthAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
-        fourthAIDifficultyMenu.setValue("Human");
+        fourthAIDifficultyMenu.setValue("Easy");
         fourthPlayerType = getPlayerType(fourthAIDifficultyMenu.getValue());
         fourthAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             fourthPlayerType  = getPlayerType(newValue);
         });
+
+        Label walls = new Label("Walls:");
+        layout.getChildren().add(walls);
+        //Number of walls menu:
+        wallOptions = new ChoiceBox<>();
+        wallOptions.getItems().addAll("5 walls", "10 walls");
+        wallOptions.setValue("10 walls");
+        wallNumber = 10;
+        wallOptions.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            switch (newValue){
+                case "5 walls":
+                    wallNumber = 5;
+                    break;
+                case "10 walls":
+                    wallNumber =10;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Uh oh... something went wrong with wall numbers in the menu...");
+            }
+        });
+        layout.getChildren().add(wallOptions);
+
 
         Label players = new Label("Players:");
         layout.getChildren().add(players);
@@ -152,7 +191,7 @@ public class Menu extends Application {
 
     private void closeProgram(){
         boolean answer = ConfirmBox.Display("Quit confirmation",
-                "Are your really sure you want to quit? You might want to save first.");
+                "  Are you sure you want to quit? \nDon't forget to save your games!");
         if (answer) {
             window.close();
         }

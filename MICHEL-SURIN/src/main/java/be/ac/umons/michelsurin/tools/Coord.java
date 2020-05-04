@@ -1,9 +1,13 @@
 package be.ac.umons.michelsurin.tools;
 
+import java.io.Serializable;
+
 /**
  * class that represents a coordinate within a board with (ordinate, absciss) format.
  */
-public class Coord implements Comparable<Coord> {
+public class Coord implements Comparable<Coord>, Serializable {
+
+    public static final long serialVersionUID = -5745303179256398207L;
 
     private int y;
     private int x;

@@ -3,13 +3,16 @@ package be.ac.umons.michelsurin.world;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.tools.Coord;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 /**
  * represents a board.
  */
-public class Board {
+public class Board implements Serializable {
+
+    public static final long serialVersionUID = 2546573719101753L;
 
     /**
      * the size of the board. Note that it's a squared board
