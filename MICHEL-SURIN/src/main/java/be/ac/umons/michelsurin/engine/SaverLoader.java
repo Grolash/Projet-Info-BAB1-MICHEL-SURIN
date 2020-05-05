@@ -9,11 +9,11 @@ import java.nio.file.Paths;
  */
 public class SaverLoader {
 
-    private Path path = Paths.get("./src/main/java/be/ac/umons/michelsurin/engine/Save.txt");
-    private File file = path.toFile();
+    private static Path path = Paths.get("./src/main/java/be/ac/umons/michelsurin/engine/Save.txt");
+    private static File file = path.toFile();
 
 
-    public void save(Game game) throws IOException {
+    public static void save(Game game) throws IOException {
         File selectedFile = file;
         if (selectedFile != null) {
             FileOutputStream file = new FileOutputStream(selectedFile);
@@ -29,7 +29,7 @@ public class SaverLoader {
         }
     }
 
-    public Game load() throws IOException, ClassNotFoundException {
+    public static Game load() throws IOException, ClassNotFoundException {
         File selectedFile = file;
         Game game;
         if (selectedFile != null) {

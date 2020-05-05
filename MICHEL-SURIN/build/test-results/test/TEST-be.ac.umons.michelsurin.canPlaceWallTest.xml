@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-05-04T12:49:30" hostname="DESKTOP-D7RGT2P" time="0.118">
+<testsuite name="be.ac.umons.michelsurin.canPlaceWallTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-05-05T09:30:06" hostname="DESKTOP-D7RGT2P" time="0.051">
   <properties/>
-  <testcase name="isThereAPath()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.011"/>
-  <testcase name="wallOverlap1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.001"/>
+  <testcase name="isThereAPath()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.008"/>
+  <testcase name="wallOverlap1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.002"/>
   <testcase name="betweenWalls1()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.001"/>
   <testcase name="betweenWalls2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.001"/>
-  <testcase name="canPlaceWall2P()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.059"/>
-  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.036"/>
-  <testcase name="isThereAPath3()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.002"/>
+  <testcase name="canPlaceWall2P()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.01"/>
+  <testcase name="isThereAPath2()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.027"/>
+  <testcase name="isThereAPath3()" classname="be.ac.umons.michelsurin.canPlaceWallTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

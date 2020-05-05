@@ -18,7 +18,7 @@ public class Action implements Serializable {
     private static Random random = new Random();
 
     /**
-     * Given a be.ac.umons.michelsurin.controller, it will, depending on its type (Human, AI, etc)
+     * Given a be.ac.umons.michelsurin.controller, it will, depending on its type (AI, etc)
      * call the correct method that will do an action.
      *
      *
@@ -27,16 +27,7 @@ public class Action implements Serializable {
      * @throws IllegalArgumentException is thrown when a be.ac.umons.michelsurin.controller as an invalid type.
      */
     public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
-        if (ctrl.getType() == "Human") {
-            //call HumanActionHandler
-        }
         switch (ctrl.getType()) {
-            /* May be needed for a console mode.
-            Human actions are handled by the GUI
-            case "Human" :
-                humanActionHandler(playerArray, ctrl);
-                break;
-            */
             case "Debilus" :
             case "Dabilus" :
                 debilusActionHandler(playerArray, ctrl);
@@ -57,7 +48,7 @@ public class Action implements Serializable {
                 break;
 
             default :
-                throw new IllegalArgumentException("the controller has an incorrect type");
+                throw new IllegalArgumentException("the controller has an incorrect type : " + ctrl.getType());
         }
 
     }

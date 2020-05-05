@@ -93,7 +93,7 @@ public class Menu extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    Game game = saverLoader.load();
+                    Game game = SaverLoader.load();
                     GameUI gameUI = new GameUI(window, scene, game);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -268,11 +268,13 @@ public class Menu extends Application {
             // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
-                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types, getWallNumber());
+                Game game = new Game(9, types, getWallNumber());
+                GameUI gameUI = new GameUI(appStage, scene, game);
             } else if (getPlayerNumberInt() == 4) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType(),
                         getThirdPlayerType(), getFourthPlayerType()};
-                GameUI gameUI = new GameUI(appStage, scene, getPlayerNumberInt(), types, getWallNumber());
+                Game game = new Game(9, types, getWallNumber());
+                GameUI gameUI = new GameUI(appStage, scene, game);
             } else {
                 throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());
             }
