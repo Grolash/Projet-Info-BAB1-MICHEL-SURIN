@@ -18,39 +18,35 @@ public class Action implements Serializable {
     private static Random random = new Random();
 
     /**
-     * Given a be.ac.umons.michelsurin.controller, it will, depending on its type (AI, etc)
+     * Given a controller, it will, depending on its type (AI, etc)
      * call the correct method that will do an action.
      *
      *
      * @param playerArray
-     * @param ctrl the be.ac.umons.michelsurin.controller
-     * @throws IllegalArgumentException is thrown when a be.ac.umons.michelsurin.controller as an invalid type.
+     * @param ctrl the controller
+     * @throws IllegalArgumentException is thrown when a controller as an invalid type.
      */
     public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         switch (ctrl.getType()) {
-            case "Debilus" :
-            case "Dabilus" :
+            case "Debilus":
+            case "Dabilus":
                 debilusActionHandler(playerArray, ctrl);
                 break;
-
-            case "Smart" :
+            case "Smart":
                 smartActionHandler(playerArray, ctrl);
                 break;
-
-            case "Smarted" :
+            case "Smarted":
                 smartedActionHandler(playerArray, ctrl);
                 break;
-            case "DebugDOWN" :
+            case "DebugDOWN":
                 debugDOWNActionHandler(playerArray, ctrl);
                 break;
-            case "DebugUP" :
+            case "DebugUP":
                 debugUPActionHandler(playerArray, ctrl);
                 break;
-
-            default :
+            default:
                 throw new IllegalArgumentException("the controller has an incorrect type : " + ctrl.getType());
         }
-
     }
 
     /**
