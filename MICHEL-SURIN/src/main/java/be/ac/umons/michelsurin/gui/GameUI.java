@@ -147,10 +147,6 @@ public class GameUI {
 
 
 
-    /**
-     * Save and load games.
-     */
-    private SaverLoader saverLoader = new SaverLoader();
 
     /**
      * This constructor creates a game with the settings given by the menu and display it.

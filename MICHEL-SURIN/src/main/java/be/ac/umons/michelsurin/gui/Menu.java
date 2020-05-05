@@ -35,7 +35,6 @@ public class Menu extends Application {
     /**
      * Save and load games.
      */
-    private SaverLoader saverLoader;
 
     private ChoiceBox<String> playerNumber;
     private ChoiceBox<String> firstAIDifficultyMenu;
@@ -89,16 +88,15 @@ public class Menu extends Application {
         layout.getChildren().add(launchButton);
 
         loadButton = new Button("Load Game");
-        loadButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        loadButton.setOnAction(e -> {
+
                 try {
                     Game game = SaverLoader.load();
                     GameUI gameUI = new GameUI(window, scene, game);
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                } catch (IOException | ClassNotFoundException f) {
+                    f.printStackTrace();
                 }
-            }
+
         });
         layout.getChildren().add(loadButton);
 
@@ -263,7 +261,7 @@ public class Menu extends Application {
 
     private void launchGame(Stage appStage){
         boolean answer = ConfirmBox.Display("Launch confirmation",
-                "Are you sure you want to launch the game? Be sure you selected the right settings.");
+                "Are you sure you want to launch the game? \n    Be sure you selected the right settings.");
         if (answer){
             // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
