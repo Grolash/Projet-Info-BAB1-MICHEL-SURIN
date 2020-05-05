@@ -9,10 +9,20 @@ import java.nio.file.Paths;
  */
 public class SaverLoader {
 
-    private static Path path = Paths.get("./src/main/java/be/ac/umons/michelsurin/engine/Save.txt");
+    /**
+     * Path to the save file in engine package.
+     */
+    private static final Path path = Paths.get("./src/main/java/be/ac/umons/michelsurin/engine/Save.txt");
+    /**
+     * File in memory.
+     */
     private static File file = path.toFile();
 
-
+    /**
+     * Save method. Writes a game object in a file following the path in attribute of the class.
+     * @param game a Game object as in engine package.
+     * @throws IOException if the process is interrupted.
+     */
     public static void save(Game game) throws IOException {
         File selectedFile = file;
         if (selectedFile != null) {
@@ -21,14 +31,18 @@ public class SaverLoader {
             ObjectOutputStream stream = new ObjectOutputStream(buf);
             stream.writeObject(game);
             stream.close();  // Thanks Mr. Pierre HAUWEELE! :D
-
-
         }
         else {
-            throw new FileNotFoundException("File does not exist!");
+            throw new FileNotFoundException("File does not exist!"); //Should not happen.
         }
     }
 
+    /**
+     * Load method. Reads and returns a game object in a file following the path in the attribute of the class.
+     * @return a Game object as in engine package.
+     * @throws IOException if the process is interrupted.
+     * @throws ClassNotFoundException if the method found no Game.
+     */
     public static Game load() throws IOException, ClassNotFoundException {
         File selectedFile = file;
         Game game;

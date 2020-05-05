@@ -70,6 +70,7 @@ public class Action implements Serializable {
     }
 
     private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
+
     }
 
     private static int smartedActionChangelog = 0; //Used not to do the same action twice in a row.
@@ -245,7 +246,16 @@ public class Action implements Serializable {
                         ordinate = random.nextInt(2);
                     }
                     else {
-                        ordinate = random.nextInt(ctrl.getDependency().getCoord().getY() - 1);
+                        Pawn pawn = (Pawn) ctrl.getDependency();
+                        if(pawn.getStart().getY() == 0) {
+                            ordinate = random.nextInt(ctrl.getDependency().getCoord().getY() - 1);
+                        }
+                        else {
+                            do {
+                                ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
+                                }
+                            while(ordinate < ctrl.getDependency().getCoord().getY());
+                        }
                     }
                     if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
                         ordinate = ctrl.getDependency().getCoord().getY();

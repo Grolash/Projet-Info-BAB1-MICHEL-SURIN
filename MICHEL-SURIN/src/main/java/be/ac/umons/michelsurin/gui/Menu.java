@@ -3,8 +3,6 @@ package be.ac.umons.michelsurin.gui;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.SaverLoader;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,11 +11,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/**
+ * Application. Here is the main menu and the settings.
+ */
 public class Menu extends Application {
 
 
@@ -32,23 +33,55 @@ public class Menu extends Application {
      */
     private Button loadButton;
 
-    /**
-     * Save and load games.
-     */
-    private SaverLoader saverLoader;
 
+    /**
+     * Number of players. ChoiceBox.
+     */
     private ChoiceBox<String> playerNumber;
+    /**
+     * Difficulty menu for the first player if it's and AI. ChoiceBox.
+     */
     private ChoiceBox<String> firstAIDifficultyMenu;
+    /**
+     * Difficulty menu for the second player if it's and AI. ChoiceBox.
+     */
     private ChoiceBox<String> secondAIDifficultyMenu;
+    /**
+     * Difficulty menu for the third player if it's and AI. ChoiceBox.
+     */
     private ChoiceBox<String> thirdAIDifficultyMenu;
+    /**
+     * Difficulty menu for the fourth player if it's and AI. ChoiceBox.
+     */
     private ChoiceBox<String> fourthAIDifficultyMenu;
+    /**
+     * Wall options menu. ChoiceBox.
+     */
     private ChoiceBox<String> wallOptions;
 
+    /**
+     * Number of players in the game.
+     */
     private int playerNumberInt;
+    /**
+     * Type of the first player.
+     */
     private String firstPlayerType;
+    /**
+     * Type of the second player.
+     */
     private String secondPlayerType;
+    /**
+     * Type of the third player.
+     */
     private String thirdPlayerType;
+    /**
+     * Type of the fourth player.
+     */
     private String fourthPlayerType;
+    /**
+     * Number of wall for each player in the game.
+     */
     private int wallNumber;
 
     /**
@@ -60,7 +93,7 @@ public class Menu extends Application {
     }
 
     /**
-     *
+     * Called at launch of application. Main menu.
      * @param primaryStage
      */
     @Override
@@ -78,7 +111,7 @@ public class Menu extends Application {
         window.setMinWidth(600);
         window.setMinHeight(600);
 
-        layout = new VBox();
+        layout = new VBox(); //Sole layout. Gets children.
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
@@ -89,22 +122,22 @@ public class Menu extends Application {
         layout.getChildren().add(launchButton);
 
         loadButton = new Button("Load Game");
-        loadButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        loadButton.setOnAction(e -> {
+        //Loaded game launch lambda method.
                 try {
                     Game game = SaverLoader.load();
                     GameUI gameUI = new GameUI(window, scene, game);
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                } catch (IOException | ClassNotFoundException f) {
+                    f.printStackTrace();
                 }
-            }
+
         });
+        //Adding to layout.
         layout.getChildren().add(loadButton);
 
         layout.getChildren().add(closeButton);
 
-        Separator separator = new Separator();
+        Separator separator = new Separator(); //The line separating the main buttons from settings menus.
         layout.getChildren().add(separator);
 
 
@@ -119,6 +152,8 @@ public class Menu extends Application {
         firstAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             firstPlayerType = getPlayerType(newValue);
         });
+        firstAIDifficultyMenu.setMinSize(95, 30);
+        firstAIDifficultyMenu.setMaxSize(95, 30);
 
         secondAIDifficultyMenu = new ChoiceBox<>();
         secondAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
@@ -127,6 +162,8 @@ public class Menu extends Application {
         secondAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             secondPlayerType = getPlayerType(newValue);
         });
+        secondAIDifficultyMenu.setMinSize(95, 30);
+        secondAIDifficultyMenu.setMaxSize(95, 30);
 
         thirdAIDifficultyMenu = new ChoiceBox<>();
         thirdAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
@@ -135,6 +172,8 @@ public class Menu extends Application {
         thirdAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             thirdPlayerType = getPlayerType(newValue);
         });
+        thirdAIDifficultyMenu.setMinSize(95, 30);
+        thirdAIDifficultyMenu.setMaxSize(95, 30);
 
         fourthAIDifficultyMenu = new ChoiceBox<>();
         fourthAIDifficultyMenu.getItems().addAll("Human", "Random AI", "Easy", "Harder");
@@ -143,11 +182,15 @@ public class Menu extends Application {
         fourthAIDifficultyMenu.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             fourthPlayerType  = getPlayerType(newValue);
         });
+        fourthAIDifficultyMenu.setMinSize(95, 30);
+        fourthAIDifficultyMenu.setMaxSize(95, 30);
 
         Label walls = new Label("Walls:");
         layout.getChildren().add(walls);
         //Number of walls menu:
         wallOptions = new ChoiceBox<>();
+        wallOptions.setMinSize(110, 30);
+        wallOptions.setMaxSize(110, 30);
         wallOptions.getItems().addAll("5 walls", "10 walls");
         wallOptions.setValue("10 walls");
         wallNumber = 10;
@@ -170,6 +213,8 @@ public class Menu extends Application {
         layout.getChildren().add(players);
         //Player number menus, will define which difficulty options are enabled.
         playerNumber = new ChoiceBox<>();
+        playerNumber.setMinSize(110, 30);
+        playerNumber.setMaxSize(110, 30);
         playerNumber.getItems().addAll( "2 Players",
                 "4 Players");
         playerNumber.setValue("2 Players");
@@ -199,7 +244,7 @@ public class Menu extends Application {
                 layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
             }
         });
-        layout.setMinSize(600, 600);
+        layout.setMinSize(700, 700);
         scene = new Scene(layout);
         scene.getStylesheets().add("Viper.css");
         window.setScene(scene);
@@ -208,6 +253,9 @@ public class Menu extends Application {
 
     }
 
+    /**
+     * The close method of the program. Calls a ConfirmBox prevent missed clicks.
+     */
     private void closeProgram(){
         boolean answer = ConfirmBox.Display("Quit confirmation",
                 "  Are you sure you want to quit? \nDon't forget to save your games!");
@@ -237,6 +285,8 @@ public class Menu extends Application {
         }
     }
 
+    //Getters!
+
     public int getPlayerNumberInt() {
         return playerNumberInt;
     }
@@ -261,9 +311,13 @@ public class Menu extends Application {
         return wallNumber;
     }
 
+    /**
+     * GameUI launch method. Creates a game with selected settings and starts GameUI.
+     * @param appStage
+     */
     private void launchGame(Stage appStage){
         boolean answer = ConfirmBox.Display("Launch confirmation",
-                "Are you sure you want to launch the game? Be sure you selected the right settings.");
+                "Are you sure you want to launch the game? \n    Be sure you selected the right settings.");
         if (answer){
             // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
