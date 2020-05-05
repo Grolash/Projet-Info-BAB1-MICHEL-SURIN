@@ -13,7 +13,7 @@ public class SaverLoader {
     private File file = path.toFile();
 
 
-    public void Save(Game game) throws IOException {
+    public void save(Game game) throws IOException {
         File selectedFile = file;
         if (selectedFile != null) {
             FileOutputStream file = new FileOutputStream(selectedFile);
@@ -29,7 +29,7 @@ public class SaverLoader {
         }
     }
 
-    public Game Load() throws IOException, ClassNotFoundException {
+    public Game load() throws IOException, ClassNotFoundException {
         File selectedFile = file;
         Game game;
         if (selectedFile != null) {

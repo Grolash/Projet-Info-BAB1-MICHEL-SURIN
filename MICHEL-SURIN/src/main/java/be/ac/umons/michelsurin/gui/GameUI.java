@@ -97,10 +97,6 @@ public class GameUI {
      */
     private int boardSize;
     /**
-     * The number of wall for each player
-     */
-    private final int numbOfWall;
-    /**
      * The pane containing all the scene
      */
     private BorderPane mainPane;
@@ -169,7 +165,6 @@ public class GameUI {
     public GameUI(Stage appStage, Scene menuScene, int playerNumber, String[] types, int numbOfWall){
         this.appStage = appStage;
 
-        this.numbOfWall = numbOfWall;
         this.game = new Game(9, types, numbOfWall);
         this.playerArray = game.getPlayerArray();
         this.playerTotal = playerNumber;
@@ -215,8 +210,255 @@ public class GameUI {
         saveButton.setTextFill(Color.GREEN);
         saveButton.setOnAction(e -> {
             try {
-                saverLoader.Save(game);
+                saverLoader.save(game);
                 System.out.println("I did something");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+        //back to the game
+        backToGameButton = new Button("Back to game");
+        backToGameButton.setBackground(Background.EMPTY);
+        backToGameButton.setTextFill(Color.GREEN);
+        backToGameButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                appStage.setScene(gameScene);
+            }
+        });
+        //back to menu
+        backToMenuInGameButton = new Button("Back to main menu");
+        backToMenuInGameButton.setBackground(Background.EMPTY);
+        backToMenuInGameButton.setTextFill(Color.GREEN);
+        backToMenuInGameButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //TODO confirm box for save
+                appStage.setScene(menuScene);
+            }
+        });
+        pauseMenu.getChildren().addAll(saveButton, backToGameButton, backToMenuInGameButton);
+        pauseScene.getStylesheets().add("Viper.css");
+        //gameScene --------------------------------------
+        mainPane.setCenter(gameContent);
+        gameScene.setFill(Color.BLACK);
+
+        //pauseScene access
+        gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+                    appStage.setScene(pauseScene);
+                }
+            }
+        });
+
+        //board drawing
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                ImageView cell = new ImageView();
+                cell.setImage(cellImg);
+                cell.setY(i * Vspace);
+                cell.setX(j * Hspace);
+                cell.setEffect(new Glow(0));
+                gameContent.getChildren().add(cell);
+            }
+        }
+        //pawn initialization
+        for (int i=0; i<playerTotal; i++) {
+            gameContent.getChildren().add(new ImageView());
+        }
+        //wall highlight
+        ImageView wallHighlight = new ImageView();
+        wallHighlight.setEffect(this.wallShadow);
+        gameContent.getChildren().add(wallHighlight);
+
+        updateWall();
+        updatePawn();
+
+        //TURN SYSTEM ------------------------------------------------------------------
+        final int[] currentPlayer = {0}; //start with player 0
+        final boolean[] dragActive = {false}; //used to know if a dragEvent has been triggered
+        final Coord[] wantedWallCoord = new Coord[1]; //used to transfer coord through events
+        //CLICK HANDLING
+        gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Coord[] possibleCell = game.whereCanIGo(currentPlayer[0]);
+                Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
+                PawnController ctrl = playerArray[currentPlayer[0]];
+                Coord playerCoord = ctrl.getDependency().getCoord();
+                int size = gameContent.getChildren().size();
+                ImageView lastChild = (ImageView) gameContent.getChildren().get(size-1);
+
+                if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                    //we are left-clicking on a ghost wall, we need to place it
+                    resetGlowing(); //if cells are glowing the need to be reset
+                    if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
+                        //it's a click on a ghost wall, it means that we want it to be placed
+                        if (lastChild.getImage().equals(wallHImg)
+                                && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("RIGHT"))) {
+                            //Hwall
+                            ctrl.placeWall(clickedCell, Game.directions.get("RIGHT"));
+                            lastChild.setImage(empty);
+                            updateWall();
+                            currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                        } else if (lastChild.getImage().equals(wallVImg)
+                                && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("UP"))) {
+                            //Vwall
+                            ctrl.placeWall(clickedCell, Game.directions.get("UP"));
+                            lastChild.setImage(empty);
+                            updateWall();
+                            currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                        }
+                    } else {
+                        //click somewhere else, we reset the ghost wall
+                        lastChild.setImage(empty);
+                    }
+                    dragActive[0] = false; //reset the drag
+                } else {
+                    //we want to move
+                    if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize
+                            && ctrl.getType() == "Human") {
+                        //click is on the current player
+                        ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
+                        if (playerCoord.compareTo(clickedCell) == 0) {
+                            //click on pawn --> we make the reachable cell glowing
+                            for (Coord coord : possibleCell) {
+                                gameContent.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(colorCell);
+                            }
+                        } else if (clickedCell.isIn(possibleCell)
+                                && clickedCellImage.getEffect().equals(colorCell)) {
+                            //if click on a glowing cell (a cell where the player can go), we mote the player to it
+                            int deltaY = clickedCell.getY() - playerCoord.getY();
+                            int deltaX = clickedCell.getX() - playerCoord.getX();
+                            Coord dir = new Coord(deltaY, deltaX);
+                            ctrl.move(dir);
+                            updatePawn();
+                            resetGlowing();
+                            //Check win
+                            if (ctrl.hasWon()) {
+                                appStage.setScene(victoryScene);
+                            } else {
+                                currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                            }
+                        } else {
+                            //click is somewhere else, we reset the cell glow
+                            resetGlowing();
+                        }
+                    }
+                }
+            }
+        });
+        //enter the wall highlight mode
+        gameContent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //we need a way to choose between H wall and V wall
+                Coord currentCellCoord = getCoordFromPos(event.getX(), event.getY());
+                wantedWallCoord[0] = currentCellCoord;
+                int size = gameContent.getChildren().size();
+                if (currentCellCoord.getY() < boardSize && currentCellCoord.getY() > 0 && currentCellCoord.getX() < boardSize-1
+                        && event.getButton().compareTo(MouseButton.SECONDARY) == 0
+                        && playerArray[currentPlayer[0]].getNumbWall() > 0) {
+                    //we are at a correct place for a wall to be placed
+                    //now check whether we are on top of the cell or on the bottom
+                    dragActive[0] = true; //tells that a drag has been triggered
+                    resetGlowing(); //in case we were looking for a cell
+                    //the following lines will determines if the mouse is on the upper or lower half of the cell
+                    //if upper -> Hwall, if lower -> Vwall
+                    if (event.getY() > currentCellCoord.getY()*(Vspace)
+                            && event.getY() < (currentCellCoord.getY()*(Vspace))+(Vspace/2)
+                            && Rules.canPlaceWall(playerArray, playerArray[currentPlayer[0]],
+                            currentCellCoord, Game.directions.get("RIGHT"))) {
+                        //if we can place a Hwall, we display a ghost Hwall, waiting for click release
+                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get(size-1);
+                        wallHighlight.setImage(wallHImg);
+                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 18);
+                        wallHighlight.setX(currentCellCoord.getX() * Hspace - 9);
+                    } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer[0]],
+                            currentCellCoord, Game.directions.get("UP"))){
+                        //if we can place a Vwall, we display a ghost Vwall, waiting for click release
+                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get(size-1);
+                        wallHighlight.setImage(wallVImg);
+                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 54);
+                        wallHighlight.setX(currentCellCoord.getX() * Hspace + 33);
+                    }
+                }
+            }
+        });
+        //AI handling
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (playerArray[currentPlayer[0]].getType() != "Human") {
+                    //current player is an AI, we call it's actionHandler
+                    Action.getAction(playerArray, playerArray[currentPlayer[0]]);
+                    updatePawn();
+                    updateWall();
+                    if (playerArray[currentPlayer[0]].hasWon()) {
+                        //we stop the "loop" and show victory screen
+                        this.stop();
+                        appStage.setScene(victoryScene);
+                    } else {
+                        //next player
+                        currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                    }
+                }
+            }
+        }.start();
+        appStage.show();
+    }
+
+    public GameUI(Stage appStage, Scene menuScene, Game game) {
+        this.appStage = appStage;
+
+        this.game = game;
+        this.playerArray = game.getPlayerArray();
+        this.playerTotal = game.getPlayerArray().length;
+        this.board = game.getBoard();
+        this.boardSize = board.getSize();
+
+        this.mainPane = new BorderPane();
+        mainPane.setBackground(Background.EMPTY);
+        mainPane.setMinSize(600, 600);
+
+        this.victoryPane = new BorderPane();
+        victoryPane.setBackground(Background.EMPTY);
+        victoryPane.setMinSize(600, 600);
+
+        this.gameContent = new Group();
+
+        this.pauseMenu = new VBox();
+        pauseMenu.setAlignment(Pos.CENTER);
+        pauseMenu.setMinSize(600, 600);
+        pauseMenu.setBackground(Background.EMPTY);
+        pauseMenu.setSpacing(15);
+
+        this.gameScene = new Scene(mainPane);
+        this.victoryScene = new Scene(victoryPane);
+        this.pauseScene = new Scene(pauseMenu);
+
+        this.appStage.setScene(gameScene);
+
+        //victoryScene --------------------------------------
+        backToMenu = new Button("BACK TO THE MENUUUUUUU");
+        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                appStage.setScene(menuScene);
+            }
+        });
+        victoryPane.setCenter(backToMenu);
+        victoryScene.getStylesheets().add("Viper.css");
+        //pauseScene --------------------------------------
+        //save
+        saveButton = new Button("Save Game");
+        saveButton.setBackground(Background.EMPTY);
+        saveButton.setTextFill(Color.GREEN);
+        saveButton.setOnAction(e -> {
+            try {
+                saverLoader.save(game);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
