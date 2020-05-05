@@ -30,7 +30,6 @@ class Controller() :
     def whatItem(self):
         string = "This controller has for dependency an item of type: %s" % (self.dependency.name)
         return string
-
 class PawnController(Controller) :
     """
     A controller designed to controll a Pawn.
