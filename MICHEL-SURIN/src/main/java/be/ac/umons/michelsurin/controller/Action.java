@@ -70,6 +70,7 @@ public class Action implements Serializable {
     }
 
     private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
+
     }
 
     private static int smartedActionChangelog = 0; //Used not to do the same action twice in a row.
