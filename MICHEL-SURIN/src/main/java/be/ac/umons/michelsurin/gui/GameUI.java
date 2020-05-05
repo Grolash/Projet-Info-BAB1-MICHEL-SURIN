@@ -85,6 +85,10 @@ public class GameUI {
      */
     private int playerTotal;
     /**
+     * Index of the player who's turn it is
+     */
+    private int currentPlayer;
+    /**
      * Array containing all the PawnController in the game
      */
     private PawnController[] playerArray;
@@ -144,9 +148,10 @@ public class GameUI {
      * Button used to go back to the menu AFTER a game has been won
      */
     private Button backToMenu;
-
-
-
+    /**
+     * Save and load games.
+     */
+    private SaverLoader saverLoader = new SaverLoader();
 
     /**
      * This constructor creates a game with the settings given by the menu and display it.
@@ -161,6 +166,7 @@ public class GameUI {
         this.appStage = appStage;
 
         this.game = game;
+        this.currentPlayer = game.getCurrentPlayer();
         this.playerArray = game.getPlayerArray();
         this.playerTotal = game.getPlayerArray().length;
         this.board = game.getBoard();
@@ -271,49 +277,49 @@ public class GameUI {
         updatePawn();
 
         //TURN SYSTEM ------------------------------------------------------------------
-        final int[] currentPlayer = {0}; //start with player 0
+        System.out.printf(String.valueOf(currentPlayer));
         final boolean[] dragActive = {false}; //used to know if a dragEvent has been triggered
         final Coord[] wantedWallCoord = new Coord[1]; //used to transfer coord through events
         //CLICK HANDLING
         gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Coord[] possibleCell = game.whereCanIGo(currentPlayer[0]);
+                Coord[] possibleCell = game.whereCanIGo(currentPlayer);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
-                PawnController ctrl = playerArray[currentPlayer[0]];
+                PawnController ctrl = playerArray[currentPlayer];
                 Coord playerCoord = ctrl.getDependency().getCoord();
                 int size = gameContent.getChildren().size();
-                ImageView lastChild = (ImageView) gameContent.getChildren().get(size-1);
+                ImageView ghostWall = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
 
                 if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
                     //we are left-clicking on a ghost wall, we need to place it
                     resetGlowing(); //if cells are glowing the need to be reset
                     if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
                         //it's a click on a ghost wall, it means that we want it to be placed
-                        if (lastChild.getImage().equals(wallHImg)
+                        if (ghostWall.getImage().equals(wallHImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("RIGHT"))) {
                             //Hwall
                             ctrl.placeWall(clickedCell, Game.directions.get("RIGHT"));
-                            lastChild.setImage(empty);
+                            ghostWall.setImage(empty);
                             updateWall();
-                            currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
-                        } else if (lastChild.getImage().equals(wallVImg)
+                            currentPlayer = (currentPlayer + 1) % playerTotal;
+                        } else if (ghostWall.getImage().equals(wallVImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("UP"))) {
                             //Vwall
                             ctrl.placeWall(clickedCell, Game.directions.get("UP"));
-                            lastChild.setImage(empty);
+                            ghostWall.setImage(empty);
                             updateWall();
-                            currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                            currentPlayer = (currentPlayer + 1) % playerTotal;
                         }
                     } else {
                         //click somewhere else, we reset the ghost wall
-                        lastChild.setImage(empty);
+                        ghostWall.setImage(empty);
                     }
                     dragActive[0] = false; //reset the drag
                 } else {
                     //we want to move
                     if (event.getButton().compareTo(MouseButton.PRIMARY) == 0 && clickedCell.getY() < boardSize && clickedCell.getX() < boardSize
-                            && ctrl.getType() == "Human") {
+                            && ctrl.getType().equals("Human")) {
                         //click is on the current player
                         ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
                         if (playerCoord.compareTo(clickedCell) == 0) {
@@ -334,7 +340,7 @@ public class GameUI {
                             if (ctrl.hasWon()) {
                                 appStage.setScene(victoryScene);
                             } else {
-                                currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                                currentPlayer= (currentPlayer + 1) % playerTotal;
                             }
                         } else {
                             //click is somewhere else, we reset the cell glow
@@ -354,7 +360,7 @@ public class GameUI {
                 int size = gameContent.getChildren().size();
                 if (currentCellCoord.getY() < boardSize && currentCellCoord.getY() > 0 && currentCellCoord.getX() < boardSize-1
                         && event.getButton().compareTo(MouseButton.SECONDARY) == 0
-                        && playerArray[currentPlayer[0]].getNumbWall() > 0) {
+                        && playerArray[currentPlayer].getNumbWall() > 0) {
                     //we are at a correct place for a wall to be placed
                     //now check whether we are on top of the cell or on the bottom
                     dragActive[0] = true; //tells that a drag has been triggered
@@ -363,21 +369,25 @@ public class GameUI {
                     //if upper -> Hwall, if lower -> Vwall
                     if (event.getY() > currentCellCoord.getY()*(Vspace)
                             && event.getY() < (currentCellCoord.getY()*(Vspace))+(Vspace/2)
-                            && Rules.canPlaceWall(playerArray, playerArray[currentPlayer[0]],
+                            && Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
                             currentCellCoord, Game.directions.get("RIGHT"))) {
                         //if we can place a Hwall, we display a ghost Hwall, waiting for click release
-                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get(size-1);
+                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallHImg);
                         wallHighlight.setY(currentCellCoord.getY() * Vspace - 18);
                         wallHighlight.setX(currentCellCoord.getX() * Hspace - 9);
-                    } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer[0]],
+                    } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
                             currentCellCoord, Game.directions.get("UP"))){
                         //if we can place a Vwall, we display a ghost Vwall, waiting for click release
-                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get(size-1);
+                        ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallVImg);
                         wallHighlight.setY(currentCellCoord.getY() * Vspace - 54);
                         wallHighlight.setX(currentCellCoord.getX() * Hspace + 33);
+                    } else {
+                        wallHighlight.setImage(empty);
                     }
+                } else {
+                    wallHighlight.setImage(empty);
                 }
             }
         });
@@ -385,18 +395,18 @@ public class GameUI {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (playerArray[currentPlayer[0]].getType() != "Human") {
+                if (!playerArray[currentPlayer].getType().equals("Human")) {
                     //current player is an AI, we call it's actionHandler
-                    Action.getAction(playerArray, playerArray[currentPlayer[0]]);
+                    Action.getAction(playerArray, playerArray[currentPlayer]);
                     updatePawn();
                     updateWall();
-                    if (playerArray[currentPlayer[0]].hasWon()) {
+                    if (playerArray[currentPlayer].hasWon()) {
                         //we stop the "loop" and show victory screen
                         this.stop();
                         appStage.setScene(victoryScene);
                     } else {
                         //next player
-                        currentPlayer[0] = (currentPlayer[0] + 1) % playerTotal;
+                        currentPlayer = (currentPlayer + 1) % playerTotal;
                     }
                 }
             }
@@ -417,13 +427,13 @@ public class GameUI {
     /**
      * will take each pawn sprite in the scene and update their position with their actual position
      */
-    public void updatePawn() {
+    private void updatePawn() {
         for (int i=0; i<playerTotal; i++) {
             //We know that all the pawns are in this interval [boardSize², boardSize²+playerTotal[
             ImageView pawn = (ImageView) gameContent.getChildren().get( (boardSize*boardSize)+i );
             Coord playerCoord = playerArray[i].getDependency().getCoord();
             if (pawn.getImage() == null) { //if there is already an image set, it's not necessary to set it again
-                if (playerArray[i].getType() == "Human") {
+                if (playerArray[i].getType().equals("Human")) {
                     pawn.setImage(humanPawnImg); //TODO random choice between Neo/Morpheus/Trinity
                 } else {
                     pawn.setImage(AIPawnImg);
@@ -435,12 +445,13 @@ public class GameUI {
     }
 
     /**
-     * add the new wall to the display.
+     * update all walls
      */
-    public void updateWall() {
+    private void updateWall() {
         ArrayList<Coord[]> wallList = board.getWallList();
-        ImageView wall = new ImageView();
+
         for (Coord[] wallCoord : wallList) {
+            ImageView wall = new ImageView();
             if (wallCoord[0].getY() == wallCoord[1].getY()) {
                 //horizontal wall
                 wall.setImage(wallHImg);
@@ -452,9 +463,9 @@ public class GameUI {
                 wall.setX(wallCoord[0].getX() * Hspace + 33);
                 wall.setY(wallCoord[0].getY() * Vspace - 54);
             }
+            gameContent.getChildren().add(wall);
         }
-        //we add the wall at before-last index because the last index is booked for the wall highlight
-        gameContent.getChildren().add(gameContent.getChildren().size()-2, wall);
+
     }
 
     /**
@@ -465,7 +476,7 @@ public class GameUI {
      * @param y
      * @return a coordinates instance for a Game object to use.
      */
-    public Coord getCoordFromPos(double x, double y) {
+    private Coord getCoordFromPos(double x, double y) {
         int game_y = (int) y / Vspace;
         int game_x = (int) x / Hspace;
         return new Coord(game_y, game_x);
@@ -480,7 +491,7 @@ public class GameUI {
      * @return the corresponding coordinates. Null if iit has not been found.
      */
     @Deprecated
-    public Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
+    private Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
         for (Coord coord : cellArray) {
             if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
                 return coord;

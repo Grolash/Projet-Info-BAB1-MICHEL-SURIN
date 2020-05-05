@@ -266,12 +266,12 @@ public class Menu extends Application {
             // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
-                Game game = new Game(9, types, getWallNumber());
+                Game game = new Game(9, types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else if (getPlayerNumberInt() == 4) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType(),
                         getThirdPlayerType(), getFourthPlayerType()};
-                Game game = new Game(9, types, getWallNumber());
+                Game game = new Game(9, types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else {
                 throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());
