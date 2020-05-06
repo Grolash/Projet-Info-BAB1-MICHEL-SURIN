@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * given game settings, run a GUI game.
@@ -274,7 +276,6 @@ public class GameUI {
         updatePawn();
 
         //TURN SYSTEM ------------------------------------------------------------------
-        System.out.printf(String.valueOf(currentPlayer));
         final boolean[] dragActive = {false}; //used to know if a dragEvent has been triggered
         final Coord[] wantedWallCoord = new Coord[1]; //used to transfer coord through events
         //CLICK HANDLING
@@ -307,6 +308,7 @@ public class GameUI {
                             ghostWall.setImage(empty);
                             updateWall();
                             currentPlayer = (currentPlayer + 1) % playerTotal;
+                            game.setCurrentPlayer(currentPlayer);
                         }
                     } else {
                         //click somewhere else, we reset the ghost wall
@@ -338,6 +340,7 @@ public class GameUI {
                                 appStage.setScene(victoryScene);
                             } else {
                                 currentPlayer= (currentPlayer + 1) % playerTotal;
+                                game.setCurrentPlayer(currentPlayer);
                             }
                         } else {
                             //click is somewhere else, we reset the cell glow
@@ -389,6 +392,7 @@ public class GameUI {
             }
         });
         //AI handling
+
         new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -404,6 +408,7 @@ public class GameUI {
                     } else {
                         //next player
                         currentPlayer = (currentPlayer + 1) % playerTotal;
+                        game.setCurrentPlayer(currentPlayer);
                     }
                 }
             }

@@ -60,11 +60,11 @@ public class Game implements Serializable {
      * @param size the size of the board, should be 9.
      * @param playerTypeArray an array of string containing the types of the player (Human, Smart...).
      * @param numbOfWall the number of wall of each player.
-     * @param currentplayer the index of the player that needs to take action.
+     * @param currentPlayer the index of the player that needs to take action.
      * @throws IllegalArgumentException raise exception if an invalid number of player is used.
      */
-    public Game(int size, String[] playerTypeArray, int numbOfWall, int currentplayer) throws IllegalArgumentException {
-            this.currentPlayer = currentplayer;
+    public Game(int size, String[] playerTypeArray, int numbOfWall, int currentPlayer) throws IllegalArgumentException {
+            this.currentPlayer = currentPlayer;
             this.playerNumber = playerTypeArray.length;
             if ( (playerNumber != 2) && (playerNumber != 4) ) {
                 throw new IllegalArgumentException("Invalid number of player. Should be 2 or 4");
@@ -187,6 +187,10 @@ public class Game implements Serializable {
 
     public int getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public Board getBoard() {
