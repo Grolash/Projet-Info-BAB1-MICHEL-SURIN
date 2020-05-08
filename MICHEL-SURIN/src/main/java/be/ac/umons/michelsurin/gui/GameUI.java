@@ -59,11 +59,11 @@ public class GameUI {
     /**
      * Horizontal gap between cell
      */
-    public final int Hspace = 50;
+    public final int Hspace = 52;
     /**
      * Vertical gap between cell
      */
-    public final int Vspace = 50;
+    public final int Vspace = 52;
     /**
      * Effect that highlight the sprite attach to it. Used to show possible move for players
      */

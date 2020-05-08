@@ -10,7 +10,7 @@
 \contentsline {subsection}{\numberline {4.1}Le pathfinding}{5}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Les règles}{6}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Les IAs}{7}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Problèmes survenus}{7}{section.5}%
+\contentsline {section}{\numberline {5}Bugs connus}{7}{section.5}%
 \contentsline {section}{\numberline {6}Conclusion}{7}{section.6}%
 \contentsline {section}{\numberline {7}Bibliographie}{7}{section.7}%
 \contentsline {section}{\numberline {8}Remerciements}{8}{section.8}%
