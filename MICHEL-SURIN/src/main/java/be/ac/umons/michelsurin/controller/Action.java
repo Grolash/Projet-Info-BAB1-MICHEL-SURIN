@@ -69,8 +69,15 @@ public class Action implements Serializable {
         ctrl.move(Game.directions.get("DOWN"));
     }
 
-    private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
+
+    /**
+     * "Smart" AI based on pathfinding to be more efficient than any random resolution algorithm.
+     * @param playerArray an array of all the players in the game.
+     * @param ctrl the controller it has been put in charge of.
+     */
+    private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
+    int selfTravelled = Math.abs(ctrl.getDependency().getCoord().getY());
     }
 
     private static int smartedActionChangelog = 0; //Used not to do the same action twice in a row.
@@ -247,14 +254,14 @@ public class Action implements Serializable {
                     }
                     else {
                         Pawn pawn = (Pawn) ctrl.getDependency();
-                        if(pawn.getStart().getY() == 0) {
+                        if(pawn.getStart().getY() == 0) { //If start at top, place between O and self position
                             ordinate = random.nextInt(ctrl.getDependency().getCoord().getY() - 1);
                         }
-                        else {
+                        else { //If start at bottom, place between board size and self position
                             do {
-                                ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
+                                ordinate = random.nextInt(ctrl.getBoard().getSize()); //Can place on all the board
                                 }
-                            while(ordinate < ctrl.getDependency().getCoord().getY());
+                            while(ordinate < ctrl.getDependency().getCoord().getY()); //While higher on the board than pawn
                         }
                     }
                     if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
