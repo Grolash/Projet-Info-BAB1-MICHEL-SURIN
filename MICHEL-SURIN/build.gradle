@@ -35,3 +35,9 @@ task stat(type : JavaExec) {
     standardInput = System.in
     main = 'be.ac.umons.michelsurin.engine.StatRunner'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'be.ac.umons.michelsurin.gui.Menu'
+    }
+}

@@ -1,0 +1,46 @@
+\documentclass[a4paper]{article}
+
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[babel]{microtype}
+\usepackage{lipsum}
+
+\author{Pierre Hauweele}
+\title{Rapport de Projet d'Informatique}
+\date{2019--2020}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\lipsum[1-1]
+
+\section{Guide d'utilisation}
+\subsection{Mode graphique}
+On lance le jeu avec
+\begin{verbatim}
+gradle run
+\end{verbatim}
+\subsection{Mode statistiques}
+Pour ce projet, le mode statistiques se lance avec la commande
+\begin{verbatim}
+gradle runStat
+\end{verbatim}
+
+\section{Implémentation}
+Dans le répertoire \texttt{misc/} vous pouvez trouver les fichiers que
+j'ai choisi d'ajouter à mon archive. Ces fichiers ne sont pas demandés
+par l'énoncé.
+\begin{itemize}
+  \item Le dossier \texttt{code\_rapport/}: ce sont les sources
+    \LaTeX\footnote{\LaTeX\ est un système de composition de documents
+    fonctionnant de manière programmative.}\ de mon rapport.
+  \item Le fichier \texttt{build\_archive.sh}: il s'agit du script
+    Bash\footnote{Bash est interpréteur de scripts souvent disponible sur
+    Linux.} que j'utilise pour générer mon archive à rendre. Il teste le
+    projet, nettoie les répertoires et crée l'archive.
+\end{itemize}
+
+\end{document}
