@@ -299,6 +299,7 @@ public class GameUI {
                             ghostWall.setImage(empty);
                             updateWall();
                             currentPlayer = (currentPlayer + 1) % playerTotal;
+                            ((Glow) gameContent.getChildren().get(boardSize*boardSize + currentPlayer-1).getEffect()).setLevel(0);
                         } else if (ghostWall.getImage().equals(wallVImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("UP"))) {
                             //Vwall
@@ -356,7 +357,10 @@ public class GameUI {
                 Coord currentCellCoord = getCoordFromPos(event.getX(), event.getY());
                 wantedWallCoord[0] = currentCellCoord;
                 int size = gameContent.getChildren().size();
-                if (currentCellCoord.getY() < boardSize && currentCellCoord.getY() > 0 && currentCellCoord.getX() < boardSize-1
+                if (currentCellCoord.getY() < boardSize
+                        && currentCellCoord.getY() > 0
+                        && currentCellCoord.getX() < boardSize-1
+                        && currentCellCoord.getX() > 0
                         && event.getButton().compareTo(MouseButton.SECONDARY) == 0
                         && playerArray[currentPlayer].getNumbWall() > 0) {
                     //we are at a correct place for a wall to be placed
@@ -394,6 +398,7 @@ public class GameUI {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                gameContent.getChildren().get(boardSize*boardSize + currentPlayer-1).setEffect(new Glow(0.8));
                 if (!playerArray[currentPlayer].getType().equals("Human")) {
                     //current player is an AI, we call it's actionHandler
                     Action.getAction(playerArray, playerArray[currentPlayer]);

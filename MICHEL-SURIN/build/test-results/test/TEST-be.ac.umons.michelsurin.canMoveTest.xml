@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.canMoveTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-05-08T14:43:20" hostname="DESKTOP-D7RGT2P" time="0.031">
+<testsuite name="be.ac.umons.michelsurin.canMoveTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-05-08T15:09:52" hostname="DESKTOP-D7RGT2P" time="0.029">
   <properties/>
-  <testcase name="canMoveCornerLD()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.017"/>
+  <testcase name="canMoveCornerLD()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.02"/>
   <testcase name="canMoveCornerLU()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.001"/>
-  <testcase name="canMoveCornerRD()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.002"/>
+  <testcase name="canMoveCornerRD()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.001"/>
   <testcase name="canMoveCornerRU()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.001"/>
-  <testcase name="cantMove()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.005"/>
+  <testcase name="cantMove()" classname="be.ac.umons.michelsurin.canMoveTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
