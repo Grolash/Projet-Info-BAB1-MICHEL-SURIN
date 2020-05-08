@@ -4,10 +4,12 @@ package be.ac.umons.michelsurin.engine;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.world.Board;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Action implements Serializable {
@@ -451,6 +453,60 @@ public class Action implements Serializable {
         float randfloat = random.nextInt(4);
         return Math.round(randfloat);
 
+    }
+
+    /**
+     * given a player (PawnController). It will check all the cell around its position and return an array
+     * containing all the cells where the player can go from it's position.
+     * It takes in consideration walls and pawns
+     *
+     * @param ctrl the player/controller for whom we are looking for reachable cell.
+     * @return an array with all the cell reachable from the player's position.
+     */
+    public static Coord[] whereCanIGo(PawnController ctrl) {
+        ArrayList<Coord> list = new ArrayList<Coord>();
+        Board board = ctrl.getBoard();
+        Coord ctrlCoord = ctrl.getDependency().getCoord();
+        Set<String> keys = Game.directions.keySet();
+        for (String key : keys) {
+            Coord dir = Game.directions.get(key);
+            if (Rules.canMove(ctrl, Game.directions.get(key)) && !board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
+                //no pawn, no wall, free to go
+                list.add(Coord.add(ctrlCoord, dir));
+            } else if (Rules.canMove(ctrl, Game.directions.get(key)) && board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
+                //there is a pawn, we need to check if there is a wall or a pawn behind it
+                Coord encounteredPawnCoord = Coord.add(ctrlCoord, dir);
+                Coord behindCoord = Coord.add(encounteredPawnCoord, dir);
+                if (Rules.canMove(ctrl, dir, encounteredPawnCoord) && !board.getCell(behindCoord).hasPawn()) {
+                    //no pawn, no wall, free to go !
+                    list.add(behindCoord);
+                } else if (!board.getCell(behindCoord).hasPawn()){
+                    //there is a wall  the encountered pawn. We need to check on
+                    //encountered pawn's sides.
+                    //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
+                    //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
+                    if (dir.compareTo(Game.directions.get("UP")) == 0 || dir.compareTo(Game.directions.get("DOWN")) == 0) {
+                        //side dir are LEFT and RIGHT
+                        if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord) ) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT")));
+                        }
+                        if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord) ) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT")));
+                        }
+                    } else {
+                        //side dir are UP and DOWN
+                        if (Rules.canMove(ctrl, Game.directions.get("UP"), encounteredPawnCoord) ) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("UP")));
+                        }
+                        if (Rules.canMove(ctrl, Game.directions.get("DOWN"), encounteredPawnCoord) ) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN")));
+                        }
+                    }
+                }
+            }
+        }
+        Coord[] array = list.toArray(Coord[]::new); //convert to an array to make sure it won't change
+        return  array;
     }
 
 }

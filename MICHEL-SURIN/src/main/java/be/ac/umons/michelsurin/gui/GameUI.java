@@ -229,6 +229,19 @@ public class GameUI {
         });
         pauseMenu.getChildren().addAll(saveButton, backToGameButton, backToMenuInGameButton);
         pauseScene.getStylesheets().add("Viper.css");
+
+        //victoryScene --------------------------------------
+        Separator separator = new Separator();
+        backToMenu = new Button("BACK TO THE MENU");
+        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                appStage.setScene(menuScene);
+            }
+        });
+        victoryPane.setSpacing(15);
+        victoryPane.setAlignment(Pos.CENTER);
+        victoryScene.getStylesheets().add("Viper.css");
         //gameScene --------------------------------------
         mainPane.setCenter(gameContent);
         gameScene.setFill(Color.BLACK);
@@ -273,9 +286,9 @@ public class GameUI {
         gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Coord[] possibleCell = game.whereCanIGo(currentPlayer);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
                 PawnController ctrl = playerArray[currentPlayer];
+                Coord[] possibleCell = Action.whereCanIGo(ctrl);
                 Coord playerCoord = ctrl.getDependency().getCoord();
                 int size = gameContent.getChildren().size();
                 ImageView ghostWall = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
@@ -328,6 +341,10 @@ public class GameUI {
                             resetGlowing();
                             //Check win
                             if (ctrl.hasWon()) {
+                                Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+                                victoryPane.getChildren().add(whoWon);
+                                victoryPane.getChildren().add(separator);
+                                victoryPane.getChildren().add(backToMenu);
                                 appStage.setScene(victoryScene);
                             } else {
                                 currentPlayer= (currentPlayer + 1) % playerTotal;
@@ -398,6 +415,10 @@ public class GameUI {
                     if (playerArray[currentPlayer].hasWon()) {
                         //we stop the "loop" and show victory screen
                         this.stop();
+                        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+                        victoryPane.getChildren().add(whoWon);
+                        victoryPane.getChildren().add(separator);
+                        victoryPane.getChildren().add(backToMenu);
                         appStage.setScene(victoryScene);
                     } else {
                         //next player
@@ -408,22 +429,6 @@ public class GameUI {
             }
         }.start();
 
-        //victoryScene --------------------------------------
-        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
-        Separator separator = new Separator();
-        backToMenu = new Button("BACK TO THE MENU");
-        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                appStage.setScene(menuScene);
-            }
-        });
-        victoryPane.getChildren().add(whoWon);
-        victoryPane.getChildren().add(separator);
-        victoryPane.getChildren().add(backToMenu);
-        victoryPane.setSpacing(15);
-        victoryPane.setAlignment(Pos.CENTER);
-        victoryScene.getStylesheets().add("Viper.css");
         appStage.show();
     }
 
