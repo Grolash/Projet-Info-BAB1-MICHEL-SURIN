@@ -13,6 +13,12 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
+import javax.print.attribute.standard.MediaName;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.spi.AudioFileReader;
+import java.applet.AudioClip;
 import java.io.IOException;
 
 
@@ -58,7 +64,10 @@ public class Menu extends Application {
      * Wall options menu. ChoiceBox.
      */
     private ChoiceBox<String> wallOptions;
-
+    /**
+     * board size option menu. ChoiceBox.
+     */
+    private ChoiceBox<String> boardSizeOption;
     /**
      * Number of players in the game.
      */
@@ -83,7 +92,10 @@ public class Menu extends Application {
      * Number of wall for each player in the game.
      */
     private int wallNumber;
-
+    /**
+     * Size of the board.
+     */
+    private int boardSize;
     /**
      *
      * @param args
@@ -208,6 +220,19 @@ public class Menu extends Application {
         });
         layout.getChildren().add(wallOptions);
 
+        Label boardSizeSetting = new Label("Board size :");
+        layout.getChildren().add(boardSizeSetting);
+        //board size menu :
+        boardSizeOption = new ChoiceBox<>();
+        boardSizeOption.getItems().addAll("Tiny", "Standard", "Huge");
+        boardSizeOption.setValue("Standard");
+        boardSize = getBoardSize(boardSizeOption.getValue());
+        boardSizeOption.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            boardSize = getBoardSize(newValue);
+        });
+        boardSizeOption.setMinSize(95, 30);
+        boardSizeOption.setMaxSize(95, 30);
+        layout.getChildren().add(boardSizeOption);
 
         Label players = new Label("Players:");
         layout.getChildren().add(players);
@@ -252,7 +277,6 @@ public class Menu extends Application {
 
 
     }
-
     /**
      * The close method of the program. Calls a ConfirmBox prevent missed clicks.
      */
@@ -261,6 +285,25 @@ public class Menu extends Application {
                 "  Are you sure you want to quit? \nDon't forget to save your games!");
         if (answer) {
             window.close();
+        }
+    }
+
+    /**
+     * Convert string to a valid board size.
+     * @param string
+     * @return
+     * @throws IllegalArgumentException
+     */
+    private int getBoardSize(String string) {
+        switch (string) {
+            case "Tiny" :
+                return 5;
+            case "Standard" :
+                return 9;
+            case "Huge" :
+                return 15;
+            default:
+                throw new IllegalArgumentException("Wrong board size !");
         }
     }
 
@@ -319,7 +362,6 @@ public class Menu extends Application {
         boolean answer = ConfirmBox.Display("Launch confirmation",
                 "Are you sure you want to launch the game? \n    Be sure you selected the right settings.");
         if (answer){
-            // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
                 Game game = new Game(9, types, getWallNumber(), 0);

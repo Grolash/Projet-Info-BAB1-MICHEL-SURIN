@@ -1,8 +1,7 @@
-package be.ac.umons.michelsurin.controller;
+package be.ac.umons.michelsurin.engine;
 
 
-import be.ac.umons.michelsurin.engine.Game;
-import be.ac.umons.michelsurin.engine.Rules;
+import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 
@@ -425,10 +424,6 @@ public class Action implements Serializable {
         }
 
 
-    }
-
-    public Random getRandom() {
-        return random;
     }
 
     /**

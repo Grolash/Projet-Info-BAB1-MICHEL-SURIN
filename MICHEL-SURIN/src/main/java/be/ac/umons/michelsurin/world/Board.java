@@ -51,13 +51,6 @@ public class Board implements Serializable {
     }
 
     /**
-     * @return the 2D array containing all the cell of the board
-     */
-    public Cell[][] getCellArray() {
-        return cellArray;
-    }
-
-    /**
      * @return the list containing all the wall that have been placed on the board
      */
     public ArrayList<Coord[]> getWallList() {

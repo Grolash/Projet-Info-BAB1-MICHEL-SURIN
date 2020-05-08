@@ -1,6 +1,6 @@
 package be.ac.umons.michelsurin.gui;
 
-import be.ac.umons.michelsurin.controller.Action;
+import be.ac.umons.michelsurin.engine.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.Rules;
@@ -26,8 +26,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * given game settings, run a GUI game.
@@ -484,22 +482,5 @@ public class GameUI {
         return new Coord(game_y, game_x);
     }
 
-    /**
-     * given an array of coordinates and a mouse click event. It will check if one of the coordinates corresponds
-     * to the click position and if one is found, it returns it.
-     *
-     * @param mouseClick the click event we are looking the position from.
-     * @param cellArray  the coordinates we are comparing.
-     * @return the corresponding coordinates. Null if iit has not been found.
-     */
-    @Deprecated
-    private Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
-        for (Coord coord : cellArray) {
-            if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
-                return coord;
-            }
-        }
-        return null;
-    }
 
 }

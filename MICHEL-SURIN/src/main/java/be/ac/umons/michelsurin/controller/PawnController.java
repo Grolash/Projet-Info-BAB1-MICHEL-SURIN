@@ -45,10 +45,6 @@ public class PawnController extends Controller {
         this.numbWall = 10;
     }
 
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
     public int getNumbWall() {
         return numbWall;
     }

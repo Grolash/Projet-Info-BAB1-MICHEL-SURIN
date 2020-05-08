@@ -1,9 +1,9 @@
 package be.ac.umons.michelsurin.engine;
 
-import be.ac.umons.michelsurin.controller.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.tools.CpuTime;
 import be.ac.umons.michelsurin.world.Board;
 
 import java.io.Serializable;
@@ -52,8 +52,6 @@ public class Game implements Serializable {
         directions.put("DOWN", new Coord(1,0));
         directions.put("RIGHT", new Coord(0,1));
     }
-
-
 
     /**
      *
@@ -115,7 +113,7 @@ public class Game implements Serializable {
         }
 
     /**
-     * Game contructor used by the StatRunner. It can only create 1v1 on a 9x9 board with 10 walls per player.
+     * Game constructor used by the StatRunner. It can only create 1v1 on a 9x9 board with 10 walls per player.
      * It is used to simulate games.
      * @param type1 type of the first AI
      * @param type2 type of the second AI
@@ -166,12 +164,15 @@ public class Game implements Serializable {
      *
      * @param winTable an Hashtable containing each type with their number of won game.
      */
-    public void statLoop(Hashtable<String, Integer> winTable) {
+    public void statLoop(Hashtable<String, Integer> winTable, Hashtable<String, Long> timeTable) {
         int i = 0;
         do {
-            //System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
+            CpuTime time = new CpuTime();
+            time.start();
             Action.getAction(playerArray, playerArray[i]);
-            //System.out.println("-----ACTION RESOLVED----"+ playerArray[i].getType());
+            time.stop();
+            //add time to the AI
+            timeTable.put(playerArray[i].getType(), timeTable.get(playerArray[i].getType())+ time.getMilliSeconds());
             i++;
             i %= playerNumber;
 
