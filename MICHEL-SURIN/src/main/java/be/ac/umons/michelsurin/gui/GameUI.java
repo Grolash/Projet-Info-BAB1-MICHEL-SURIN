@@ -193,22 +193,7 @@ public class GameUI {
 
         this.appStage.setScene(gameScene);
 
-        //victoryScene --------------------------------------
-        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
-        Separator separator = new Separator();
-        backToMenu = new Button("BACK TO THE MENU");
-        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                appStage.setScene(menuScene);
-            }
-        });
-        victoryPane.getChildren().add(whoWon);
-        victoryPane.getChildren().add(separator);
-        victoryPane.getChildren().add(backToMenu);
-        victoryPane.setSpacing(15);
-        victoryPane.setAlignment(Pos.CENTER);
-        victoryScene.getStylesheets().add("Viper.css");
+
         //pauseScene --------------------------------------
         //save
         saveButton = new Button("Save Game");
@@ -367,7 +352,7 @@ public class GameUI {
                 if (currentCellCoord.getY() < boardSize
                         && currentCellCoord.getY() > 0
                         && currentCellCoord.getX() < boardSize-1
-                        && currentCellCoord.getX() > 0
+                        && currentCellCoord.getX() >= 0
                         && event.getButton().compareTo(MouseButton.SECONDARY) == 0
                         && playerArray[currentPlayer].getNumbWall() > 0) {
                     //we are at a correct place for a wall to be placed
@@ -422,6 +407,23 @@ public class GameUI {
                 }
             }
         }.start();
+
+        //victoryScene --------------------------------------
+        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+        Separator separator = new Separator();
+        backToMenu = new Button("BACK TO THE MENU");
+        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                appStage.setScene(menuScene);
+            }
+        });
+        victoryPane.getChildren().add(whoWon);
+        victoryPane.getChildren().add(separator);
+        victoryPane.getChildren().add(backToMenu);
+        victoryPane.setSpacing(15);
+        victoryPane.setAlignment(Pos.CENTER);
+        victoryScene.getStylesheets().add("Viper.css");
         appStage.show();
     }
 

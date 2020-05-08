@@ -231,14 +231,6 @@ public class Action implements Serializable {
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    //TODO old recursive code
-                    //System.out.println("tries : " + triesWalls);
-                    /*
-                    if (triesWalls == 50){
-                        smartedActionChangelog += 1;
-                        triesWalls = 0;
-                        Action.smartedActionHandler(playerArray, ctrl);
-                    } */
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0 ||
                             ctrl.getDependency().getCoord().getY() - 1 == 0) {
@@ -277,7 +269,6 @@ public class Action implements Serializable {
                     placeDir = getDirection(intDir);
 
                     triesWalls++;
-                    //System.out.println("in the while");
                 }
                 while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
                 //System.out.println("while passed");
