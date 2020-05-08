@@ -36,8 +36,8 @@ public class StatRunner {
         double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;
         double ratioAI2 = winTable.get(secondAI).floatValue() / numbGame;
 
-        long timeRatioAI1 = timeTable.get(firstAI).longValue() / numbGame;
-        long timeRatioAI2 = timeTable.get(secondAI).longValue() / numbGame;
+        long timeRatioAI1 = timeTable.get(firstAI) / numbGame;
+        long timeRatioAI2 = timeTable.get(secondAI) / numbGame;
         System.out.println(firstAI + " ratio : " + ratioAI1);
         System.out.println("Average turn time (in ms) : " + timeRatioAI1);
         System.out.println("---------------------------");
