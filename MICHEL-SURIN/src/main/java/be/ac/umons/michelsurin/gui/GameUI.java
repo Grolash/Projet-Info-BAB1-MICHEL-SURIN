@@ -14,6 +14,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.Shadow;
@@ -112,7 +114,7 @@ public class GameUI {
     /**
      * Pane used for the victory screen
      */
-    private BorderPane victoryPane;
+    private VBox victoryPane;
     /**
      * Scene where the game takes place
      */
@@ -173,7 +175,7 @@ public class GameUI {
         mainPane.setBackground(Background.EMPTY);
         mainPane.setMinSize(600, 600);
 
-        this.victoryPane = new BorderPane();
+        this.victoryPane = new VBox();
         victoryPane.setBackground(Background.EMPTY);
         victoryPane.setMinSize(600, 600);
 
@@ -192,14 +194,20 @@ public class GameUI {
         this.appStage.setScene(gameScene);
 
         //victoryScene --------------------------------------
-        backToMenu = new Button("BACK TO THE MENUUUUUUU");
+        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+        Separator separator = new Separator();
+        backToMenu = new Button("BACK TO THE MENU");
         backToMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 appStage.setScene(menuScene);
             }
         });
-        victoryPane.setCenter(backToMenu);
+        victoryPane.getChildren().add(whoWon);
+        victoryPane.getChildren().add(separator);
+        victoryPane.getChildren().add(backToMenu);
+        victoryPane.setSpacing(15);
+        victoryPane.setAlignment(Pos.CENTER);
         victoryScene.getStylesheets().add("Viper.css");
         //pauseScene --------------------------------------
         //save
@@ -299,7 +307,6 @@ public class GameUI {
                             ghostWall.setImage(empty);
                             updateWall();
                             currentPlayer = (currentPlayer + 1) % playerTotal;
-                            ((Glow) gameContent.getChildren().get(boardSize*boardSize + currentPlayer-1).getEffect()).setLevel(0);
                         } else if (ghostWall.getImage().equals(wallVImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("UP"))) {
                             //Vwall
@@ -398,7 +405,6 @@ public class GameUI {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
-                gameContent.getChildren().get(boardSize*boardSize + currentPlayer-1).setEffect(new Glow(0.8));
                 if (!playerArray[currentPlayer].getType().equals("Human")) {
                     //current player is an AI, we call it's actionHandler
                     Action.getAction(playerArray, playerArray[currentPlayer]);
