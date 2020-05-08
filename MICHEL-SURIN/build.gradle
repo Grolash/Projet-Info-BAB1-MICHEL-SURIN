@@ -21,10 +21,17 @@ dependencies {
 
 javafx {
     version = "13"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base' ]
+    modules = [ 'javafx.controls'/*, 'javafx.fxml', 'javafx.graphics', 'javafx.base'*/ ]
 }
 
 
 application {
     mainClassName = 'be.ac.umons.michelsurin.gui.Menu'
+}
+
+task stat(type : JavaExec) {
+    description = "Run the statistic mode of the Quoridor"
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    main = 'be.ac.umons.michelsurin.engine.StatRunner'
 }

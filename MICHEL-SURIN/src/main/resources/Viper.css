@@ -1,0 +1,38 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-font-size: 10pt;
+}
+
+.label {
+    -fx-background-color: #000000;
+    -fx-text-fill: #10a110;
+}
+.button {
+    -fx-background-color: #000000;
+    -fx-text-fill: #10a110;
+    -fx-border-color: #10a110;
+    -fx-font-family: Monospaced;
+}
+.choice-box {
+    -fx-background-color: #000000;
+    -fx-text-fill: #10a110;
+    -fx-border-color: #10a110;
+    -fx-font-family: Monospaced;
+}
+.menu-item:focused{
+    -fx-background-color: #003300;
+}
+.context-menu {
+    -fx-background-color: #000000;
+}
+
+.separator .line {
+    -fx-border-color: #10a110;
+    -fx-border-style: dotted;
+    -fx-border-radius: 5;
+}
+
+
+#bold-label {
+    -fx-font-weight: bold;
+}

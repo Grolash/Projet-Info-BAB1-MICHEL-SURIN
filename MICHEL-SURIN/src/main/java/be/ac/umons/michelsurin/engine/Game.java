@@ -1,11 +1,12 @@
 package be.ac.umons.michelsurin.engine;
 
-import be.ac.umons.michelsurin.controller.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.tools.CpuTime;
 import be.ac.umons.michelsurin.world.Board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
@@ -14,12 +15,18 @@ import java.util.Set;
  * @version v1.0
  *
  */
-public class Game {
+public class Game implements Serializable {
+
+    public static final long serialVersionUID = -7739854031988438014L;
 
     /**
      * number of player in the current game, is 2 or 4
      */
     private int playerNumber;
+    /**
+     * the index of the player that needs to take action
+     */
+    private int currentPlayer;
     /**
      * Array containing all the PawnController in the game, one per pawn
      */
@@ -46,17 +53,16 @@ public class Game {
         directions.put("RIGHT", new Coord(0,1));
     }
 
-
-
     /**
      *
      * @param size the size of the board, should be 9.
      * @param playerTypeArray an array of string containing the types of the player (Human, Smart...).
      * @param numbOfWall the number of wall of each player.
+     * @param currentPlayer the index of the player that needs to take action.
      * @throws IllegalArgumentException raise exception if an invalid number of player is used.
      */
-    public Game(int size, String[] playerTypeArray, int numbOfWall) throws IllegalArgumentException {
-
+    public Game(int size, String[] playerTypeArray, int numbOfWall, int currentPlayer) throws IllegalArgumentException {
+            this.currentPlayer = currentPlayer;
             this.playerNumber = playerTypeArray.length;
             if ( (playerNumber != 2) && (playerNumber != 4) ) {
                 throw new IllegalArgumentException("Invalid number of player. Should be 2 or 4");
@@ -107,7 +113,7 @@ public class Game {
         }
 
     /**
-     * Game contructor used by the StatRunner. It can only create 1v1 on a 9x9 board with 10 walls per player.
+     * Game constructor used by the StatRunner. It can only create 1v1 on a 9x9 board with 10 walls per player.
      * It is used to simulate games.
      * @param type1 type of the first AI
      * @param type2 type of the second AI
@@ -158,12 +164,15 @@ public class Game {
      *
      * @param winTable an Hashtable containing each type with their number of won game.
      */
-    public void statLoop(Hashtable<String, Integer> winTable) {
+    public void statLoop(Hashtable<String, Integer> winTable, Hashtable<String, Long> timeTable) {
         int i = 0;
         do {
-            //System.out.println("---ACTION WILL BEGIN---" + playerArray[i].getType());
+            CpuTime time = new CpuTime();
+            time.start();
             Action.getAction(playerArray, playerArray[i]);
-            //System.out.println("-----ACTION RESOLVED----"+ playerArray[i].getType());
+            time.stop();
+            //add time to the AI
+            timeTable.put(playerArray[i].getType(), timeTable.get(playerArray[i].getType())+ time.getMilliSeconds());
             i++;
             i %= playerNumber;
 
@@ -175,6 +184,14 @@ public class Game {
 
     public PawnController[] getPlayerArray() {
         return playerArray;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public Board getBoard() {

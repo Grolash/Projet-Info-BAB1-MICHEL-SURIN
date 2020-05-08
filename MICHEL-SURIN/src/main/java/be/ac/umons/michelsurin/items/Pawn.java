@@ -9,6 +9,8 @@ import be.ac.umons.michelsurin.tools.Coord;
  */
 public class Pawn extends MOAI {
 
+    public static final long serialVersionUID = -5340222817402922521L;
+
     private Coord start;
     private int goal;
     private boolean goalIsARow;

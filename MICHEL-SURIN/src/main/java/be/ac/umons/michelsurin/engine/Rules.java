@@ -128,18 +128,14 @@ public class Rules {
                 Cell secondCell = board.getCell(nextCoord);
                 Coord[] possibleWall = new Coord[2];
                 possibleWall[0] = coord; //the origin's coordinates
-                Coord tempCoord = new Coord(coord.getY(),coord.getX()+1); //the right cell's coordinates
-                possibleWall[1] = tempCoord;
-
-
-                Coord nextToOrigin = Coord.add(coord, Game.directions.get("RIGHT"));
+                Coord nextToOrigin = Coord.add(coord, Game.directions.get("RIGHT")); //the right cell's coordinates
+                possibleWall[1] = nextToOrigin;
                 Cell nextToOriginCell = board.getCell(nextToOrigin);
+
                 //now the check
-                if (originCell.wallTo(Game.directions.get("RIGHT")) ||
-                        secondCell.wallTo(Game.directions.get("RIGHT")) ||
-                        (originCell.wallTo(Game.directions.get("UP")) &&
-                                nextToOriginCell.wallTo(Game.directions.get("UP")) ) || //case of cutting a perpendicular wall
-                        board.InWallList(possibleWall)) {
+                if (originCell.wallTo(Game.directions.get("RIGHT"))
+                        || secondCell.wallTo(Game.directions.get("RIGHT"))
+                        || board.InWallList(possibleWall)) {
                         return false;
                 } else {
                     return true;
@@ -163,11 +159,9 @@ public class Rules {
                 Coord aboveOrigin = Coord.add(coord, Game.directions.get("UP"));
                 Cell aboveOriginCell = board.getCell(aboveOrigin);
                 //now the check
-                if (originCell.wallTo(Game.directions.get("UP")) ||
-                        secondCell.wallTo(Game.directions.get("UP")) ||
-                        (originCell.wallTo(Game.directions.get("RIGHT")) &&
-                                aboveOriginCell.wallTo(Game.directions.get("RIGHT")) ) || //case of cutting a perpendicular wall
-                        (board.getWallList().contains(possibleWall))) {
+                if (originCell.wallTo(Game.directions.get("UP"))
+                        || secondCell.wallTo(Game.directions.get("UP"))
+                        || (board.InWallList(possibleWall))) {
                     return false;
                 } else {
                     return true;
@@ -176,21 +170,6 @@ public class Rules {
         }
         return false; //will never happen
 
-    }
-
-    /**
-     * checks if the coord full-fill the winning condition.
-     *
-     * @param coord the coordinates we're comparing to.
-     * @param ctrl the controller we're looking at.
-     * @return true if the coordinates correspond to the objective of the controller, false otherwise.
-     */
-    public static boolean hasWon(Coord coord, PawnController ctrl) {
-        if (coord.getY() == ((Pawn) ctrl.getDependency()).getGoal()) { //downcast dependency from MOAI to Pawn then compare
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**

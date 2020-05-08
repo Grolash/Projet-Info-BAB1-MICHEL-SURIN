@@ -6,16 +6,28 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * A small window to demand confirmation.
+ */
 public class ConfirmBox {
 
+    /**
+     * Boolean value of the answer.
+     */
     static boolean answer;
 
+    /**
+     * A small window to demand confirmation.
+     * @param title The title of the window.
+     * @param question The text (usually a question asked to the user) displayed by the ConfirmBox.
+     * @return boolean value corresponding to the answer given to the question.
+     */
     public static boolean Display(String title, String question){
         Stage window = new Stage();
 
-        window.initModality(Modality.APPLICATION_MODAL);
+        window.initModality(Modality.APPLICATION_MODAL); //Prevent interactions events with the called until taken care of.
         window.setTitle(title);
-        window.setMinWidth(250);
+        window.setMinWidth(400);
         window.setMinHeight(250);
 
         Label label = new Label();
@@ -39,8 +51,9 @@ public class ConfirmBox {
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add("Viper.css");
         window.setScene(scene);
-        window.showAndWait();
+        window.showAndWait(); //Assures the window stay displayed until taken care of.
 
         return answer;
     }

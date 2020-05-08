@@ -16,6 +16,7 @@ import java.security.InvalidParameterException;
  */
 public class PawnController extends Controller {
 
+    public static final long serialVersionUID = 3234993869872838826L;
     private int playerNumber;
     private int numbWall;
 
@@ -42,10 +43,6 @@ public class PawnController extends Controller {
         super(type, dependency, board);
         this.playerNumber = playerNumber;
         this.numbWall = 10;
-    }
-
-    public int getPlayerNumber() {
-        return playerNumber;
     }
 
     public int getNumbWall() {
