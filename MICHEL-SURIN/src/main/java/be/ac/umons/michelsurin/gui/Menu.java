@@ -3,6 +3,7 @@ package be.ac.umons.michelsurin.gui;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.SaverLoader;
 import javafx.application.Application;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -127,7 +129,8 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-
+        Label title = new Label("QUORIDOR v0.9.1");
+        layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");
         launchButton.setOnAction(e -> launchGame(window));
@@ -155,6 +158,16 @@ public class Menu extends Application {
 
         Label settings = new Label("Settings:");
         layout.getChildren().add(settings);
+
+        HBox line = new HBox();
+        VBox column1 = new VBox();
+        VBox column2 = new VBox();
+        column1.setSpacing(15);
+        column2.setSpacing(15);
+        line.getChildren().addAll(column1, column2);
+        line.setAlignment(Pos.CENTER);
+        line.setSpacing(50);
+        layout.getChildren().add(line);
 
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
         firstAIDifficultyMenu = new ChoiceBox<>();
@@ -198,7 +211,7 @@ public class Menu extends Application {
         fourthAIDifficultyMenu.setMaxSize(95, 30);
 
         Label walls = new Label("Walls:");
-        layout.getChildren().add(walls);
+        column1.getChildren().add(walls);
         //Number of walls menu:
         wallOptions = new ChoiceBox<>();
         wallOptions.setMinSize(110, 30);
@@ -218,10 +231,10 @@ public class Menu extends Application {
                     throw new IllegalArgumentException("Uh oh... something went wrong with wall numbers in the menu...");
             }
         });
-        layout.getChildren().add(wallOptions);
+        column1.getChildren().add(wallOptions);
 
         Label boardSizeSetting = new Label("Board size :");
-        layout.getChildren().add(boardSizeSetting);
+        column1.getChildren().add(boardSizeSetting);
         //board size menu :
         boardSizeOption = new ChoiceBox<>();
         boardSizeOption.getItems().addAll("Tiny", "Standard", "Huge");
@@ -232,10 +245,10 @@ public class Menu extends Application {
         });
         boardSizeOption.setMinSize(95, 30);
         boardSizeOption.setMaxSize(95, 30);
-        layout.getChildren().add(boardSizeOption);
+        column1.getChildren().add(boardSizeOption);
 
         Label players = new Label("Players:");
-        layout.getChildren().add(players);
+        column2.getChildren().add(players);
         //Player number menus, will define which difficulty options are enabled.
         playerNumber = new ChoiceBox<>();
         playerNumber.setMinSize(110, 30);
@@ -244,29 +257,29 @@ public class Menu extends Application {
                 "4 Players");
         playerNumber.setValue("2 Players");
         playerNumberInt = 2;
-        layout.getChildren().add(playerNumber);
+        column2.getChildren().add(playerNumber);
         Label difficulty = new Label("AI difficulty:");
-        layout.getChildren().add(difficulty);
+        column2.getChildren().add(difficulty);
         //default state
-        layout.getChildren().remove(firstAIDifficultyMenu);
-        layout.getChildren().remove(secondAIDifficultyMenu);
-        layout.getChildren().remove(thirdAIDifficultyMenu);
-        layout.getChildren().remove(fourthAIDifficultyMenu);
-        layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
+        column2.getChildren().remove(firstAIDifficultyMenu);
+        column2.getChildren().remove(secondAIDifficultyMenu);
+        column2.getChildren().remove(thirdAIDifficultyMenu);
+        column2.getChildren().remove(fourthAIDifficultyMenu);
+        column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
         playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             if (newValue.equals("2 Players")){
                 playerNumberInt = 2;
-                layout.getChildren().remove(firstAIDifficultyMenu);
-                layout.getChildren().remove(secondAIDifficultyMenu);
-                layout.getChildren().remove(thirdAIDifficultyMenu);
-                layout.getChildren().remove(fourthAIDifficultyMenu);
-                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
+                column2.getChildren().remove(firstAIDifficultyMenu);
+                column2.getChildren().remove(secondAIDifficultyMenu);
+                column2.getChildren().remove(thirdAIDifficultyMenu);
+                column2.getChildren().remove(fourthAIDifficultyMenu);
+                column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
             }
             else if (newValue.equals("4 Players")){
                 playerNumberInt = 4;
-                layout.getChildren().remove(firstAIDifficultyMenu);
-                layout.getChildren().remove(secondAIDifficultyMenu);
-                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
+                column2.getChildren().remove(firstAIDifficultyMenu);
+                column2.getChildren().remove(secondAIDifficultyMenu);
+                column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
             }
         });
         layout.setMinSize(700, 700);

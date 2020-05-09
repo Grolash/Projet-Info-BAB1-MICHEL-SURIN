@@ -38,14 +38,14 @@ public class GameUI {
      * Standard cell sprite
      */
     private final Image cellImg = new Image("tile.png");
+
     /**
-     * Human player sprite
+     * Array containing all the player sprite
      */
-    private final Image humanPawnImg = new Image("neo.png");
-    /**
-     * AI player sprite
-     */
-    private final Image AIPawnImg = new Image("agent.png");
+    private final Image[] playerSprite = {new Image("neo.png")
+                                        , new Image("agent.png")
+                                        , new Image("morpheus.png")
+                                        , new Image("trinity.png")};
     /**
      * Horizontal wall sprite
      */
@@ -451,11 +451,7 @@ public class GameUI {
             ImageView pawn = (ImageView) gameContent.getChildren().get( (boardSize*boardSize)+i );
             Coord playerCoord = playerArray[i].getDependency().getCoord();
             if (pawn.getImage() == null) { //if there is already an image set, it's not necessary to set it again
-                if (playerArray[i].getType().equals("Human")) {
-                    pawn.setImage(humanPawnImg); //TODO random choice between Neo/Morpheus/Trinity
-                } else {
-                    pawn.setImage(AIPawnImg);
-                }
+                pawn.setImage(playerSprite[i]);
             }
             pawn.setX(playerCoord.getX() * Hspace);
             pawn.setY(playerCoord.getY() * Vspace);

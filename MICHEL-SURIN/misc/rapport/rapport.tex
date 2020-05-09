@@ -154,8 +154,11 @@ Dans un soucis d'optimisation, on vérifie d'abord les collisions avec d'autres 
 
 \subsection{Les IAs}
 blablabla IA...
-\section{Bugs connus}
-blablabla les ia, javaFX 
+\section{Bugs connus / points faibles}
+
+\subsection{L'IA facile}
+L'IA facile (\textit{smarted}), afin de ne pas répéter tout le temps la même action utilise un \textit{changelog}, mais dû à la façon dont les actions d'IA sont appelée, ce changelog est commun à toutes les IA du même type. Cela implique qu'au lieu que chaque instance change son \textit{changelog}, c'est chaque appel d'IA facile qui va changer ce \textit{changelog}. \\
+Afin de pouvoir fixer ce problème, il faudrait pouvoir instancier ce \textit{changelog} dans chaque contrôleur. Ou alors déplacer et instancier la méthode qui calcule la prochaine action dans le contrôleur lui même. Nous nous sommes rendu compte de se problème malheureusement très tard. Le résoudre prendrait du temps et risque de générer des problèmes.
 
 \section{Conclusion}
 
