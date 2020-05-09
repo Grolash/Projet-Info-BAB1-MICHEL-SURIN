@@ -295,29 +295,22 @@ public class GameUI {
 
                 if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
                     //we are left-clicking on a ghost wall, we need to place it
-                    System.out.println("we need to place");
                     resetGlowing(); //if cells are glowing the need to be reset
                     if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
-                        System.out.println("Click on the wall");
                         //it's a click on a ghost wall, it means that we want it to be placed
                         if (ghostWall.getImage().equals(wallHImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("RIGHT"))) {
                             //Hwall
-                            System.out.println("gotta place Hwall");
                             ctrl.placeWall(clickedCell, Game.directions.get("RIGHT"));
                             ghostWall.setImage(empty);
                             updateWall();
-                            System.out.println("Update wall");
                             currentPlayer = (currentPlayer + 1) % playerTotal;
-                            System.out.println("current player increment");
                         } else if (ghostWall.getImage().equals(wallVImg)
                                 && Rules.canPlaceWall(playerArray, ctrl, wantedWallCoord[0], Game.directions.get("UP"))) {
                             //Vwall
-                            System.out.println("Vwall");
                             ctrl.placeWall(clickedCell, Game.directions.get("UP"));
                             ghostWall.setImage(empty);
                             updateWall();
-                            System.out.println("Update wall");
                             currentPlayer = (currentPlayer + 1) % playerTotal;
                             game.setCurrentPlayer(currentPlayer);
                         }
@@ -415,14 +408,10 @@ public class GameUI {
             @Override
             public void handle(long now) {
                 if (!playerArray[currentPlayer].getType().equals("Human")) {
-                    System.out.println("it's AI time !");
                     //current player is an AI, we call it's actionHandler
                     Action.getAction(playerArray, playerArray[currentPlayer]);
-                    System.out.println("AI did something. GREAT !");
                     updatePawn();
-                    System.out.println("Update pawn");
                     updateWall();
-                    System.out.println("Update walls !");
                     if (playerArray[currentPlayer].hasWon()) {
                         //we stop the "loop" and show victory screen
                         this.stop();
