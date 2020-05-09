@@ -269,7 +269,7 @@ public class Action implements Serializable {
 
                     triesWalls++;
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
+                while (!Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
@@ -378,12 +378,10 @@ public class Action implements Serializable {
         } else if (action == 1){ //Tries and place a wall
 
             if (ctrl.getNumbWall() > 0) {
-                //System.out.println("wall");
                 Coord placeCoord;
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    //System.out.println(triesWalls);
                     int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
                     if (ordinate == 0){ //We want ordinates 1 to 8
                         ordinate = ctrl.getBoard().getSize()-1;
@@ -398,9 +396,8 @@ public class Action implements Serializable {
                         intDir = 3;
                     placeDir = getDirection(intDir);
                     triesWalls++;
-                    //System.out.println(placeCoord + " | " + placeDir);
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
+                while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
