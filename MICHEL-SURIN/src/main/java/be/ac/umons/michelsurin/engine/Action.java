@@ -88,6 +88,7 @@ public class Action implements Serializable {
      * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
+        int half = ctrl.getBoard().getSize()/2;
         if (smartedActionChangelog > 1) { //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
         }
@@ -269,8 +270,8 @@ public class Action implements Serializable {
 
                     triesWalls++;
                 }
-                while (!Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
-                if (triesWalls <= 50) {
+                while (!Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 25);
+                if (triesWalls <= 25) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
                     smartedActionChangelog += 1;
@@ -397,8 +398,8 @@ public class Action implements Serializable {
                     placeDir = getDirection(intDir);
                     triesWalls++;
                 }
-                while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
-                if (triesWalls <= 50) {
+                while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 25);
+                if (triesWalls <= 25) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
                     debilusActionHandler(playerArray, ctrl);

@@ -40,8 +40,6 @@ public class Menu extends Application {
      * Load a game.
      */
     private Button loadButton;
-
-
     /**
      * Number of players. ChoiceBox.
      */
@@ -129,7 +127,7 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-        Label title = new Label("QUORIDOR v0.9.2");
+        Label title = new Label("QUORIDOR v0.9.3");
         layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");
@@ -216,7 +214,7 @@ public class Menu extends Application {
         wallOptions = new ChoiceBox<>();
         wallOptions.setMinSize(110, 30);
         wallOptions.setMaxSize(110, 30);
-        wallOptions.getItems().addAll("5 walls", "10 walls");
+        wallOptions.getItems().addAll("5 walls", "10 walls", "15 walls");
         wallOptions.setValue("10 walls");
         wallNumber = 10;
         wallOptions.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
@@ -226,6 +224,9 @@ public class Menu extends Application {
                     break;
                 case "10 walls":
                     wallNumber =10;
+                    break;
+                case "15 walls":
+                    wallNumber =15;
                     break;
                 default:
                     throw new IllegalArgumentException("Uh oh... something went wrong with wall numbers in the menu...");
@@ -377,12 +378,12 @@ public class Menu extends Application {
         if (answer){
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
-                Game game = new Game(9, types, getWallNumber(), 0);
+                Game game = new Game(getBoardSize(boardSizeOption.getValue()), types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else if (getPlayerNumberInt() == 4) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType(),
                         getThirdPlayerType(), getFourthPlayerType()};
-                Game game = new Game(9, types, getWallNumber(), 0);
+                Game game = new Game(getBoardSize(boardSizeOption.getValue()), types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else {
                 throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());

@@ -173,7 +173,8 @@ public class GameUI {
 
         this.mainPane = new BorderPane();
         mainPane.setBackground(Background.EMPTY);
-        mainPane.setMinSize(600, 600);
+        mainPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
 
         this.victoryPane = new VBox();
         victoryPane.setBackground(Background.EMPTY);
@@ -183,7 +184,8 @@ public class GameUI {
 
         this.pauseMenu = new VBox();
         pauseMenu.setAlignment(Pos.CENTER);
-        pauseMenu.setMinSize(600, 600);
+        pauseMenu.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
         pauseMenu.setBackground(Background.EMPTY);
         pauseMenu.setSpacing(15);
 
@@ -328,7 +330,7 @@ public class GameUI {
                         if (playerCoord.compareTo(clickedCell) == 0) {
                             //click on pawn --> we make the reachable cell glowing
                             for (Coord coord : possibleCell) {
-                                gameContent.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(colorCell);
+                                gameContent.getChildren().get(coord.getX() + (boardSize * coord.getY())).setEffect(colorCell);
                             }
                         } else if (clickedCell.isIn(possibleCell)
                                 && clickedCellImage.getEffect().equals(colorCell)) {
