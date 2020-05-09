@@ -234,6 +234,7 @@ public class Action implements Serializable {
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
+                    System.out.println("looking for a sweet spot");
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0 ||
                             ctrl.getDependency().getCoord().getY() - 1 == 0) {
@@ -246,9 +247,10 @@ public class Action implements Serializable {
                         }
                         else {
                             do {
-                                ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
+                                ordinate = random.nextInt(ctrl.getBoard().getSize() );
+                                System.out.println("ordinate is " + ordinate);
                                 }
-                            while(ordinate < ctrl.getDependency().getCoord().getY());
+                            while(ordinate < ctrl.getDependency().getCoord().getY() );
                         }
                     }
                     if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
@@ -270,6 +272,7 @@ public class Action implements Serializable {
 
                     placeCoord = new Coord(ordinate, absciss);
                     placeDir = getDirection(intDir);
+                    System.out.println("Origin : " + placeCoord + " | " + "direction : " + placeDir);
 
                     triesWalls++;
                 }

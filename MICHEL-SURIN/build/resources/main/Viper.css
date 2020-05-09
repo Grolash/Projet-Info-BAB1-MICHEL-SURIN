@@ -13,6 +13,15 @@
     -fx-border-color: #10a110;
     -fx-font-family: Monospaced;
 }
+.button:hover {
+    -fx-background-color: #002603;
+    -fx-text-fill: #10a110;
+    -fx-border-color: #10a110;
+    -fx-font-family: Monospaced;
+}
+.button:pressed {
+    -fx-background-color: #1eff00;
+}
 .choice-box {
     -fx-background-color: #000000;
     -fx-text-fill: #10a110;
@@ -25,6 +34,7 @@
 .context-menu {
     -fx-background-color: #000000;
 }
+
 
 .separator .line {
     -fx-border-color: #10a110;
