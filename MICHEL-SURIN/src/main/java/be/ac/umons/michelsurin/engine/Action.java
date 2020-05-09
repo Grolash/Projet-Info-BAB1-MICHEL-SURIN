@@ -1,14 +1,18 @@
-package be.ac.umons.michelsurin.controller;
+package be.ac.umons.michelsurin.engine;
 
 
+import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.Rules;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.world.Board;
+import be.ac.umons.michelsurin.world.Cell;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Action implements Serializable {
@@ -69,11 +73,6 @@ public class Action implements Serializable {
         ctrl.move(Game.directions.get("DOWN"));
     }
 
-    private static void smartActionHandler(PawnController[] playerArray, PawnController ctrl) {
-
-    }
-
-    private static int smartedActionChangelog = 0; //Used not to do the same action twice in a row.
 
     /**
      * Method used by smarted and smart to move following a path given by the pathfinding tool.
