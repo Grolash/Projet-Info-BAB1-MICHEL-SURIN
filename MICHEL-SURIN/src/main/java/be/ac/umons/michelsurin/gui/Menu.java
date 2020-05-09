@@ -3,6 +3,7 @@ package be.ac.umons.michelsurin.gui;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.SaverLoader;
 import javafx.application.Application;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,9 +11,16 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
+import javax.print.attribute.standard.MediaName;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.spi.AudioFileReader;
+import java.applet.AudioClip;
 import java.io.IOException;
 
 
@@ -32,8 +40,6 @@ public class Menu extends Application {
      * Load a game.
      */
     private Button loadButton;
-
-
     /**
      * Number of players. ChoiceBox.
      */
@@ -58,7 +64,10 @@ public class Menu extends Application {
      * Wall options menu. ChoiceBox.
      */
     private ChoiceBox<String> wallOptions;
-
+    /**
+     * board size option menu. ChoiceBox.
+     */
+    private ChoiceBox<String> boardSizeOption;
     /**
      * Number of players in the game.
      */
@@ -83,7 +92,10 @@ public class Menu extends Application {
      * Number of wall for each player in the game.
      */
     private int wallNumber;
-
+    /**
+     * Size of the board.
+     */
+    private int boardSize;
     /**
      *
      * @param args
@@ -115,7 +127,8 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-
+        Label title = new Label("QUORIDOR v0.9.4a");
+        layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");
         launchButton.setOnAction(e -> launchGame(window));
@@ -128,7 +141,7 @@ public class Menu extends Application {
                     Game game = SaverLoader.load();
                     GameUI gameUI = new GameUI(window, scene, game);
                 } catch (IOException | ClassNotFoundException f) {
-                    f.printStackTrace();
+                    AlertBox.Display("Error 404 not found", "No save found.");
                 }
 
         });
@@ -143,6 +156,16 @@ public class Menu extends Application {
 
         Label settings = new Label("Settings:");
         layout.getChildren().add(settings);
+
+        HBox line = new HBox();
+        VBox column1 = new VBox();
+        VBox column2 = new VBox();
+        column1.setSpacing(15);
+        column2.setSpacing(15);
+        line.getChildren().addAll(column1, column2);
+        line.setAlignment(Pos.CENTER);
+        line.setSpacing(50);
+        layout.getChildren().add(line);
 
         //Following lines will set difficulty menus for AI. Listeners will follow in real time selection changes.
         firstAIDifficultyMenu = new ChoiceBox<>();
@@ -186,12 +209,12 @@ public class Menu extends Application {
         fourthAIDifficultyMenu.setMaxSize(95, 30);
 
         Label walls = new Label("Walls:");
-        layout.getChildren().add(walls);
+        column1.getChildren().add(walls);
         //Number of walls menu:
         wallOptions = new ChoiceBox<>();
         wallOptions.setMinSize(110, 30);
         wallOptions.setMaxSize(110, 30);
-        wallOptions.getItems().addAll("5 walls", "10 walls");
+        wallOptions.getItems().addAll("5 walls", "10 walls", "15 walls");
         wallOptions.setValue("10 walls");
         wallNumber = 10;
         wallOptions.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
@@ -202,15 +225,31 @@ public class Menu extends Application {
                 case "10 walls":
                     wallNumber =10;
                     break;
+                case "15 walls":
+                    wallNumber =15;
+                    break;
                 default:
                     throw new IllegalArgumentException("Uh oh... something went wrong with wall numbers in the menu...");
             }
         });
-        layout.getChildren().add(wallOptions);
+        column1.getChildren().add(wallOptions);
 
+        Label boardSizeSetting = new Label("Board size :");
+        column1.getChildren().add(boardSizeSetting);
+        //board size menu :
+        boardSizeOption = new ChoiceBox<>();
+        boardSizeOption.getItems().addAll("Tiny", "Standard", "Huge");
+        boardSizeOption.setValue("Standard");
+        boardSize = getBoardSize(boardSizeOption.getValue());
+        boardSizeOption.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            boardSize = getBoardSize(newValue);
+        });
+        boardSizeOption.setMinSize(95, 30);
+        boardSizeOption.setMaxSize(95, 30);
+        column1.getChildren().add(boardSizeOption);
 
         Label players = new Label("Players:");
-        layout.getChildren().add(players);
+        column2.getChildren().add(players);
         //Player number menus, will define which difficulty options are enabled.
         playerNumber = new ChoiceBox<>();
         playerNumber.setMinSize(110, 30);
@@ -219,29 +258,29 @@ public class Menu extends Application {
                 "4 Players");
         playerNumber.setValue("2 Players");
         playerNumberInt = 2;
-        layout.getChildren().add(playerNumber);
+        column2.getChildren().add(playerNumber);
         Label difficulty = new Label("AI difficulty:");
-        layout.getChildren().add(difficulty);
+        column2.getChildren().add(difficulty);
         //default state
-        layout.getChildren().remove(firstAIDifficultyMenu);
-        layout.getChildren().remove(secondAIDifficultyMenu);
-        layout.getChildren().remove(thirdAIDifficultyMenu);
-        layout.getChildren().remove(fourthAIDifficultyMenu);
-        layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
+        column2.getChildren().remove(firstAIDifficultyMenu);
+        column2.getChildren().remove(secondAIDifficultyMenu);
+        column2.getChildren().remove(thirdAIDifficultyMenu);
+        column2.getChildren().remove(fourthAIDifficultyMenu);
+        column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
         playerNumber.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
             if (newValue.equals("2 Players")){
                 playerNumberInt = 2;
-                layout.getChildren().remove(firstAIDifficultyMenu);
-                layout.getChildren().remove(secondAIDifficultyMenu);
-                layout.getChildren().remove(thirdAIDifficultyMenu);
-                layout.getChildren().remove(fourthAIDifficultyMenu);
-                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
+                column2.getChildren().remove(firstAIDifficultyMenu);
+                column2.getChildren().remove(secondAIDifficultyMenu);
+                column2.getChildren().remove(thirdAIDifficultyMenu);
+                column2.getChildren().remove(fourthAIDifficultyMenu);
+                column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu);
             }
             else if (newValue.equals("4 Players")){
                 playerNumberInt = 4;
-                layout.getChildren().remove(firstAIDifficultyMenu);
-                layout.getChildren().remove(secondAIDifficultyMenu);
-                layout.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
+                column2.getChildren().remove(firstAIDifficultyMenu);
+                column2.getChildren().remove(secondAIDifficultyMenu);
+                column2.getChildren().addAll(firstAIDifficultyMenu, secondAIDifficultyMenu, thirdAIDifficultyMenu, fourthAIDifficultyMenu);
             }
         });
         layout.setMinSize(700, 700);
@@ -252,7 +291,6 @@ public class Menu extends Application {
 
 
     }
-
     /**
      * The close method of the program. Calls a ConfirmBox prevent missed clicks.
      */
@@ -261,6 +299,25 @@ public class Menu extends Application {
                 "  Are you sure you want to quit? \nDon't forget to save your games!");
         if (answer) {
             window.close();
+        }
+    }
+
+    /**
+     * Convert string to a valid board size.
+     * @param string
+     * @return
+     * @throws IllegalArgumentException
+     */
+    private int getBoardSize(String string) {
+        switch (string) {
+            case "Tiny" :
+                return 5;
+            case "Standard" :
+                return 9;
+            case "Huge" :
+                return 15;
+            default:
+                throw new IllegalArgumentException("Wrong board size !");
         }
     }
 
@@ -319,15 +376,14 @@ public class Menu extends Application {
         boolean answer = ConfirmBox.Display("Launch confirmation",
                 "Are you sure you want to launch the game? \n    Be sure you selected the right settings.");
         if (answer){
-            // TODO implement game launch!
             if (getPlayerNumberInt() == 2) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType()};
-                Game game = new Game(9, types, getWallNumber(), 0);
+                Game game = new Game(getBoardSize(boardSizeOption.getValue()), types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else if (getPlayerNumberInt() == 4) {
                 String[] types = {getFirstPlayerType(), getSecondPlayerType(),
                         getThirdPlayerType(), getFourthPlayerType()};
-                Game game = new Game(9, types, getWallNumber(), 0);
+                Game game = new Game(getBoardSize(boardSizeOption.getValue()), types, getWallNumber(), 0);
                 GameUI gameUI = new GameUI(appStage, scene, game);
             } else {
                 throw new IllegalArgumentException("expected 2 or 4 player, got " + getPlayerNumberInt());

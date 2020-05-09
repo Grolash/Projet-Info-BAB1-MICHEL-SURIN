@@ -12,7 +12,7 @@ public class SaverLoader {
     /**
      * Path to the save file in engine package.
      */
-    private static final Path path = Paths.get("./misc/saves/Save.quor");
+    private static final Path path = Paths.get("./misc/saves/Save.data");
     /**
      * File in memory.
      */

@@ -173,21 +173,6 @@ public class Rules {
     }
 
     /**
-     * checks if the coord full-fill the winning condition.
-     *
-     * @param coord the coordinates we're comparing to.
-     * @param ctrl the controller we're looking at.
-     * @return true if the coordinates correspond to the objective of the controller, false otherwise.
-     */
-    public static boolean hasWon(Coord coord, PawnController ctrl) {
-        if (coord.getY() == ((Pawn) ctrl.getDependency()).getGoal()) { //downcast dependency from MOAI to Pawn then compare
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * It searches a path to the goal row of the controller's dependency starting from it's current coordinates.
      * It starts to explore the surrounding of the controller's position in the board then it does the same for each
      * newly discovered position. The idea behind this algorithm is the breadth-first search

@@ -1,6 +1,6 @@
 package be.ac.umons.michelsurin.gui;
 
-import be.ac.umons.michelsurin.controller.Action;
+import be.ac.umons.michelsurin.engine.Action;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.Rules;
@@ -14,6 +14,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.Shadow;
@@ -26,8 +28,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * given game settings, run a GUI game.
@@ -38,14 +38,14 @@ public class GameUI {
      * Standard cell sprite
      */
     private final Image cellImg = new Image("tile.png");
+
     /**
-     * Human player sprite
+     * Array containing all the player sprite
      */
-    private final Image humanPawnImg = new Image("neo.png");
-    /**
-     * AI player sprite
-     */
-    private final Image AIPawnImg = new Image("agent.png");
+    private final Image[] playerSprite = {new Image("neo.png")
+                                        , new Image("agent.png")
+                                        , new Image("morpheus.png")
+                                        , new Image("trinity.png")};
     /**
      * Horizontal wall sprite
      */
@@ -61,11 +61,11 @@ public class GameUI {
     /**
      * Horizontal gap between cell
      */
-    public final int Hspace = 50;
+    public final int Hspace = 52;
     /**
      * Vertical gap between cell
      */
-    public final int Vspace = 50;
+    public final int Vspace = 52;
     /**
      * Effect that highlight the sprite attach to it. Used to show possible move for players
      */
@@ -114,7 +114,7 @@ public class GameUI {
     /**
      * Pane used for the victory screen
      */
-    private BorderPane victoryPane;
+    private VBox victoryPane;
     /**
      * Scene where the game takes place
      */
@@ -173,9 +173,10 @@ public class GameUI {
 
         this.mainPane = new BorderPane();
         mainPane.setBackground(Background.EMPTY);
-        mainPane.setMinSize(600, 600);
+        mainPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
 
-        this.victoryPane = new BorderPane();
+        this.victoryPane = new VBox();
         victoryPane.setBackground(Background.EMPTY);
         victoryPane.setMinSize(600, 600);
 
@@ -183,7 +184,8 @@ public class GameUI {
 
         this.pauseMenu = new VBox();
         pauseMenu.setAlignment(Pos.CENTER);
-        pauseMenu.setMinSize(600, 600);
+        pauseMenu.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
         pauseMenu.setBackground(Background.EMPTY);
         pauseMenu.setSpacing(15);
 
@@ -193,16 +195,7 @@ public class GameUI {
 
         this.appStage.setScene(gameScene);
 
-        //victoryScene --------------------------------------
-        backToMenu = new Button("BACK TO THE MENUUUUUUU");
-        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                appStage.setScene(menuScene);
-            }
-        });
-        victoryPane.setCenter(backToMenu);
-        victoryScene.getStylesheets().add("Viper.css");
+
         //pauseScene --------------------------------------
         //save
         saveButton = new Button("Save Game");
@@ -238,6 +231,19 @@ public class GameUI {
         });
         pauseMenu.getChildren().addAll(saveButton, backToGameButton, backToMenuInGameButton);
         pauseScene.getStylesheets().add("Viper.css");
+
+        //victoryScene --------------------------------------
+        Separator separator = new Separator();
+        backToMenu = new Button("BACK TO THE MENU");
+        backToMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                appStage.setScene(menuScene);
+            }
+        });
+        victoryPane.setSpacing(15);
+        victoryPane.setAlignment(Pos.CENTER);
+        victoryScene.getStylesheets().add("Viper.css");
         //gameScene --------------------------------------
         mainPane.setCenter(gameContent);
         gameScene.setFill(Color.BLACK);
@@ -282,9 +288,9 @@ public class GameUI {
         gameContent.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Coord[] possibleCell = game.whereCanIGo(currentPlayer);
                 Coord clickedCell = getCoordFromPos(event.getX(), event.getY());
                 PawnController ctrl = playerArray[currentPlayer];
+                Coord[] possibleCell = Action.whereCanIGo(ctrl);
                 Coord playerCoord = ctrl.getDependency().getCoord();
                 int size = gameContent.getChildren().size();
                 ImageView ghostWall = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
@@ -324,7 +330,7 @@ public class GameUI {
                         if (playerCoord.compareTo(clickedCell) == 0) {
                             //click on pawn --> we make the reachable cell glowing
                             for (Coord coord : possibleCell) {
-                                gameContent.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(colorCell);
+                                gameContent.getChildren().get(coord.getX() + (boardSize * coord.getY())).setEffect(colorCell);
                             }
                         } else if (clickedCell.isIn(possibleCell)
                                 && clickedCellImage.getEffect().equals(colorCell)) {
@@ -337,6 +343,10 @@ public class GameUI {
                             resetGlowing();
                             //Check win
                             if (ctrl.hasWon()) {
+                                Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+                                victoryPane.getChildren().add(whoWon);
+                                victoryPane.getChildren().add(separator);
+                                victoryPane.getChildren().add(backToMenu);
                                 appStage.setScene(victoryScene);
                             } else {
                                 currentPlayer= (currentPlayer + 1) % playerTotal;
@@ -358,7 +368,10 @@ public class GameUI {
                 Coord currentCellCoord = getCoordFromPos(event.getX(), event.getY());
                 wantedWallCoord[0] = currentCellCoord;
                 int size = gameContent.getChildren().size();
-                if (currentCellCoord.getY() < boardSize && currentCellCoord.getY() > 0 && currentCellCoord.getX() < boardSize-1
+                if (currentCellCoord.getY() < boardSize
+                        && currentCellCoord.getY() > 0
+                        && currentCellCoord.getX() < boardSize-1
+                        && currentCellCoord.getX() >= 0
                         && event.getButton().compareTo(MouseButton.SECONDARY) == 0
                         && playerArray[currentPlayer].getNumbWall() > 0) {
                     //we are at a correct place for a wall to be placed
@@ -404,6 +417,10 @@ public class GameUI {
                     if (playerArray[currentPlayer].hasWon()) {
                         //we stop the "loop" and show victory screen
                         this.stop();
+                        Label whoWon = new Label("Congratulation ! Player " + (currentPlayer+1) + " has won !");
+                        victoryPane.getChildren().add(whoWon);
+                        victoryPane.getChildren().add(separator);
+                        victoryPane.getChildren().add(backToMenu);
                         appStage.setScene(victoryScene);
                     } else {
                         //next player
@@ -413,6 +430,7 @@ public class GameUI {
                 }
             }
         }.start();
+
         appStage.show();
     }
 
@@ -435,11 +453,7 @@ public class GameUI {
             ImageView pawn = (ImageView) gameContent.getChildren().get( (boardSize*boardSize)+i );
             Coord playerCoord = playerArray[i].getDependency().getCoord();
             if (pawn.getImage() == null) { //if there is already an image set, it's not necessary to set it again
-                if (playerArray[i].getType().equals("Human")) {
-                    pawn.setImage(humanPawnImg); //TODO random choice between Neo/Morpheus/Trinity
-                } else {
-                    pawn.setImage(AIPawnImg);
-                }
+                pawn.setImage(playerSprite[i]);
             }
             pawn.setX(playerCoord.getX() * Hspace);
             pawn.setY(playerCoord.getY() * Vspace);
@@ -484,22 +498,5 @@ public class GameUI {
         return new Coord(game_y, game_x);
     }
 
-    /**
-     * given an array of coordinates and a mouse click event. It will check if one of the coordinates corresponds
-     * to the click position and if one is found, it returns it.
-     *
-     * @param mouseClick the click event we are looking the position from.
-     * @param cellArray  the coordinates we are comparing.
-     * @return the corresponding coordinates. Null if iit has not been found.
-     */
-    @Deprecated
-    private Coord cellClickIsInArray(MouseEvent mouseClick, Coord[] cellArray) {
-        for (Coord coord : cellArray) {
-            if (getCoordFromPos(mouseClick.getX(), mouseClick.getY()).compareTo(coord) == 0) {
-                return coord;
-            }
-        }
-        return null;
-    }
 
 }

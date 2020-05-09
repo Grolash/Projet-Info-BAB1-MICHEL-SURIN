@@ -210,8 +210,6 @@ public class canPlaceWallTest {
         Assertions.assertFalse(Rules.canPlaceWall(playerArray, ctrl, wall3[0], dir3));
     }
 
-
-
     @Test
     public void canPlaceWall2P() {
         //init

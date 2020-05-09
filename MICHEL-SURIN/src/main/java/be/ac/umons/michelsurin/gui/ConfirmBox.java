@@ -46,6 +46,12 @@ public class ConfirmBox {
             window.close();
         });
 
+        window.setOnCloseRequest(e -> {
+            e.consume(); //Say to Java : "Hey, we're handling this ourselves."
+            answer = false;
+            window.close();
+        });
+
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, yesButton, noButton);
         layout.setAlignment(Pos.CENTER);

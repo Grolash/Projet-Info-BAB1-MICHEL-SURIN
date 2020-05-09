@@ -3,119 +3,145 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="776.7234285714287" y="1477.0">engine.Game</node>
-    <node x="46.0" y="285.0">engine.Rules</node>
-    <node x="0.0" y="1811.0">gui.ConfirmBox</node>
-    <node x="254.0" y="1811.0">engine.StatRunner</node>
-    <node x="489.0" y="1811.0">gui.GameUI</node>
-    <node x="786.082" y="672.0">world.Board</node>
-    <node x="653.832" y="1180.0">controller.PawnController</node>
-    <node x="1093.7234285714287" y="0.0">controller.Action</node>
-    <node x="683.0" y="1811.0">gui.AlertBox</node>
-    <node x="687.332" y="991.0">controller.Controller</node>
-    <node x="537.5" y="759.0">items.MOAI</node>
-    <node x="738.0017142857143" y="0.0">tools.Coord</node>
-    <node x="512.332" y="1023.0">items.Wall</node>
-    <node x="1547.7234285714287" y="0.0">gui.Menu</node>
-    <node x="0.0" y="1002.0">items.Pawn</node>
-    <node x="699.832" y="331.0">world.Cell</node>
+    <node x="445.42638248847913" y="1096.0">be.ac.umons.michelsurin.controller.Controller</node>
+    <node x="222.49999999999997" y="1128.0">be.ac.umons.michelsurin.items.Wall</node>
+    <node x="232.48387096774184" y="801.0">be.ac.umons.michelsurin.items.MOAI</node>
+    <node x="10.5" y="1075.0">be.ac.umons.michelsurin.items.Pawn</node>
+    <node x="396.8895929339476" y="373.0">be.ac.umons.michelsurin.world.Cell</node>
+    <node x="677.8895929339476" y="349.0">be.ac.umons.michelsurin.engine.Rules</node>
+    <node x="2301.889592933948" y="0.0">be.ac.umons.michelsurin.engine.StatRunner</node>
+    <node x="2047.8895929339478" y="0.0">be.ac.umons.michelsurin.gui.ConfirmBox</node>
+    <node x="1593.8895929339476" y="0.0">be.ac.umons.michelsurin.engine.Action</node>
+    <node x="56.78041474654367" y="1687.0">be.ac.umons.michelsurin.engine.Game</node>
+    <node x="494.92638248847913" y="714.0">be.ac.umons.michelsurin.world.Board</node>
+    <node x="534.6395929339475" y="2070.0">be.ac.umons.michelsurin.gui.GameUI</node>
+    <node x="411.92638248847913" y="1348.0">be.ac.umons.michelsurin.controller.PawnController</node>
+    <node x="217.92638248847913" y="0.0">be.ac.umons.michelsurin.tools.Coord</node>
+    <node x="718.1234639016895" y="1784.0">be.ac.umons.michelsurin.engine.SaverLoader</node>
+    <node x="1265.8895929339476" y="0.0">be.ac.umons.michelsurin.gui.Menu</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="items.Wall" target="items.MOAI">
-      <point x="0.0" y="-37.5" />
-      <point x="589.832" y="966.0" />
-      <point x="599.5" y="966.0" />
-      <point x="0.0" y="47.5" />
+    <edge source="be.ac.umons.michelsurin.controller.Controller" target="be.ac.umons.michelsurin.items.MOAI">
+      <point x="-54.5" y="-90.5" />
+      <point x="499.92638248847913" y="1045.0" />
+      <point x="366.65053763440847" y="1045.0" />
+      <point x="53.66666666666663" y="68.5" />
     </edge>
-    <edge source="engine.Game" target="world.Board">
+    <edge source="be.ac.umons.michelsurin.engine.Rules" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="0.0" y="-157.5" />
+      <point x="949.3895929339476" y="309.0" />
+      <point x="389.71209677419347" y="309.0" />
+      <point x="79.28571428571433" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.engine.Game" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="-108.79999999999995" y="-166.5" />
+      <point x="83.98041474654372" y="1667.0" />
+      <point x="0.0" y="1667.0" />
+      <point x="0.0" y="309.0" />
+      <point x="231.1406682027648" y="309.0" />
+      <point x="-79.28571428571433" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.world.Board" target="be.ac.umons.michelsurin.world.Cell">
+      <point x="-57.0" y="-155.5" />
+      <point x="551.9263824884791" y="689.0" />
+      <point x="526.8895929339476" y="689.0" />
+      <point x="0.0" y="133.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.items.Pawn" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="-47.75" y="-111.5" />
+      <point x="58.25" y="319.0" />
+      <point x="257.56923963133625" y="319.0" />
+      <point x="-52.85714285714289" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.controller.Controller" target="be.ac.umons.michelsurin.world.Board">
+      <point x="54.5" y="-90.5" />
+      <point x="0.0" y="155.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.engine.Game" target="be.ac.umons.michelsurin.controller.PawnController">
+      <point x="108.79999999999995" y="-166.5" />
+      <point x="301.5804147465436" y="1667.0" />
+      <point x="483.17638248847913" y="1667.0" />
+      <point x="-71.25" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.gui.GameUI" target="be.ac.umons.michelsurin.controller.PawnController">
+      <point x="-33.749999999999886" y="-409.5" />
+      <point x="635.8895929339476" y="2045.0" />
+      <point x="625.6763824884791" y="2045.0" />
+      <point x="71.25" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.world.Board" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="57.0" y="-155.5" />
+      <point x="665.9263824884791" y="689.0" />
+      <point x="667.3895929339476" y="689.0" />
+      <point x="667.3895929339476" y="319.0" />
+      <point x="363.283525345622" y="319.0" />
+      <point x="52.85714285714289" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.items.MOAI" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="0.0" y="-68.5" />
+      <point x="312.98387096774184" y="329.0" />
+      <point x="310.42638248847913" y="329.0" />
+      <point x="0.0" y="144.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.engine.Game" target="be.ac.umons.michelsurin.items.Pawn">
+      <point x="-54.39999999999998" y="-166.5" />
+      <point x="138.3804147465437" y="1667.0" />
+      <point x="106.0" y="1667.0" />
+      <point x="0.0" y="111.5" />
+    </edge>
+    <edge source="be.ac.umons.michelsurin.controller.PawnController" target="be.ac.umons.michelsurin.controller.Controller">
       <point x="0.0" y="-144.5" />
-      <point x="912.7234285714287" y="1457.0" />
-      <point x="949.332" y="1457.0" />
-      <point x="949.332" y="966.0" />
-      <point x="957.082" y="966.0" />
-      <point x="57.0" y="134.5" />
+      <point x="0.0" y="90.5" />
     </edge>
-    <edge source="world.Cell" target="tools.Coord">
-      <point x="0.0" y="-122.5" />
-      <point x="0.0" y="112.5" />
+    <edge source="be.ac.umons.michelsurin.gui.GameUI" target="be.ac.umons.michelsurin.engine.Game">
+      <point x="-101.24999999999989" y="-409.5" />
+      <point x="568.3895929339476" y="2045.0" />
+      <point x="192.78041474654367" y="2045.0" />
+      <point x="0.0" y="166.5" />
     </edge>
-    <edge source="items.Pawn" target="tools.Coord">
-      <point x="-35.5" y="-58.5" />
-      <point x="35.5" y="245.0" />
-      <point x="751.2160000000001" y="245.0" />
-      <point x="-79.28571428571422" y="112.5" />
+    <edge source="be.ac.umons.michelsurin.items.Pawn" target="be.ac.umons.michelsurin.items.MOAI">
+      <point x="47.75" y="-111.5" />
+      <point x="153.75" y="1055.0" />
+      <point x="259.3172043010752" y="1055.0" />
+      <point x="-53.66666666666663" y="68.5" />
     </edge>
-    <edge source="world.Board" target="world.Cell">
-      <point x="-57.0" y="-134.5" />
-      <point x="843.082" y="647.0" />
-      <point x="829.832" y="647.0" />
-      <point x="0.0" y="122.5" />
+    <edge source="be.ac.umons.michelsurin.gui.GameUI" target="be.ac.umons.michelsurin.world.Board">
+      <point x="33.750000000000114" y="-409.5" />
+      <point x="703.3895929339476" y="2045.0" />
+      <point x="707.6234639016895" y="2045.0" />
+      <point x="707.6234639016895" y="1055.0" />
+      <point x="684.9263824884791" y="1055.0" />
+      <point x="76.0" y="155.5" />
     </edge>
-    <edge source="controller.PawnController" target="controller.Controller">
-      <point x="0.0" y="-123.5" />
+    <edge source="be.ac.umons.michelsurin.gui.GameUI" target="be.ac.umons.michelsurin.engine.SaverLoader">
+      <point x="101.25000000000011" y="-409.5" />
+      <point x="770.8895929339476" y="2045.0" />
+      <point x="786.6234639016895" y="2045.0" />
       <point x="0.0" y="69.5" />
     </edge>
-    <edge source="controller.Controller" target="items.MOAI">
-      <point x="-54.5" y="-69.5" />
-      <point x="741.832" y="966.0" />
-      <point x="640.8333333333333" y="966.0" />
-      <point x="41.333333333333314" y="47.5" />
+    <edge source="be.ac.umons.michelsurin.items.Wall" target="be.ac.umons.michelsurin.items.MOAI">
+      <point x="0.0" y="-58.5" />
+      <point x="303.0" y="1055.0" />
+      <point x="312.98387096774184" y="1055.0" />
+      <point x="0.0" y="68.5" />
     </edge>
-    <edge source="engine.Game" target="items.Pawn">
-      <point x="-108.80000000000001" y="-144.5" />
-      <point x="803.9234285714288" y="1457.0" />
-      <point x="71.0" y="1457.0" />
-      <point x="0.0" y="58.5" />
+    <edge source="be.ac.umons.michelsurin.world.Cell" target="be.ac.umons.michelsurin.tools.Coord">
+      <point x="0.0" y="-133.5" />
+      <point x="526.8895929339476" y="329.0" />
+      <point x="336.8549539170506" y="329.0" />
+      <point x="26.428571428571445" y="144.5" />
     </edge>
-    <edge source="engine.Game" target="controller.PawnController">
-      <point x="-54.39999999999998" y="-144.5" />
-      <point x="858.3234285714287" y="1447.0" />
-      <point x="796.332" y="1447.0" />
-      <point x="0.0" y="123.5" />
-    </edge>
-    <edge source="world.Board" target="tools.Coord">
-      <point x="57.0" y="-134.5" />
-      <point x="957.082" y="647.0" />
-      <point x="970.332" y="647.0" />
-      <point x="970.332" y="265.0" />
-      <point x="856.9302857142858" y="265.0" />
-      <point x="26.428571428571445" y="112.5" />
-    </edge>
-    <edge source="items.Pawn" target="items.MOAI">
-      <point x="35.5" y="-58.5" />
-      <point x="106.5" y="966.0" />
-      <point x="558.1666666666666" y="966.0" />
-      <point x="-41.333333333333314" y="47.5" />
-    </edge>
-    <edge source="engine.Game" target="tools.Coord">
-      <point x="54.39999999999998" y="-144.5" />
-      <point x="967.1234285714287" y="1447.0" />
-      <point x="1024.5819999999999" y="1447.0" />
-      <point x="1024.5819999999999" y="255.0" />
-      <point x="883.3588571428572" y="255.0" />
-      <point x="52.85714285714289" y="112.5" />
-    </edge>
-    <edge source="controller.Controller" target="world.Board">
-      <point x="54.5" y="-69.5" />
-      <point x="850.832" y="966.0" />
-      <point x="843.082" y="966.0" />
-      <point x="-57.0" y="134.5" />
-    </edge>
-    <edge source="engine.Rules" target="tools.Coord">
-      <point x="0.0" y="-168.5" />
-      <point x="317.5" y="255.0" />
-      <point x="777.6445714285715" y="255.0" />
-      <point x="-52.85714285714289" y="112.5" />
-    </edge>
-    <edge source="items.MOAI" target="tools.Coord">
-      <point x="0.0" y="-47.5" />
-      <point x="599.5" y="265.0" />
-      <point x="804.0731428571429" y="265.0" />
-      <point x="-26.428571428571445" y="112.5" />
+    <edge source="be.ac.umons.michelsurin.engine.Game" target="be.ac.umons.michelsurin.world.Board">
+      <point x="54.39999999999998" y="-166.5" />
+      <point x="247.18041474654365" y="1657.0" />
+      <point x="401.42638248847913" y="1657.0" />
+      <point x="401.42638248847913" y="1055.0" />
+      <point x="532.9263824884791" y="1055.0" />
+      <point x="-76.0" y="155.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.20000000000000015" x="991.7142857142853" y="330.9999999999999" />
+  <settings layout="Hierarchic Group" zoom="0.8" x="797.625" y="533.75" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
@@ -124,7 +150,7 @@
     <Category>Properties</Category>
     <Category>Inner Classes</Category>
   </Categories>
-  <SCOPE>All</SCOPE>
+  <SCOPE>Production</SCOPE>
   <VISIBILITY>private</VISIBILITY>
 </Diagram>
 
