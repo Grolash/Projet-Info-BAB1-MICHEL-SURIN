@@ -88,12 +88,13 @@ public class Action implements Serializable {
      * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
-
+        System.out.println("ight imma do something");
         if (smartedActionChangelog > 1) { //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
         }
-
-        if (smartedActionChangelog == 0){ //Tries and move.
+        System.out.println("I will do " + smartedActionChangelog + " | 0 = move, 1 = wall");
+        if (smartedActionChangelog == 0){
+            //Tries and move.
             //System.out.println("I move");
             // Almost same as Debilus but follows a path
             Coord direction;
@@ -227,7 +228,7 @@ public class Action implements Serializable {
 
         }
         else if (smartedActionChangelog == 1){ //Tries and place a wall
-            //System.out.println("I place a wall");
+            System.out.println("I place a wall");
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
