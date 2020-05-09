@@ -20,7 +20,7 @@
     -fx-font-family: Monospaced;
 }
 .button:pressed {
-    -fx-background-color: #1eff00;
+    -fx-background-color: #0b4d11;
 }
 .choice-box {
     -fx-background-color: #000000;
@@ -28,11 +28,14 @@
     -fx-border-color: #10a110;
     -fx-font-family: Monospaced;
 }
-.menu-item:focused{
-    -fx-background-color: #003300;
-}
-.context-menu {
+.choice-box .context-menu {
     -fx-background-color: #000000;
+}
+.choice-box .menu-item:focused {
+    -fx-background-color: #002603;
+    -fx-text-fill: #10a110;
+    -fx-border-color: #10a110;
+    -fx-font-family: Monospaced;
 }
 
 
