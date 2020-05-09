@@ -4,10 +4,12 @@ package be.ac.umons.michelsurin.engine;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.world.Board;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Action implements Serializable {
@@ -86,13 +88,11 @@ public class Action implements Serializable {
      * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
-
         if (smartedActionChangelog > 1) { //See above the method.
             smartedActionChangelog = 0; //Just a reinitialisation.
         }
-
-        if (smartedActionChangelog == 0){ //Tries and move.
-            //System.out.println("I move");
+        if (smartedActionChangelog == 0){
+            //Tries and move.
             // Almost same as Debilus but follows a path
             Coord direction;
             int randint; //   /!\    Was a random tool, moved to be a direction indicator
@@ -225,20 +225,11 @@ public class Action implements Serializable {
 
         }
         else if (smartedActionChangelog == 1){ //Tries and place a wall
-            //System.out.println("I place a wall");
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    //TODO old recursive code
-                    //System.out.println("tries : " + triesWalls);
-                    /*
-                    if (triesWalls == 50){
-                        smartedActionChangelog += 1;
-                        triesWalls = 0;
-                        Action.smartedActionHandler(playerArray, ctrl);
-                    } */
                     int ordinate;
                     if (ctrl.getDependency().getCoord().getY() == 0 ||
                             ctrl.getDependency().getCoord().getY() - 1 == 0) {
@@ -251,9 +242,9 @@ public class Action implements Serializable {
                         }
                         else {
                             do {
-                                ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
+                                ordinate = random.nextInt(ctrl.getBoard().getSize() );
                                 }
-                            while(ordinate < ctrl.getDependency().getCoord().getY());
+                            while(ordinate < ctrl.getDependency().getCoord().getY() );
                         }
                     }
                     if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
@@ -277,13 +268,10 @@ public class Action implements Serializable {
                     placeDir = getDirection(intDir);
 
                     triesWalls++;
-                    //System.out.println("in the while");
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
-                //System.out.println("while passed");
+                while (!Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
-                    //System.out.println(ctrl.getPlayerNumber() + " placed a wall :)");
                 } else {
                     smartedActionChangelog += 1;
                     smartedActionHandler(playerArray, ctrl);
@@ -390,12 +378,10 @@ public class Action implements Serializable {
         } else if (action == 1){ //Tries and place a wall
 
             if (ctrl.getNumbWall() > 0) {
-                //System.out.println("wall");
                 Coord placeCoord;
                 Coord placeDir;
                 int triesWalls = 0;
                 do {
-                    //System.out.println(triesWalls);
                     int ordinate = random.nextInt(ctrl.getBoard().getSize() - 1);
                     if (ordinate == 0){ //We want ordinates 1 to 8
                         ordinate = ctrl.getBoard().getSize()-1;
@@ -410,9 +396,8 @@ public class Action implements Serializable {
                         intDir = 3;
                     placeDir = getDirection(intDir);
                     triesWalls++;
-                    //System.out.println(placeCoord + " | " + placeDir);
                 }
-                while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) || triesWalls > 50);
+                while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && triesWalls <= 50);
                 if (triesWalls <= 50) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
@@ -460,6 +445,64 @@ public class Action implements Serializable {
         float randfloat = random.nextInt(4);
         return Math.round(randfloat);
 
+    }
+
+    /**
+     * given a player (PawnController). It will check all the cell around its position and return an array
+     * containing all the cells where the player can go from it's position.
+     * It takes in consideration walls and pawns
+     *
+     * @param ctrl the player/controller for whom we are looking for reachable cell.
+     * @return an array with all the cell reachable from the player's position.
+     */
+    public static Coord[] whereCanIGo(PawnController ctrl) {
+        ArrayList<Coord> list = new ArrayList<Coord>();
+        Board board = ctrl.getBoard();
+        Coord ctrlCoord = ctrl.getDependency().getCoord();
+        Set<String> keys = Game.directions.keySet();
+        for (String key : keys) {
+            Coord dir = Game.directions.get(key);
+            if (Rules.canMove(ctrl, Game.directions.get(key)) && !board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
+                //no pawn, no wall, free to go
+                list.add(Coord.add(ctrlCoord, dir));
+            } else if (Rules.canMove(ctrl, Game.directions.get(key)) && board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
+                //there is a pawn, we need to check if there is a wall or a pawn behind it
+                Coord encounteredPawnCoord = Coord.add(ctrlCoord, dir);
+                Coord behindCoord = Coord.add(encounteredPawnCoord, dir);
+                if (Rules.canMove(ctrl, dir, encounteredPawnCoord) && !board.getCell(behindCoord).hasPawn()) {
+                    //no pawn, no wall, free to go !
+                    list.add(behindCoord);
+                } else if (!Rules.canMove(ctrl, dir, encounteredPawnCoord) || board.getCell(Coord.add(encounteredPawnCoord, dir)).hasPawn() ){
+                    //there is a wall or a pawn behind the encountered pawn. We need to check on
+                    //encountered pawn's sides.
+                    //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
+                    //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
+                    if (dir.compareTo(Game.directions.get("UP")) == 0 || dir.compareTo(Game.directions.get("DOWN")) == 0) {
+                        //side dir are LEFT and RIGHT
+                        if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord)
+                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT"))).hasPawn() ) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT")));
+                        }
+                        if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord)
+                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT"))).hasPawn()) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT")));
+                        }
+                    } else {
+                        //side dir are UP and DOWN
+                        if (Rules.canMove(ctrl, Game.directions.get("UP"), encounteredPawnCoord)
+                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("UP"))).hasPawn()) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("UP")));
+                        }
+                        if (Rules.canMove(ctrl, Game.directions.get("DOWN"), encounteredPawnCoord)
+                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN"))).hasPawn()) {
+                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN")));
+                        }
+                    }
+                }
+            }
+        }
+        Coord[] array = list.toArray(Coord[]::new); //convert to an array to make sure it won't change
+        return  array;
     }
 
 }

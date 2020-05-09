@@ -123,7 +123,8 @@ Résolution 600x600 -> pourquoi ?
 Comme dis précédemment, nous avons choisis d'implémenter le \textit{breadth-first search}. \\
 L'idée est donc de partir du pion et d'explorer toute les cases possible aux alentours. Ensuite, toutes ses cases nouvellement explorées doivent être explorées à leur tour et ainsi de suite jusqu'à ce qu'on ai trouvé un case qui rempli la condition de victoire. Etant donnée que chaque case renvoie vers la case depuis laquelle on l'a explorée, on peut ensuite remonté jusqu'au pion et nous avons notre chemin le plus court. \\
 Pour implémenter ceci il a fallu d'abord définir une liste de cases que l'on a déjà explorée et une liste contenant les cases qui doivent être explorées à la prochaine itération. \\
-L'algorithme principale (findAPath) initialise les différentes listes ainsi qu'une HashTable qui va contenir les liens entre les cases. Dans cette table, la clé est une case et la valeur associé renvoie vers la case dont on est venu. La case de départ est marquée avec une coordonnée spéciale, de même pour la case d'arrivée. L'algorithme va ensuite lancer des itérations (explore) pour explorer les cases aux alentours en vérifiant qu'on explore pas deux fois la même case et qu'on respecte bien les règles de déplacement.
+L'algorithme principal (\textit{findAPath}) initialise les différentes listes ainsi qu'une HashTable qui va contenir les liens entre les cases. Dans cette table, la clé est une case et la valeur associé renvoie vers la case dont on est venu. La case de départ est marquée avec une coordonnée spéciale, de même pour la case d'arrivée. L'algorithme va ensuite lancer des itérations (\textit{explore}) pour explorer les cases aux alentours en vérifiant qu'on explore pas deux fois la même case et qu'on respecte bien les règles de déplacement. Si \textit{explore} retourne 1 alors cela signifie qu'un chemin à été trouvé. Si il retourne 0, on continue d'itérer, si il retoure 2 alors il n'y a pas de chemin car il ne reste plus de case à explorer et dans ce cas on retourne une HashTable spéciale avec une clé particulière qui indique qu'il n'y a pas de chemin.\\
+Pour traduire la HashTable en un chemin, il suffit de partir de la clé spéciale qui marque l'arrivée, et de remonter de clé en valeur à la marque de départ.
 
 \subsection{Les règles}
 Les règles n'ont pas toute été simples à implémenter. Autant la validité d'un déplacement ne demande que de vérifier si la case où l'on se trouve possède un mur dans la direction donnée autant tester la validité d'un mur est autrement plus complexe. \\
@@ -153,8 +154,11 @@ Dans un soucis d'optimisation, on vérifie d'abord les collisions avec d'autres 
 
 \subsection{Les IAs}
 blablabla IA...
-\section{Problèmes survenus}
-blablabla les ia, javaFX 
+\section{Bugs connus / points faibles}
+
+\subsection{L'IA facile}
+L'IA facile (\textit{smarted}), afin de ne pas répéter tout le temps la même action utilise un \textit{changelog}, mais dû à la façon dont les actions d'IA sont appelée, ce changelog est commun à toutes les IA du même type. Cela implique qu'au lieu que chaque instance change son \textit{changelog}, c'est chaque appel d'IA facile qui va changer ce \textit{changelog}. \\
+Afin de pouvoir fixer ce problème, il faudrait pouvoir instancier ce \textit{changelog} dans chaque contrôleur. Ou alors déplacer et instancier la méthode qui calcule la prochaine action dans le contrôleur lui même. Nous nous sommes rendu compte de se problème malheureusement très tard. Le résoudre prendrait du temps et risque de générer des problèmes.
 
 \section{Conclusion}
 

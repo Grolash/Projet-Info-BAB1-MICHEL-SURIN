@@ -199,57 +199,5 @@ public class Game implements Serializable {
     }
 
 
-    /**
-     * given a player number. It will check all the cell around its position and return an array
-     * containing all the cells where the player can go from it's position.
-     * It takes in consideration walls and pawns
-     *
-     * @param player the player.
-     * @return an array with all the cell reachable from the player's position.
-     */
-    public Coord[] whereCanIGo(int player) {
-        ArrayList<Coord> list = new ArrayList<Coord>();
-        PawnController ctrl = playerArray[player];
-        Coord ctrlCoord = ctrl.getDependency().getCoord();
-        Set<String> keys = directions.keySet();
-        for (String key : keys) {
-            Coord dir = directions.get(key);
-            if (Rules.canMove(ctrl, directions.get(key)) && !board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
-                //no pawn, no wall, free to go
-                list.add(Coord.add(ctrlCoord, dir));
-            } else if (Rules.canMove(ctrl, directions.get(key)) && board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
-                //there is a pawn, we need to check if there is a wall or a pawn behind it
-                Coord encounteredPawnCoord = Coord.add(ctrlCoord, dir);
-                Coord behindCoord = Coord.add(encounteredPawnCoord, dir);
-                if (Rules.canMove(ctrl, dir, encounteredPawnCoord) && !board.getCell(behindCoord).hasPawn()) {
-                    //no pawn, no wall, free to go !
-                    list.add(behindCoord);
-                } else {
-                    //there is a wall or a pawn behind the first encountered one... We need to check on
-                    //encountered pawn's sides.
-                    //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
-                    //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
-                    if (dir.compareTo(directions.get("UP")) == 0 || dir.compareTo(directions.get("DOWN")) == 0) {
-                        //side dir are LEFT and RIGHT
-                        if (Rules.canMove(ctrl, directions.get("LEFT"), encounteredPawnCoord)) {
-                            list.add(Coord.add(encounteredPawnCoord, directions.get("LEFT")));
-                        }
-                        if (Rules.canMove(ctrl, directions.get("RIGHT"), encounteredPawnCoord)) {
-                            list.add(Coord.add(encounteredPawnCoord, directions.get("RIGHT")));
-                        }
-                    } else {
-                        //side dir are UP and DOWN
-                        if (Rules.canMove(ctrl, directions.get("UP"), encounteredPawnCoord)) {
-                            list.add(Coord.add(encounteredPawnCoord, directions.get("UP")));
-                        }
-                        if (Rules.canMove(ctrl, directions.get("DOWN"), encounteredPawnCoord)) {
-                            list.add(Coord.add(encounteredPawnCoord, directions.get("DOWN")));
-                        }
-                    }
-                }
-            }
-        }
-        Coord[] array = list.toArray(Coord[]::new); //convert to an array to make sure it won't change
-        return  array;
-    }
+
 }
