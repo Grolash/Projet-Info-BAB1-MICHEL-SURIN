@@ -127,7 +127,7 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-        Label title = new Label("QUORIDOR v0.9.4a");
+        Label title = new Label("QUORIDOR v0.9.5a");
         layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");
@@ -143,7 +143,6 @@ public class Menu extends Application {
                 } catch (IOException | ClassNotFoundException f) {
                     AlertBox.Display("Error 404 not found", "No save found.");
                 }
-
         });
         //Adding to layout.
         layout.getChildren().add(loadButton);
