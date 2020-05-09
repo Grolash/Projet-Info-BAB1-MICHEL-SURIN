@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.pathfindingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-05-09T16:15:29" hostname="DESKTOP-D7RGT2P" time="0.007">
+<testsuite name="be.ac.umons.michelsurin.pathfindingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-05-09T16:32:22" hostname="DESKTOP-D7RGT2P" time="0.011">
   <properties/>
-  <testcase name="twoSamSizePath()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.001"/>
-  <testcase name="indirectPath1()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.001"/>
-  <testcase name="alreadyWon()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.002"/>
+  <testcase name="twoSamSizePath()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.002"/>
+  <testcase name="indirectPath1()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.002"/>
+  <testcase name="alreadyWon()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.001"/>
   <testcase name="directPath()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.001"/>
   <testcase name="oneStepToVictory()" classname="be.ac.umons.michelsurin.pathfindingTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
