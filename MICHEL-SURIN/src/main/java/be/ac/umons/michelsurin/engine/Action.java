@@ -75,8 +75,10 @@ public class Action implements Serializable {
 
 
     /**
-     * Method used by smarted and smart to move following a path given by the pathfinding tool.
+     * Method used by "Smarted" and "Smart" AIs to move following a path given by the pathfinding tool.
      * It takes in account all the rules of quorridor.
+     *
+     *
      * @param ctrl the PawnController of the AI
      */
     private static void AIAdvancedMove(PawnController ctrl){
@@ -212,6 +214,16 @@ public class Action implements Serializable {
 
     }
 
+
+    /**
+     * Wall placement method of "Smart" AI.
+     * It places walls in priority in the path of the most advanced player (which path is the smallest), beginning by
+     * the most next move, and if not possible then following the path (because it's the best way of the target).
+     * If can not place any wall on the path of the target, it places the wall which is the best possible to elongate
+     * the path of the target.
+     * @param playerArray
+     * @param ctrl
+     */
     private static void smartWallPlacement(PawnController[] playerArray,PawnController ctrl){
         if (ctrl.getNumbWall() > 0) {
             Coord placeCoord;
@@ -381,6 +393,14 @@ public class Action implements Serializable {
 
     /**
      * Determinist "Smart" AI based on pathfinding to be more efficient than any random resolution algorithm.
+     *
+     * Smart first determines which player is the closest to victory. If smart is not that player, it will try to move to
+     * close the gap if the other player (the closest to victory) has not a path smaller than half the board size.
+     * If the other player has a path smaller than half the board size, Smart abandons the "closing the gap" strategy
+     * and places a wall instead.
+     * If Smart is the closest player to victory, it will try place a wall to enlarge the gap with the others.
+     * When Smart has no more walls, it moves following the best path (which is the result of the pathfinding), as always.
+     *
      * @param playerArray an array of all the players in the game.
      * @param ctrl the controller it has been put in charge of.
      */
@@ -432,10 +452,6 @@ public class Action implements Serializable {
         return travel;
     }
 
-    /**
-     * Action counter, used not to make twice the same action in a row.
-     */
-    private static int smartedActionChangelog = 0;
 
     /**
      * Smarted AI:
@@ -443,21 +459,21 @@ public class Action implements Serializable {
      * Smarted follows a path defined by pathfinding tool.
      * Also, we figured out placing a wall between one's start and one's current
      * position (included) leads to better situations, so Smarted place walls accordingly.
-     * Nevertheless it does never place a wall between itself and the goal, it moves it one cell further right.
+     * Nevertheless it should never place a wall between itself and the goal, it moves it instead one cell further right.
      * @param playerArray
      * @param ctrl
      * @throws IllegalArgumentException incorrect delta calculation between two coordinates.
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
 
-        if (smartedActionChangelog > 1) { //See above the method.
-            smartedActionChangelog = 0; //Just a reinitialisation.
+        if (ctrl.getSmartedActionChangelog() > 1) { //See above the method.
+            ctrl.setSmartedActionChangelog(0); //Just a reinitialisation.
         }
 
-        if (smartedActionChangelog == 0){
+        if (ctrl.getSmartedActionChangelog() == 0){
             AIAdvancedMove(ctrl);
         }
-        else if (smartedActionChangelog == 1){ //Tries and place a wall
+        else if (ctrl.getSmartedActionChangelog() == 1){ //Tries and place a wall
             if (ctrl.getNumbWall() > 0) {
                 Coord placeCoord;
                 Coord placeDir;
@@ -506,19 +522,19 @@ public class Action implements Serializable {
                 if (triesWalls <= 25) {
                     ctrl.placeWall(placeCoord, placeDir);
                 } else {
-                    smartedActionChangelog += 1;
+                    ctrl.setSmartedActionChangelog(ctrl.getSmartedActionChangelog() + 1);
                     smartedActionHandler(playerArray, ctrl);
                 }
 
             }
             else {
-                smartedActionChangelog += 1;
+                ctrl.setSmartedActionChangelog(ctrl.getSmartedActionChangelog() + 1);
                 smartedActionHandler(playerArray, ctrl);
             }
 
         }
 
-        smartedActionChangelog += 1;
+        ctrl.setSmartedActionChangelog(ctrl.getSmartedActionChangelog() + 1);
     }
 
 
@@ -526,6 +542,7 @@ public class Action implements Serializable {
     /**
      * "Debilus" AI:
      * Most basic AI, entirely random due to it's purpose. Is totally intended to be unintelligent and inefficient.
+     * Chooses all it's actions and their directions via a random number.
      * @param playerArray
      * @param ctrl
      */
