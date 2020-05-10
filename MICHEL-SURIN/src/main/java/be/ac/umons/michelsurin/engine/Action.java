@@ -221,9 +221,9 @@ public class Action implements Serializable {
                 int absciss;
                 int intDir;
 
-                PawnController target = playerArray[1];
-                if (ctrl.equals(playerArray[1])){
-                    target = playerArray[2];
+                PawnController target = playerArray[0];
+                if (ctrl.equals(playerArray[0])){
+                    target = playerArray[1];
                 }
 
                 for (PawnController pawnController : playerArray){ //controls the travelled distance of all the players
@@ -232,7 +232,7 @@ public class Action implements Serializable {
                     }
                 }
 
-                ArrayList<Coord> targetPath = Rules.path(ctrl);
+                ArrayList<Coord> targetPath = Rules.path(target);
                 Coord next = targetPath.remove(targetPath.size()-1);
                 ordinate = next.getY();
                 absciss = next.getX();
@@ -242,23 +242,15 @@ public class Action implements Serializable {
 
                 switch (deltaY){
                     case 1:
-                        intDir = 2;
-                        break;
-
                     case -1:
-                        intDir = 0;
+                        intDir = 3;
                         break;
-
                     case 0:
                         switch (deltaX){
                             case 1:
-                                intDir = 3;
-                                break;
-
                             case -1:
-                                intDir = 1;
+                                intDir = 0;
                                 break;
-
                             default:
                                 throw new IllegalArgumentException("deltaX should be 1 or -1.");
 
@@ -290,26 +282,17 @@ public class Action implements Serializable {
 
                     switch (deltaY){
                         case 1:
-                            intDir = 2;
-                            break;
-
                         case -1:
-                            intDir = 0;
+                            intDir = 3;
                             break;
-
                         case 0:
                             switch (deltaX){
                                 case 1:
-                                    intDir = 3;
-                                    break;
-
                                 case -1:
-                                    intDir = 1;
+                                    intDir = 0;
                                     break;
-
                                 default:
                                     throw new IllegalArgumentException("deltaX should be 1 or -1.");
-
                             }
                             break;
 

@@ -225,7 +225,6 @@ public class GameUI {
         backToMenuInGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO confirm box for save
                 appStage.setScene(menuScene);
             }
         });
