@@ -21,7 +21,7 @@ public class PawnController extends Controller {
     private int playerNumber;
     private int numbWall;
 
-    private Random random;
+    private Random random = new Random();
     private int smartedActionChangelog = random.nextInt(2);
 
     /**
