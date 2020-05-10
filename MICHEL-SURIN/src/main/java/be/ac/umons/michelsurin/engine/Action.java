@@ -132,7 +132,7 @@ public class Action implements Serializable {
         if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
             //If there is a pawn in "front" of itself, tries to bypass it.
 
-            if (!(Rules.canMove(ctrl, direction, forwardCell)) | ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
+            if (!(Rules.canMove(ctrl, direction, forwardCell)) || ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
                 //If it can not go behind, tries to move diagonally
                 // (actually it makes moves forward then on the chosen side).
                 int tries = 0; //The number of tried moves.
