@@ -387,13 +387,13 @@ public class GameUI {
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallHImg);
                         wallHighlight.setY(currentCellCoord.getY() * Vspace - 18);
-                        wallHighlight.setX(currentCellCoord.getX() * Hspace - 9);
+                        wallHighlight.setX(currentCellCoord.getX() * Hspace );
                     } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
                             currentCellCoord, Game.directions.get("UP"))){
                         //if we can place a Vwall, we display a ghost Vwall, waiting for click release
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallVImg);
-                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 54);
+                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 50);
                         wallHighlight.setX(currentCellCoord.getX() * Hspace + 33);
                     } else {
                         wallHighlight.setImage(empty);
@@ -470,13 +470,13 @@ public class GameUI {
             if (wallCoord[0].getY() == wallCoord[1].getY()) {
                 //horizontal wall
                 wall.setImage(wallHImg);
-                wall.setX(wallCoord[0].getX() * Hspace - 9);
+                wall.setX(wallCoord[0].getX() * Hspace );
                 wall.setY(wallCoord[0].getY() * Vspace - 18);
             } else {
                 //vertical wall
                 wall.setImage(wallVImg);
                 wall.setX(wallCoord[0].getX() * Hspace + 33);
-                wall.setY(wallCoord[0].getY() * Vspace - 54);
+                wall.setY(wallCoord[0].getY() * Vspace - 50);
             }
             gameContent.getChildren().add(wall);
         }
