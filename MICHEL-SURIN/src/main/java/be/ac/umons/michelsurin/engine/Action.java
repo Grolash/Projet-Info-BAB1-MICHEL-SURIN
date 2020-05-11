@@ -247,7 +247,7 @@ public class Action implements Serializable {
                 }
 
                 for (PawnController pawnController : playerArray){ //controls the travelled distance of all the players
-                    if (travel(pawnController) < travel(target)){ //to see if self is the most advanced.
+                    if (travel(pawnController) < travel(target) && !pawnController.equals(ctrl)){ //to see if self is the most advanced.
                         target = pawnController;
                     }
                 }
@@ -291,49 +291,52 @@ public class Action implements Serializable {
                 //Tries to place a wall on the next best move of the most advanced player.
             }
             else {
-                int i = 2;
-                do {
-                    Coord prev = targetPath.remove(targetPath.size()-(i-1));
-                    next = targetPath.remove(targetPath.size()-i);
-                    ordinate = next.getY();
-                    absciss = next.getX();
-                    deltaY = next.getY() - prev.getY();
-                    deltaX = next.getX() - prev.getX();
+                if(targetPath.size() > 0) {
+                    do {
+                        Coord prev = next;
+                        Coord newNext = targetPath.remove(targetPath.size() - 1);
+                        ordinate = newNext.getY();
+                        absciss = newNext.getX();
+                        deltaY = newNext.getY() - prev.getY();
+                        deltaX = newNext.getX() - prev.getX();
 
-                    switch (deltaY){
-                        case 1:
-                        case -1:
-                            intDir = 3;
-                            break;
-                        case 0:
-                            switch (deltaX){
-                                case 1:
-                                case -1:
-                                    intDir = 0;
-                                    break;
-                                default:
-                                    throw new IllegalArgumentException("deltaX should be 1 or -1.");
-                            }
-                            break;
+                        switch (deltaY) {
+                            case 1:
+                            case -1:
+                                intDir = 3;
+                                break;
+                            case 0:
+                                switch (deltaX) {
+                                    case 1:
+                                    case -1:
+                                        intDir = 0;
+                                        break;
+                                    default:
+                                        throw new IllegalArgumentException("deltaX should be 1 or -1.");
+                                }
+                                break;
 
-                        default:
-                            throw new IllegalArgumentException("deltaY should be 1 or -1.");
-                    }
+                            default:
+                                throw new IllegalArgumentException("deltaY should be 1 or -1.");
+                        }
 
 
-                    placeCoord = new Coord(ordinate, absciss);
-                    placeDir = getDirection(intDir);
+                        placeCoord = new Coord(ordinate, absciss);
+                        placeDir = getDirection(intDir);
 
-                    i++;
-                }while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) & (targetPath.size()-i > 0));
+                        prev = next;
+                        next = newNext;
+
+                    } while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && targetPath.size() > 0));
+                }
 
                 if (Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) {
                     ctrl.placeWall(placeCoord, placeDir);
                     //Tries to place a wall on the rest of the path (still the best moveset).
                 }
-                else{
+                else{ //BAD COMPLEXITY! PLEASE FIX ME! KILL ME!
                     int pathSize = targetPath.size();
-                    Coord maxPathSizeCoord = targetPath.remove(targetPath.size() - 1);
+                    Coord maxPathSizeCoord = targetPath.get(targetPath.size() - 1);
                     Coord mathPathSizeDir = getDirection(1);
                     Board tempBoard;
 
