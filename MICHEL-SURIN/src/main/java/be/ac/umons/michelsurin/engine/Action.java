@@ -42,12 +42,14 @@ public class Action implements Serializable {
             case "Easy":
             case "Easy1":
             case "Easy2":
+                System.out.println("\r It's me Smarted!");
                 smartedActionHandler(playerArray, ctrl);
                 break;
             case "Smart" :
             case "Hard":
             case "Hard1":
             case "Hard2":
+                System.out.println("\r It's smart time");
                 smartActionHandler(playerArray, ctrl);
                 break;
             case "DebugDOWN":
@@ -295,6 +297,7 @@ public class Action implements Serializable {
                     do {
                         Coord prev = next;
                         Coord newNext = targetPath.remove(targetPath.size() - 1);
+
                         ordinate = newNext.getY();
                         absciss = newNext.getX();
                         deltaY = newNext.getY() - prev.getY();
@@ -327,14 +330,16 @@ public class Action implements Serializable {
                         prev = next;
                         next = newNext;
 
-                    } while (!(Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && targetPath.size() > 0));
+                    } while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && targetPath.size() > 1);
                 }
 
                 if (Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) {
                     ctrl.placeWall(placeCoord, placeDir);
                     //Tries to place a wall on the rest of the path (still the best moveset).
                 }
-                else{ //BAD COMPLEXITY! PLEASE FIX ME! KILL ME!
+                else{ //BAD COMPLEXITY! PLEASE FIX ME! KILL ME! - fixed, I commented
+                    AIAdvancedMove(ctrl);
+                    /*
                     int pathSize = targetPath.size();
                     Coord maxPathSizeCoord = targetPath.get(targetPath.size() - 1);
                     Coord mathPathSizeDir = getDirection(1);
@@ -392,7 +397,7 @@ public class Action implements Serializable {
                     }
                     else { //If can not place advantageous wall, better move...
                         AIAdvancedMove(ctrl);
-                    }
+                    } */
                 }
             }
 
