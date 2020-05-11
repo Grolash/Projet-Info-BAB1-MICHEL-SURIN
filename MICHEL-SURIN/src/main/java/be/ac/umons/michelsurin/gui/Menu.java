@@ -120,14 +120,12 @@ public class Menu extends Application {
         closeButton.setOnAction(e -> closeProgram());
 
         window.setTitle("Main Menu");
-        window.setMinWidth(600);
-        window.setMinHeight(600);
 
         layout = new VBox(); //Sole layout. Gets children.
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-        Label title = new Label("QUORIDOR v0.9.5b");
+        Label title = new Label("QUORIDOR v0.9.6b");
         layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");

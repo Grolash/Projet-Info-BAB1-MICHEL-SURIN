@@ -32,20 +32,23 @@ public class Action implements Serializable {
      */
     public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         switch (ctrl.getType()) {
+            case "Debilus" :
             case "Random":
             case "Random1":
             case "Random2":
                 debilusActionHandler(playerArray, ctrl);
                 break;
+            case "Smarted" :
             case "Easy":
             case "Easy1":
             case "Easy2":
-                smartActionHandler(playerArray, ctrl);
+                smartedActionHandler(playerArray, ctrl);
                 break;
+            case "Smart" :
             case "Hard":
             case "Hard1":
             case "Hard2":
-                smartedActionHandler(playerArray, ctrl);
+                smartActionHandler(playerArray, ctrl);
                 break;
             case "DebugDOWN":
                 debugDOWNActionHandler(playerArray, ctrl);

@@ -174,20 +174,21 @@ public class GameUI {
         this.mainPane = new BorderPane();
         mainPane.setBackground(Background.EMPTY);
         mainPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
-                , Vspace*game.getBoard().getSize()+Vspace);
+                            , Vspace*game.getBoard().getSize()+Vspace);
 
         this.victoryPane = new VBox();
         victoryPane.setBackground(Background.EMPTY);
-        victoryPane.setMinSize(600, 600);
+        victoryPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
 
         this.gameContent = new Group();
 
         this.pauseMenu = new VBox();
         pauseMenu.setAlignment(Pos.CENTER);
-        pauseMenu.setMinSize(Hspace*game.getBoard().getSize()+Hspace
-                , Vspace*game.getBoard().getSize()+Vspace);
         pauseMenu.setBackground(Background.EMPTY);
         pauseMenu.setSpacing(15);
+        pauseMenu.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                            , Vspace*game.getBoard().getSize()+Vspace);
 
         this.gameScene = new Scene(mainPane);
         this.victoryScene = new Scene(victoryPane);
@@ -225,7 +226,10 @@ public class GameUI {
         backToMenuInGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                appStage.setScene(menuScene);
+                ConfirmBox.Display("Confirmation", "Are you sure ? All unsaved changed will be lost.");
+                if (ConfirmBox.answer) {
+                    appStage.setScene(menuScene);
+                }
             }
         });
         pauseMenu.getChildren().addAll(saveButton, backToGameButton, backToMenuInGameButton);
