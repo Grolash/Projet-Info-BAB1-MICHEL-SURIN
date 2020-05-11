@@ -504,10 +504,10 @@ public class Action implements Serializable {
                             while(ordinate < ctrl.getDependency().getCoord().getY() );
                         }
                     }
-                    if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() != 0)) {
+                    if ((ordinate == 0) && (ctrl.getDependency().getCoord().getY() != 0)) {
                         ordinate = ctrl.getDependency().getCoord().getY();
                     }
-                    else if ((ordinate == 0) & (ctrl.getDependency().getCoord().getY() == 0)){
+                    else if ((ordinate == 0) && (ctrl.getDependency().getCoord().getY() == 0)){
                         ordinate = 2;
                     }
                     //Does not place a wall further than itself.
@@ -517,7 +517,7 @@ public class Action implements Serializable {
                     if (intDir == 1)
                         intDir = 3;
 
-                    if ((absciss == ctrl.getDependency().getCoord().getX()) & (intDir == 3))
+                    if ((absciss == ctrl.getDependency().getCoord().getX()) && (intDir == 3))
                         absciss += 1;
                     //If the wall is in the way of the goal, displace it.
 
