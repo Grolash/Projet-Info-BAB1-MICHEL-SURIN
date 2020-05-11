@@ -120,7 +120,7 @@ public class Rules {
             if (coord.getY() == 0) {
                 return false;
             //checks potential collisions with existing walls
-            } else if (coord.getX() == 8) {
+            } else if (coord.getX() == 8){
                 return false;
             } else {
                 //nextCoord will be used to check if there is already a wall at the place we want to place a wall
