@@ -32,14 +32,19 @@ public class Action implements Serializable {
      */
     public static void getAction(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
         switch (ctrl.getType()) {
-            case "Debilus":
-            case "Dabilus":
+            case "Random":
+            case "Random1":
+            case "Random2":
                 debilusActionHandler(playerArray, ctrl);
                 break;
-            case "Smart":
+            case "Easy":
+            case "Easy1":
+            case "Easy2":
                 smartActionHandler(playerArray, ctrl);
                 break;
-            case "Smarted":
+            case "Hard":
+            case "Hard1":
+            case "Hard2":
                 smartedActionHandler(playerArray, ctrl);
                 break;
             case "DebugDOWN":
@@ -566,7 +571,7 @@ public class Action implements Serializable {
             if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
                 //If there is a pawn in "front" of itself, tries to bypass it.
 
-                if (!(Rules.canMove(ctrl, direction, forwardCell)) | ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
+                if (!(Rules.canMove(ctrl, direction, forwardCell)) || ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
                     //If it can not go behind, tries to move diagonally
                     // actually it makes moves forward then on the chosen side).
                     int tries = 0; //The number of tried moves.

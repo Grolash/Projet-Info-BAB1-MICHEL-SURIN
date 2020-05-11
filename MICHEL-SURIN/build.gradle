@@ -14,6 +14,7 @@ test {
 }
 
 dependencies {
+    compile 'me.tongfei:progressbar:0.8.1'
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 }
@@ -29,15 +30,10 @@ application {
     mainClassName = 'be.ac.umons.michelsurin.gui.Menu'
 }
 
-task stat(type : JavaExec) {
+task stat(type : JavaExec){
     description = "Run the statistic mode of the Quoridor"
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     main = 'be.ac.umons.michelsurin.engine.StatRunner'
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'be.ac.umons.michelsurin.gui.Menu'
-    }
-}
