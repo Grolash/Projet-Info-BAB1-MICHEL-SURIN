@@ -15,6 +15,28 @@ public class canPlaceWallTest {
     @Test
     public void wallOverlap1() {
         //init
+        Pawn p1 = new Pawn(new Coord(0, 4), 8, true);
+        Pawn p2 = new Pawn(new Coord(8, 4), 0, true);
+        Coord[] pawnCoord = new Coord[2];
+        pawnCoord[0] = p1.getStart();
+        pawnCoord[1] = p2.getStart();
+        Board board = new Board(9, pawnCoord);
+
+        Coord[] testingWall = new Coord[2];
+        testingWall[0] = new Coord(2, 2);
+        testingWall[1] = new Coord(1, 2);
+        board.addToWallList(testingWall);
+
+        //tests
+        Assertions.assertTrue(Rules.validPlacement(new Coord(2, 1), Game.directions.get("RIGHT"), board)); //a wall next to
+        Assertions.assertTrue(Rules.validPlacement(new Coord(2, 3), Game.directions.get("RIGHT"), board)); //a wall next to
+
+        Assertions.assertTrue(Rules.validPlacement(new Coord(3, 2), Game.directions.get("RIGHT"), board)); //a wall under
+        Assertions.assertTrue(Rules.validPlacement(new Coord(1, 2), Game.directions.get("RIGHT"), board)); //a wall above
+    }
+    @Test
+    public void wallOverlap2() {
+        //init
         Pawn p1 = new Pawn(new Coord(0,4),8, true);
         Pawn p2 = new Pawn(new Coord(8,4),0, true);
         Coord[] pawnCoord = new Coord[2];
@@ -28,18 +50,28 @@ public class canPlaceWallTest {
         board.addToWallList(testingWall);
 
         //tests
-        Assertions.assertTrue(Rules.validPlacement(new Coord(2,1), Game.directions.get("RIGHT"), board)); //a wall next to
-        Assertions.assertTrue(Rules.validPlacement(new Coord(2,3), Game.directions.get("RIGHT"), board)); //a wall next to
-
-        Assertions.assertTrue(Rules.validPlacement(new Coord(3,2), Game.directions.get("RIGHT"), board)); //a wall under
-        Assertions.assertTrue(Rules.validPlacement(new Coord(1,2), Game.directions.get("RIGHT"), board)); //a wall above
-
         Assertions.assertFalse(Rules.validPlacement(new Coord(2,2), Game.directions.get("RIGHT"), board)); //cutting the existing wall
 
         Assertions.assertTrue(Rules.validPlacement(new Coord(2,1), Game.directions.get("UP"), board)); //left parallel
         Assertions.assertTrue(Rules.validPlacement(new Coord(2,3), Game.directions.get("UP"), board)); //right parallel
         Assertions.assertTrue(Rules.validPlacement(new Coord(4,2), Game.directions.get("UP"), board)); //same but under
+    }
+    @Test
+    public void wallOverlap3() {
+        //init
+        Pawn p1 = new Pawn(new Coord(0,4),8, true);
+        Pawn p2 = new Pawn(new Coord(8,4),0, true);
+        Coord[] pawnCoord = new Coord[2];
+        pawnCoord[0] = p1.getStart();
+        pawnCoord[1] = p2.getStart();
+        Board board = new Board(9, pawnCoord);
 
+        Coord[] testingWall = new Coord[2];
+        testingWall[0] = new Coord(2,2);
+        testingWall[1] = new Coord(1,2);
+        board.addToWallList(testingWall);
+
+        //tests
         Assertions.assertFalse(Rules.validPlacement(new Coord(3,2), Game.directions.get("UP"), board)); //overlap 1
         Assertions.assertFalse(Rules.validPlacement(new Coord(2,2), Game.directions.get("UP"), board)); //overlap 2
         Assertions.assertFalse(Rules.validPlacement(new Coord(1,2), Game.directions.get("UP"), board)); //overlap 3
