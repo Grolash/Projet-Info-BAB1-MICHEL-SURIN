@@ -299,7 +299,7 @@ public class GameUI {
                 ImageView ghostWall = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
 
                 if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    //we are left-clicking on a ghost wall, we need to place it
+                    //we are left-clicking on a ghost wall, we need to place it if
                     resetGlowing(); //if cells are glowing the need to be reset
                     if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
                         //it's a click on a ghost wall, it means that we want it to be placed
@@ -318,6 +318,9 @@ public class GameUI {
                             updateWall();
                             currentPlayer = (currentPlayer + 1) % playerTotal;
                             game.setCurrentPlayer(currentPlayer);
+                        } else {
+                            //the wall we want to place is blocking someone so we don't place it and make it disappear
+                            ghostWall.setImage(empty);
                         }
                     } else {
                         //click somewhere else, we reset the ghost wall
@@ -330,7 +333,7 @@ public class GameUI {
                             && ctrl.getType().equals("Human")) {
                         //click is on the current player
                         ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
-                        if (playerCoord.compareTo(clickedCell) == 0) {
+                        if (playerCoord.compareTo(clickedCell) == 0 ) {
                             //click on pawn --> we make the reachable cell glowing
                             for (Coord coord : possibleCell) {
                                 gameContent.getChildren().get(coord.getX() + (boardSize * coord.getY())).setEffect(colorCell);
@@ -385,15 +388,13 @@ public class GameUI {
                     //if upper -> Hwall, if lower -> Vwall
                     if (event.getY() > currentCellCoord.getY()*(Vspace)
                             && event.getY() < (currentCellCoord.getY()*(Vspace))+(Vspace/2)
-                            && Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
-                            currentCellCoord, Game.directions.get("RIGHT"))) {
+                            && Rules.validPlacement(currentCellCoord, Game.directions.get("RIGHT"), board)) {
                         //if we can place a Hwall, we display a ghost Hwall, waiting for click release
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallHImg);
                         wallHighlight.setY(currentCellCoord.getY() * Vspace - 18);
                         wallHighlight.setX(currentCellCoord.getX() * Hspace );
-                    } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
-                            currentCellCoord, Game.directions.get("UP"))){
+                    } else if (Rules.validPlacement(currentCellCoord, Game.directions.get("UP"), board)){
                         //if we can place a Vwall, we display a ghost Vwall, waiting for click release
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallVImg);

@@ -125,7 +125,7 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-        Label title = new Label("QUORIDOR v0.9.6b");
+        Label title = new Label("QUORIDOR v0.9.7b");
         layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");
@@ -312,7 +312,7 @@ public class Menu extends Application {
             case "Standard" :
                 return 9;
             case "Huge" :
-                return 15;
+                return 13;
             default:
                 throw new IllegalArgumentException("Wrong board size !");
         }

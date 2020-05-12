@@ -4,6 +4,7 @@ package be.ac.umons.michelsurin.engine;
 import be.ac.umons.michelsurin.controller.PawnController;
 import be.ac.umons.michelsurin.engine.Game;
 import be.ac.umons.michelsurin.engine.Rules;
+import be.ac.umons.michelsurin.gui.ConfirmBox;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
@@ -42,14 +43,12 @@ public class Action implements Serializable {
             case "Easy":
             case "Easy1":
             case "Easy2":
-                System.out.println("\r It's me Smarted!");
                 smartedActionHandler(playerArray, ctrl);
                 break;
             case "Smart" :
             case "Hard":
             case "Hard1":
             case "Hard2":
-                System.out.println("\r It's smart time");
                 smartActionHandler(playerArray, ctrl);
                 break;
             case "DebugDOWN":
@@ -291,8 +290,7 @@ public class Action implements Serializable {
             if (Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) {
                 ctrl.placeWall(placeCoord, placeDir);
                 //Tries to place a wall on the next best move of the most advanced player.
-            }
-            else {
+            } else {
                 if(targetPath.size() > 0) {
                     do {
                         Coord prev = next;
@@ -335,74 +333,12 @@ public class Action implements Serializable {
 
                 if (Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir)) {
                     ctrl.placeWall(placeCoord, placeDir);
-                    //Tries to place a wall on the rest of the path (still the best moveset).
-                }
-                else{ //BAD COMPLEXITY! PLEASE FIX ME! KILL ME! - fixed, I commented
+                    //Tries to place a wall on the rest of the path (still the best move set).
+                } else{
                     AIAdvancedMove(ctrl);
-                    /*
-                    int pathSize = targetPath.size();
-                    Coord maxPathSizeCoord = targetPath.get(targetPath.size() - 1);
-                    Coord mathPathSizeDir = getDirection(1);
-                    Board tempBoard;
-
-                    for(Cell[] cellArray : ctrl.getBoard().getCellArray()) {
-                        for (Cell cell : cellArray) {
-                            tempBoard = new Board(ctrl.getBoard().getSize(), ctrl.getBoard().getPawnCoord());
-                            for (Coord[] wall : ctrl.getBoard().getWallList()) {
-                                tempBoard.addToWallList(wall);
-                            }
-                            if (Rules.canPlaceWall(playerArray, ctrl, cell.getCoord(), getDirection(1))){
-                                Coord[] testedWall = new Coord[2];
-                                testedWall[0] = cell.getCoord();
-                                testedWall[1] = Coord.add(cell.getCoord(), getDirection(1));
-                                tempBoard.addToWallList(testedWall);
-
-                                PawnController tempCtrl = new PawnController(target.getType(), (Pawn) target.getDependency(), tempBoard, 66);
-                                ArrayList<Coord> newPath = Rules.path(tempCtrl);
-                                if (newPath.size() > pathSize){
-                                    pathSize = newPath.size();
-                                    mathPathSizeDir = getDirection(1);
-                                    maxPathSizeCoord = cell.getCoord();
-                                }
-                            }
-
-                        }
-                    }
-                    for(Cell[] cellArray : ctrl.getBoard().getCellArray()) {
-                        for (Cell cell : cellArray) {
-                            tempBoard = new Board(ctrl.getBoard().getSize(), ctrl.getBoard().getPawnCoord());
-                            for (Coord[] wall : ctrl.getBoard().getWallList()) {
-                                tempBoard.addToWallList(wall);
-                            }
-                            if (Rules.canPlaceWall(playerArray, ctrl, cell.getCoord(), getDirection(2))){
-                                Coord[] testedWall = new Coord[2];
-                                testedWall[0] = cell.getCoord();
-                                testedWall[1] = Coord.add(cell.getCoord(), getDirection(2));
-                                tempBoard.addToWallList(testedWall);
-
-                                PawnController tempCtrl = new PawnController(target.getType(), (Pawn) target.getDependency(), tempBoard, 66);
-                                ArrayList<Coord> newPath = Rules.path(tempCtrl);
-                                if (newPath.size() > pathSize){
-                                    pathSize = newPath.size();
-                                    mathPathSizeDir = getDirection(2);
-                                    maxPathSizeCoord = cell.getCoord();
-                                }
-                            }
-
-                        }
-                    }
-
-                    if(Rules.canPlaceWall(playerArray, ctrl, maxPathSizeCoord, mathPathSizeDir)){
-                        ctrl.placeWall(maxPathSizeCoord, mathPathSizeDir);
-                    }
-                    else { //If can not place advantageous wall, better move...
-                        AIAdvancedMove(ctrl);
-                    } */
                 }
             }
-
         }
-
     }
 
 
@@ -722,6 +658,7 @@ public class Action implements Serializable {
      * @return an array with all the cell reachable from the player's position.
      */
     public static Coord[] whereCanIGo(PawnController ctrl) {
+        //TODO the code is awful and I believe it can ba greatly optimized and cleaned up. But we don't really have time to improve it.
         ArrayList<Coord> list = new ArrayList<Coord>();
         Board board = ctrl.getBoard();
         Coord ctrlCoord = ctrl.getDependency().getCoord();
@@ -731,38 +668,147 @@ public class Action implements Serializable {
             if (Rules.canMove(ctrl, Game.directions.get(key)) && !board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
                 //no pawn, no wall, free to go
                 list.add(Coord.add(ctrlCoord, dir));
-            } else if (Rules.canMove(ctrl, Game.directions.get(key)) && board.getCell(Coord.add(ctrlCoord, dir)).hasPawn()) {
-                //there is a pawn, we need to check if there is a wall or a pawn behind it
-                Coord encounteredPawnCoord = Coord.add(ctrlCoord, dir);
+            } else {
+                //there is a pawn
+                Coord currentCoord = ctrl.getDependency().getCoord();
+                Coord encounteredPawnCoord = Coord.add(currentCoord, dir);
                 Coord behindCoord = Coord.add(encounteredPawnCoord, dir);
-                if (Rules.canMove(ctrl, dir, encounteredPawnCoord) && !board.getCell(behindCoord).hasPawn()) {
-                    //no pawn, no wall, free to go !
-                    list.add(behindCoord);
-                } else if (!Rules.canMove(ctrl, dir, encounteredPawnCoord) || board.getCell(Coord.add(encounteredPawnCoord, dir)).hasPawn() ){
-                    //there is a wall or a pawn behind the encountered pawn. We need to check on
-                    //encountered pawn's sides.
-                    //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
-                    //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
-                    if (dir.compareTo(Game.directions.get("UP")) == 0 || dir.compareTo(Game.directions.get("DOWN")) == 0) {
-                        //side dir are LEFT and RIGHT
-                        if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord)
-                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT"))).hasPawn() ) {
-                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT")));
+                boolean mainFlag = true;
+                while (Rules.canMove(ctrl, Game.directions.get(key), currentCoord) && board.getCell(encounteredPawnCoord).hasPawn() && mainFlag) {
+                    //there is a pawn, we need to check if there is a wall or a pawn behind it
+                    if (!Rules.canMove(ctrl, dir, encounteredPawnCoord)) {
+                        //there is a wall behind the encountered pawn. We need to check on
+                        //encountered pawn's sides.
+                        //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
+                        //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
+                        if (dir.compareTo(Game.directions.get("UP")) == 0 || dir.compareTo(Game.directions.get("DOWN")) == 0) {
+                            //side dir are LEFT and RIGHT
+                            boolean[] flag = {false, false};
+                            if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT"))).hasPawn()) {
+                                //no wall no pawn
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT")));
+                            } else if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord)
+                                    && board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT"))).hasPawn()) {
+                                //no wall and a pawn
+                                currentCoord = encounteredPawnCoord;
+                                dir = Game.directions.get("LEFT");
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[0] = true;
+                            }
+                            if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT")));
+                            } else if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord)
+                                    && board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT"))).hasPawn()) {
+                                //no wall and a pawn
+                                currentCoord = encounteredPawnCoord;
+                                dir = Game.directions.get("RIGHT");
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[1] = true;
+                            }
+                            if (flag[0] && flag[1]) {
+                                currentCoord = encounteredPawnCoord;
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                mainFlag = false;
+                            }
+                        } else {
+                            //side dir are UP and DOWN
+                            boolean[] flag = {false, false};
+                            if (Rules.canMove(ctrl, Game.directions.get("UP"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("UP"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("UP")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[0] = true;
+                            }
+                            if (Rules.canMove(ctrl, Game.directions.get("DOWN"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[1] = true;
+                            }
+                            if (flag[0] && flag[1]) {
+                                currentCoord = encounteredPawnCoord;
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                mainFlag = false;
+                            }
                         }
-                        if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord)
-                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT"))).hasPawn()) {
-                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT")));
+                    } else if (board.getCell(Coord.add(encounteredPawnCoord, dir)).hasPawn()) {
+                        //there is a pawn behind the encountered pawn. We need to check on
+                        //encountered pawn's sides.
+                        //there is 2 sides direction, if the current dir is UP or DOWN --> side dir will be LEFT and RIGHT
+                        //if the current dir is LEFT or RIGHT --> side dir will be UP and DOWN
+                        if (dir.compareTo(Game.directions.get("UP")) == 0 || dir.compareTo(Game.directions.get("DOWN")) == 0) {
+                            //side dir are LEFT and RIGHT
+                            boolean[] flag = {false, false};
+                            if (Rules.canMove(ctrl, Game.directions.get("LEFT"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("LEFT")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[0] = true;
+                            }
+                            if (Rules.canMove(ctrl, Game.directions.get("RIGHT"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("RIGHT")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[1] = true;
+                            }
+                            if (flag[0] && flag[1]) {
+                                currentCoord = encounteredPawnCoord;
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                mainFlag = false;
+                            }
+                        } else {
+                            //side dir are UP and DOWN
+                            boolean[] flag = {false, false};
+                            if (Rules.canMove(ctrl, Game.directions.get("UP"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("UP"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("UP")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[0] = true;
+                            }
+                            if (Rules.canMove(ctrl, Game.directions.get("DOWN"), encounteredPawnCoord)
+                                    && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN"))).hasPawn()) {
+                                list.add(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN")));
+                            } else {
+                                //there is a wall or a pawn on encountered pawn's sides. We go behind him
+                                flag[1] = true;
+                            }
+                            if (flag[0] && flag[1]) {
+                                currentCoord = encounteredPawnCoord;
+                                encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                                behindCoord = Coord.add(encounteredPawnCoord, dir);
+                            } else {
+                                mainFlag = false;
+                            }
                         }
+                    } else if (Rules.canMove(ctrl, dir, encounteredPawnCoord) && !board.getCell(behindCoord).hasPawn()) {
+                        //no pawn, no wall, free to go !
+                        list.add(behindCoord);
+                        currentCoord = encounteredPawnCoord;
+                        encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                        behindCoord = Coord.add(encounteredPawnCoord, dir);
                     } else {
-                        //side dir are UP and DOWN
-                        if (Rules.canMove(ctrl, Game.directions.get("UP"), encounteredPawnCoord)
-                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("UP"))).hasPawn()) {
-                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("UP")));
-                        }
-                        if (Rules.canMove(ctrl, Game.directions.get("DOWN"), encounteredPawnCoord)
-                                && !board.getCell(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN"))).hasPawn()) {
-                            list.add(Coord.add(encounteredPawnCoord, Game.directions.get("DOWN")));
-                        }
+                        currentCoord = encounteredPawnCoord;
+                        encounteredPawnCoord = Coord.add(encounteredPawnCoord, dir);
+                        behindCoord = Coord.add(encounteredPawnCoord, dir);
                     }
                 }
             }
