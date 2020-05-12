@@ -79,6 +79,18 @@ Un clique gauche ailleurs que sur la case où se trouve le mur le fera disparait
 
 Vous pouvez à tout moment appuyer sur la touche \textit{ECHAP} du clavier pour faire apparaître le menu pause qui vous permet de sauvegarder ou de retourner au menu principal.
 
+\section{Répartition des tâches}
+\begin{itemize}
+\item[•] Conception du modèle : Simon MICHEL et Virgil SURIN
+\item[•] AI : Simon MICHEL
+\item[•] Logique de jeu : Virgil SURIN
+\item[•] Interface utilisateu : Simon MICHEL et Virgil SURIN
+\item[•] Traduction du modèle en Java :Virgil SURIN
+\item[•] Création des sprites : Simon MICHEL
+\item[•] Système de sauvegarde : Simon MICHEL
+\item[•] Test unitaires : Virgil SURIN
+\end{itemize}
+
 \section{Choix personnel}
 
 \subsection{Règle spéciale pour 4 joueurs}
@@ -254,21 +266,21 @@ Les résultats sont tous donnés après 10 000 parties effectuées avec un plate
 \item[2)] Difficile : 
 \begin{itemize}
 \item[-] ratio de victoire : 1.0
-\item[-] temps moyen par tour (ms) : 53
+\item[-] temps moyen par tour (ms) : 51
 \end{itemize}
 \end{itemize}
 
 \subsubsection{Facile vs difficile :}
 \begin{itemize}
-\item[1)] Facile : 
+\item[1)] Difficile : 
 \begin{itemize}
-\item[-] ratio de victoire : 0
-\item[-] temps moyen par tour (ms) : 3
+\item[-] ratio de victoire : 0.87
+\item[-] temps moyen par tour (ms) : 66
 \end{itemize}
-\item[2)] Difficile : 
+\item[2)] Facile : 
 \begin{itemize}
-\item[-] ratio de victoire : 1.0
-\item[-] temps moyen par tour (ms) : 53
+\item[-] ratio de victoire : 0.13
+\item[-] temps moyen par tour (ms) : 12
 \end{itemize}
 \end{itemize}
 
@@ -314,25 +326,38 @@ Les résultats sont tous donnés après 10 000 parties effectuées avec un plate
 \end{itemize}
 \end{itemize}
 
+On peut constater lorsqu'une IA joue contre elle même, hormis avec l'ia difficile, elle possède un petit avantage qui se ressent lorsqu'elle commence en bas mais de manière générale on est proche d'un ratio de 0.5 . L'ia difficile en revanche, et grâce à sa stratégie, arrive à prendre pleinement l'avantage de la situation. Commencer en second donne un avantage et elle l'exploite si bien qu'elle gagne à chaque coup contre elle-même.
+
 \subsection{Le système de sauvegarde}
 Parmis tous les aspects du développement, la sauvegarde était sans doute un des plus obscurs dans son fonctionnement et, de fait, le temps passé à faire des recherches sur les différentes méthodes aura dépassé le temps nécessaire à l’implémentation. Heureusement nous avons eu des indications bienvenues de la part de Mr. Pierre HAUWEELE, assistant de l’UMONS, qui nous a permi de nous concentrer pour deux méthodes, et puis de nous décider. Ainsi, après réflexion, entre la méthode plus ancienne des \textit{ObjectOutputStream} et celle plus récente des \textit{Files}, nous avons opté pour la première possibilité car son implémentation est apparue plus rapidement plus claire. Quant à la méthode de chargement (lecture d’un objet \textit{Game}), elle fonctionne de manière identique à la méthode de sauvegarde.
 
 
+\section{Apports positifs du projet}
+\subsection{Le modèle}
+Nous sommes conscient que notre modèle n'est pas parfait mais nous sommes convaincu qu'il est assez modulaire que pour rajouter facilement des éléments de \textit{gameplay} tel qu'un monstre qui traque le joueur le plus proche ou des \textit{power-up} !
 
+\subsection{L'IA difficile}
+Certes elles peut être vaincue par un être humain mais nous trouvons que malgré tout, elle se débrouille admirablement bien face à un joueur inexpérimenté ou débutant. Elle bloque l'adversaire du mieux qu'elle peut. De plus elle performe très très bien contre les autres IA implémentée et contre elle même, elle exploite à merveille l'avantage de commencer en second.
 
 \section{Bugs connus / points faibles}
 
 \subsection{Le pathfinding}
-Notre \textit{pathfinding} est plutôt rapide sur un plateau de taille 9x9 mais lors de nos test pour implémenter des plateaux plus grands, nous nous sommes rendu compte qu'avec une taille de 13x13 et encore plus une taille de 15x15, les IAs utilisant le \textit{pathfinding} commencent à avoir un temps de calcul visible un utilisateur. Également, lorsque l'utilisateur maintient clic droit pour choisir là où il placera son mur, à chaque déplacement de souris, une vérification dit si oui ou non cet emplacement ne brise aucune règle ce qui implique de calculer le chemin le plus court de chaque pions et ce à chaque déplacement ce qui cause vite des ralentissements. \\
+Notre \textit{pathfinding} est plutôt rapide sur un plateau de taille 9x9 mais lors de nos test pour implémenter des plateaux plus grands, nous nous sommes rendu compte qu'avec une taille de 13x13 et encore plus une taille de 15x15, les IAs utilisant le \textit{pathfinding} commencent à avoir un temps de calcul visible un utilisateur, cela est dû au fait que pour calculer leur prochaine action elles y font appel parfois plusieurs fois. Également, lorsque l'utilisateur maintient clic droit pour choisir là où il placera son mur, à chaque déplacement de souris, une vérification dit si oui ou non cet emplacement ne brise aucune règle ce qui implique de calculer le chemin le plus court de chaque pions et ce à chaque déplacement ce qui cause vite des ralentissements. \\
 
 Un moyen d'optimiser en partie ce problème a été d'uniquement vérifier les collisions avec d'autres murs ou bordures lorsque la souris se déplace et n'effectuer la vérification du chemin que lorsque l'utilisateur tente de placer le mur. L'expérience utilisateur s'en trouve ainsi améliorée. \\
-Pour les IAs, il faudrait tout d'abord limiter les calculs et re-calcul  de \textit{pathfinding} pour chaque joueur. Ensuite une optimisation de l'algorithme de \textit{pathfinding} serait la bienvenue
+Pour les IAs, nous avons pu grâce à la méthode \textit{whereCanIGo}, qui retourne une liste de case accessible depuis notre position, diminué le nombre de calcul de \textit{pathfinding} alors utilisé par l'ancienne méthode de calcul du mouvement pour les IAs.
+
+\subsection{Les directions}
+Notre jeux est articulé autour de 4 directions : haut, gauche, droite et bas\footnote{Respectivement \textit{UP, LEFT, RIGHT, DOWN} dans notre code}. \\
+Ces directions sont définies dans une \textit{Hashtable} se trouvant dans la classe \textit{Game}. Mais il serait en réalité plus judicieux d'utiliser un \textit{Enum} plutôt qu'une \textit{Hashtable}. En effet, lorsqu'il s'agit de constantes, l'\textit{Enum} est de loin le plus adapté à la situation. 
+
+
 
 
 
 \section{Conclusion}
 
-voilà, Virgil et Simon out.
+
 
 \section{Bibliographie}
 \begin{itemize}
@@ -340,13 +365,18 @@ voilà, Virgil et Simon out.
 \item Documentation du JDK 13 par Oracle, \url{https://docs.oracle.com/en/java/javase/13/docs/api/index.html}, consultée tout au long du projet.
 \item Documentation de JavaFX 8 par Oracle, \url{https://docs.oracle.com/javase/8/javafx/api/toc.htm}, consultée tout au long du projet.
 \item Documentation de la JavaDoc par Oracle, \url{https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html#tag}, consultée tout au long du projet.
+\item les vidéos de la chaîne \textit{thenewsboston} par Bucky ROBERTS, \url{https://www.youtube.com/playlist?list=PL6gx4Cwl9DGBzfXLWLSYVy8EbTdpGbUIG}
 \end{itemize}
 
 \section{Remerciements}
 
-Nous tenons à remercier en premier lieu les assistants du cours de Programmation et algorithmique 1 et 2 pour leurs réponses claires à nos question.
-Également merci à Guillaume Proot pour tout ses précieux conseils et retour sur certaines parties de notre projet.
-Monsieur Mélot, merci de nous avoir permis d'utiliser la classe \textit{CpuTime} afin d'encore et toujours améliorer notre projet.
+Un énorme merci à Guillaume PROOT pour ses tous conseils et questions judicieuses. \\
+Merci également à Maximilien VANHAVERBEKE ainsi qu'à Maxime NABLI de bien avoir voulu tester notre jeu et avoir apporté leur retours dessus. \\
+Nous tenons aussi à remercier Maksym IAKOVENKO avec qui ont a longtemps discuté des milles et unes façon de faire une même chose. \\
+Merci à Catherine SURIN pour ses conseils de rédaction ainsi que la relecture du rapport. \\
+Merci, bien évidemment, aux assistants de l'université de Mons: Pierre HAUWEELE, Gauvain DEVILLEZ, Jeremy DUBRULLE et Romain ABSIL. Merci d'avoir répondu à nos questions tout au long du développement. \\
+Nous souhaitons aussi remercier les professeurs Hadrien MELOT, qui nous a donné la permission d'utiliser le module \textit{CpuTime} et Bruno QUOITIN. Grâce à eux et à leurs enseignements, nous avons pu réaliser se projet.
+
 
 
 

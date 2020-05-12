@@ -174,14 +174,16 @@ public class Game implements Serializable {
             Action.getAction(playerArray, playerArray[i]);
             time.stop();
             //add time to the AI
-            timeTable.put(playerArray[i].getType(), timeTable.get(playerArray[i].getType())+ time.getMilliSeconds());
+            String key = playerArray[i].getType() + (i+1);
+            timeTable.put(key, timeTable.get(key)+ time.getMilliSeconds());
             i++;
             i %= playerNumber;
 
         } while ( !(playerArray[i].hasWon()) );
-        Integer numbOfVictory = winTable.get(playerArray[i].getType());
+        String key = playerArray[i].getType() + (i+1);
+        Integer numbOfVictory = winTable.get(key);
         numbOfVictory += 1;
-        winTable.put(playerArray[i].getType(), numbOfVictory);
+        winTable.put(key, numbOfVictory);
     }
 
     public PawnController[] getPlayerArray() {

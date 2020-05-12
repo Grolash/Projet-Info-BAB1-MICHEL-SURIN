@@ -1,6 +1,7 @@
 package be.ac.umons.michelsurin.items;
 
 import be.ac.umons.michelsurin.tools.Coord;
+import be.ac.umons.michelsurin.world.Board;
 
 import java.io.Serializable;
 

@@ -125,7 +125,7 @@ public class Menu extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(20);
         layout.setBackground(Background.EMPTY);
-        Label title = new Label("QUORIDOR v0.9.7b");
+        Label title = new Label("QUORIDOR v1.0");
         layout.getChildren().addAll(title);
 
         launchButton = new Button("Launch game!");

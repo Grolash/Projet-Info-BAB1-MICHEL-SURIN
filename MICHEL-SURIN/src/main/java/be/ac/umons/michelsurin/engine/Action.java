@@ -35,20 +35,14 @@ public class Action implements Serializable {
         switch (ctrl.getType()) {
             case "Debilus" :
             case "Random":
-            case "Random1":
-            case "Random2":
                 debilusActionHandler(playerArray, ctrl);
                 break;
             case "Smarted" :
             case "Easy":
-            case "Easy1":
-            case "Easy2":
                 smartedActionHandler(playerArray, ctrl);
                 break;
             case "Smart" :
             case "Hard":
-            case "Hard1":
-            case "Hard2":
                 smartActionHandler(playerArray, ctrl);
                 break;
             case "DebugDOWN":
@@ -90,139 +84,17 @@ public class Action implements Serializable {
      *
      * @param ctrl the PawnController of the AI
      */
-    private static void AIAdvancedMove(PawnController ctrl){
-        //Tries and move.
-        // Almost same as Debilus but follows a path
-        Coord direction;
-        int randint; //   /!\    Was a random tool, moved to be a direction indicator
-
+    private static void AIAdvancedMove(PawnController ctrl) {
         ArrayList<Coord> path = Rules.path(ctrl);
-        Coord next = path.remove(path.size()-1);
-        int deltaY = next.getY() - ctrl.getDependency().getCoord().getY();
-        int deltaX = next.getX() - ctrl.getDependency().getCoord().getX();
-
-        switch (deltaY){
-            case 1:
-                direction = getDirection(2);
-                randint = 2;
-                break;
-
-            case -1:
-                direction = getDirection(0);
-                randint = 0;
-                break;
-
-            case 0:
-                switch (deltaX){
-                    case 1:
-                        direction = getDirection(3);
-                        randint = 3;
-                        break;
-
-                    case -1:
-                        direction = getDirection(1);
-                        randint = 1;
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("deltaX should be 1 or -1.");
-
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException("deltaY should be 1 or -1.");
-        }
-
-
-
-
-        Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction);
-        //Coordinates of the intended move cell
-
-        if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
-            //If there is a pawn in "front" of itself, tries to bypass it.
-
-            if (!(Rules.canMove(ctrl, direction, forwardCell)) || ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
-                //If it can not go behind, tries to move diagonally
-                // (actually it makes moves forward then on the chosen side).
-                int tries = 0; //The number of tried moves.
-                //Coordinates of the would-be cell it will use to move "diagonally".
-                int choice = 0; //choose diagonal option (was random, is not anymore).
-                Coord directionBis;
-
-                if (choice == 0) {
-                    //Choose the non-clockwise option.
-                    int randintBis;
-                    //Changes its direction accordingly taking in account the bounds of the array.
-                    if (randint == 0)
-                        randintBis = 3;
-                    else
-                        randintBis = randint - 1;
-                    directionBis = getDirection(randintBis);
-                    if (Rules.canMove(ctrl, directionBis, forwardCell)){
-                        ctrl.move(direction); //moves on the same cell as the other pawn
-                        ctrl.move(directionBis); //moves to the side not to end in the wall
-                    }
-                    else {
-                        //The chosen option (non-clockwise) was not possible, changes choice.
-                        choice = 1;
-                    }
-                    //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
-                } else if (choice == 1) {
-                    //Choose the clockwise option
-                    int randintBis;
-                    //Changes its direction accordingly taking in account the bounds of the array.
-                    randintBis = randint + 1;
-                    if (randintBis == 4)
-                        randintBis = 0;
-                    directionBis = getDirection(randintBis);
-                    if (Rules.canMove(ctrl, directionBis, forwardCell)){
-                        ctrl.move(direction); //moves on the same cell as the other pawn
-                        ctrl.move(directionBis); //moves to the side not to end in the wall
-                    }
-                    else {
-                        //The chosen option (non-clockwise) was not possible either, tries to move side or back
-                        if (Rules.canMove(ctrl,getDirection(randint - 1))) {
-                            ctrl.move(getDirection(randint - 1));
-                        }
-                        else if (Rules.canMove(ctrl, getDirection(randint + 1))){
-                            ctrl.move(getDirection(randint + 1));
-                        }
-                        else {
-                            if(randint == 0){
-                                randint = 2;
-                                ctrl.move(getDirection(randint));
-                            }
-                            else if (randint == 1){
-                                randint = 3;
-                                ctrl.move(getDirection(randint));
-                            }
-                            else if (randint == 2){
-                                randint = 0;
-                                ctrl.move(getDirection(randint));
-                            }
-                            else if (randint == 3){
-                                randint = 1;
-                                ctrl.move(getDirection(randint));
-                            }
-                        }
-                    }
-                    //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
-                }
-            } else {
-                //If it can go behind.
-                ctrl.move(direction); //moves on the same cell as the other pawn
-                ctrl.move(direction); //moves on the cell behind the other pawn
+        Coord[] pathArray = path.toArray(new Coord[path.size()]);
+        Coord[] reachableCell = whereCanIGo(ctrl);
+        for (Coord coord : reachableCell) {
+            if (coord.isIn(pathArray)) {
+                ctrl.getDependency().setCoord(coord);
+                ctrl.getBoard().movePawnCoord(ctrl.getPlayerNumber(), coord);
             }
-        } else {
-            //If there is no special condition like a pawn in front of itself
-            ctrl.move(direction);
         }
-
-
     }
-
 
     /**
      * Wall placement method of "Smart" AI.
@@ -501,81 +373,14 @@ public class Action implements Serializable {
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
         int action = random.nextInt(2); //Choose randomly between moving and placing a wall.
+        Coord currentCell = ctrl.getDependency().getCoord();
 
         if (action == 0){ //Tries and moves.
-            Coord direction;
-            int randint;
-
-            do {
-                randint = randomizeDirection();
-                direction = getDirection(randint); //Choose a random direction
-            }
-            while (!(Rules.canMove(ctrl, direction))); //Does so until it can move.
-
-            Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction);
-            //Coordinates of the intended move cell
-
-            if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
-                //If there is a pawn in "front" of itself, tries to bypass it.
-
-                if (!(Rules.canMove(ctrl, direction, forwardCell)) || ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
-                    //If it can not go behind, tries to move diagonally
-                    // actually it makes moves forward then on the chosen side).
-                    int tries = 0; //The number of tried moves.
-                    //Coordinates of the would-be cell it will use to move "diagonally".
-                    int choice = random.nextInt(1); //choose random diagonal option.
-                    Coord directionBis;
-
-                    if (choice == 0) {
-                        //Choose the non-clockwise option.
-                        int randintBis;
-                        //Changes its direction accordingly taking in account the bounds of the array.
-                        if (randint == 0)
-                            randintBis = 3;
-                        else
-                            randintBis = randint - 1;
-                        directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardCell)){
-                            ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(directionBis); //moves to the side not to end in the wall
-                        } else {
-                            if (tries == 0) {
-                                //The chosen option (non-clockwise) was not possible, changes choice.
-                                choice = 1;
-                                tries += 1;
-                            } else action = 1;
-                        }
-                        //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
-                    } else if (choice == 1) {
-                        //Choose the clockwise option
-                        int randintBis;
-                        //Changes its direction accordingly taking in account the bounds of the array.
-                        randintBis = randint + 1;
-                        if (randintBis == 4)
-                            randintBis = 0;
-                        directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardCell)){
-                            ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(directionBis); //moves to the side not to end in the wall
-                        } else {
-                            if (tries == 0) {
-                                //The chosen option (non-clockwise) was not possible, changes choice.
-                                choice = 0;
-                                tries += 1;
-                            } else action = 1;
-                        }
-                        //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
-                    }
-                } else {
-                    //If it can go behind.
-                    ctrl.move(direction); //moves on the same cell as the other pawn
-                    ctrl.move(direction); //moves on the cell behind the other pawn
-                }
-            } else {
-                //If there is no special condition like a pawn in front of itself
-                ctrl.move(direction);
-            }
-
+            Coord[] reachableCell = whereCanIGo(ctrl);
+            int index = random.nextInt(reachableCell.length);
+            Coord nextCoord = reachableCell[index];
+            ctrl.getDependency().setCoord(nextCoord);
+            ctrl.getBoard().movePawnCoord(ctrl.getPlayerNumber(), nextCoord);
 
         } else if (action == 1){ //Tries and place a wall
 
@@ -620,6 +425,9 @@ public class Action implements Serializable {
      * @throws IllegalArgumentException in case the method does not receive an integer between 0 and 3 both included.
      */
     protected static Coord getDirection(int i) throws IllegalArgumentException {
+        if (i > 3){
+            i = i%3;
+        }
         switch (i){
             case 0:
                 return Game.directions.get("UP");
@@ -652,7 +460,7 @@ public class Action implements Serializable {
     /**
      * given a player (PawnController). It will check all the cell around its position and return an array
      * containing all the cells where the player can go from it's position.
-     * It takes in consideration walls and pawns
+     * It takes in consideration walls and pawns.
      *
      * @param ctrl the player/controller for whom we are looking for reachable cell.
      * @return an array with all the cell reachable from the player's position.

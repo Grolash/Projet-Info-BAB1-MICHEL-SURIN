@@ -1,26 +1,31 @@
 \babel@toc {french}{}
 \contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
 \contentsline {section}{\numberline {2}Mode d'emploi}{2}{section.2}%
-\contentsline {section}{\numberline {3}Choix personnel}{3}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Règle spéciale pour 4 joueurs}{3}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Le plateau et les murs}{4}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Structure du modèle}{5}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Le pathfinding}{6}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Le placement des murs par l'utilisateur}{6}{subsection.3.5}%
-\contentsline {subsection}{\numberline {3.6}La résolution}{7}{subsection.3.6}%
-\contentsline {section}{\numberline {4}Algorithme}{7}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Le pathfinding}{7}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Les règles}{8}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Les IAs}{9}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Aléatoire vs facile :}{11}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Aléatoire vs difficile :}{11}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}Facile vs difficile :}{11}{subsubsection.4.3.3}%
-\contentsline {subsubsection}{\numberline {4.3.4}Aléatoire vs aléatoire:}{12}{subsubsection.4.3.4}%
-\contentsline {subsubsection}{\numberline {4.3.5}Facile vs facile:}{12}{subsubsection.4.3.5}%
-\contentsline {subsubsection}{\numberline {4.3.6}Difficile vs difficile:}{12}{subsubsection.4.3.6}%
-\contentsline {subsection}{\numberline {4.4}Le système de sauvegarde}{12}{subsection.4.4}%
-\contentsline {section}{\numberline {5}Bugs connus / points faibles}{13}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Le pathfinding}{13}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Conclusion}{13}{section.6}%
-\contentsline {section}{\numberline {7}Bibliographie}{13}{section.7}%
-\contentsline {section}{\numberline {8}Remerciements}{14}{section.8}%
+\contentsline {section}{\numberline {3}Répartition des tâches}{3}{section.3}%
+\contentsline {section}{\numberline {4}Choix personnel}{3}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Règle spéciale pour 4 joueurs}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Le plateau et les murs}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Structure du modèle}{6}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Le pathfinding}{6}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Le placement des murs par l'utilisateur}{7}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}La résolution}{7}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Algorithme}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Le pathfinding}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Les règles}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Les IAs}{9}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Aléatoire vs facile :}{11}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Aléatoire vs difficile :}{11}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Facile vs difficile :}{12}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Aléatoire vs aléatoire:}{12}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}Facile vs facile:}{12}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}Difficile vs difficile:}{12}{subsubsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.4}Le système de sauvegarde}{13}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Apports positifs du projet}{13}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Le modèle}{13}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}L'IA difficile}{13}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Bugs connus / points faibles}{13}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Le pathfinding}{13}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Les directions}{14}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Conclusion}{14}{section.8}%
+\contentsline {section}{\numberline {9}Bibliographie}{14}{section.9}%
+\contentsline {section}{\numberline {10}Remerciements}{15}{section.10}%

@@ -1,25 +1,30 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Mode d'emploi}{}% 2
-\BOOKMARK [1][-]{section.3}{Choix personnel}{}% 3
-\BOOKMARK [2][-]{subsection.3.1}{R\350gle sp\351ciale pour 4 joueurs}{section.3}% 4
-\BOOKMARK [2][-]{subsection.3.2}{Le plateau et les murs}{section.3}% 5
-\BOOKMARK [2][-]{subsection.3.3}{Structure du mod\350le}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.4}{Le pathfinding}{section.3}% 7
-\BOOKMARK [2][-]{subsection.3.5}{Le placement des murs par l'utilisateur}{section.3}% 8
-\BOOKMARK [2][-]{subsection.3.6}{La r\351solution}{section.3}% 9
-\BOOKMARK [1][-]{section.4}{Algorithme}{}% 10
-\BOOKMARK [2][-]{subsection.4.1}{Le pathfinding}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.2}{Les r\350gles}{section.4}% 12
-\BOOKMARK [2][-]{subsection.4.3}{Les IAs}{section.4}% 13
-\BOOKMARK [3][-]{subsubsection.4.3.1}{Al\351atoire vs facile :}{subsection.4.3}% 14
-\BOOKMARK [3][-]{subsubsection.4.3.2}{Al\351atoire vs difficile :}{subsection.4.3}% 15
-\BOOKMARK [3][-]{subsubsection.4.3.3}{Facile vs difficile :}{subsection.4.3}% 16
-\BOOKMARK [3][-]{subsubsection.4.3.4}{Al\351atoire vs al\351atoire:}{subsection.4.3}% 17
-\BOOKMARK [3][-]{subsubsection.4.3.5}{Facile vs facile:}{subsection.4.3}% 18
-\BOOKMARK [3][-]{subsubsection.4.3.6}{Difficile vs difficile:}{subsection.4.3}% 19
-\BOOKMARK [2][-]{subsection.4.4}{Le syst\350me de sauvegarde}{section.4}% 20
-\BOOKMARK [1][-]{section.5}{Bugs connus / points faibles}{}% 21
-\BOOKMARK [2][-]{subsection.5.1}{Le pathfinding}{section.5}% 22
-\BOOKMARK [1][-]{section.6}{Conclusion}{}% 23
-\BOOKMARK [1][-]{section.7}{Bibliographie}{}% 24
-\BOOKMARK [1][-]{section.8}{Remerciements}{}% 25
+\BOOKMARK [1][-]{section.3}{R\351partition des t\342ches}{}% 3
+\BOOKMARK [1][-]{section.4}{Choix personnel}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{R\350gle sp\351ciale pour 4 joueurs}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{Le plateau et les murs}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.3}{Structure du mod\350le}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.4}{Le pathfinding}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.5}{Le placement des murs par l'utilisateur}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.6}{La r\351solution}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Algorithme}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{Le pathfinding}{section.5}% 12
+\BOOKMARK [2][-]{subsection.5.2}{Les r\350gles}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.3}{Les IAs}{section.5}% 14
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Al\351atoire vs facile :}{subsection.5.3}% 15
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Al\351atoire vs difficile :}{subsection.5.3}% 16
+\BOOKMARK [3][-]{subsubsection.5.3.3}{Facile vs difficile :}{subsection.5.3}% 17
+\BOOKMARK [3][-]{subsubsection.5.3.4}{Al\351atoire vs al\351atoire:}{subsection.5.3}% 18
+\BOOKMARK [3][-]{subsubsection.5.3.5}{Facile vs facile:}{subsection.5.3}% 19
+\BOOKMARK [3][-]{subsubsection.5.3.6}{Difficile vs difficile:}{subsection.5.3}% 20
+\BOOKMARK [2][-]{subsection.5.4}{Le syst\350me de sauvegarde}{section.5}% 21
+\BOOKMARK [1][-]{section.6}{Apports positifs du projet}{}% 22
+\BOOKMARK [2][-]{subsection.6.1}{Le mod\350le}{section.6}% 23
+\BOOKMARK [2][-]{subsection.6.2}{L'IA difficile}{section.6}% 24
+\BOOKMARK [1][-]{section.7}{Bugs connus / points faibles}{}% 25
+\BOOKMARK [2][-]{subsection.7.1}{Le pathfinding}{section.7}% 26
+\BOOKMARK [2][-]{subsection.7.2}{Les directions}{section.7}% 27
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 28
+\BOOKMARK [1][-]{section.9}{Bibliographie}{}% 29
+\BOOKMARK [1][-]{section.10}{Remerciements}{}% 30
