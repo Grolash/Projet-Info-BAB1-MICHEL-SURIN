@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /**
- * class designed to run a given number of game between 2 AI and output their winning ratio.
+ * class designed to run a given number of game between 2 AI and output their winning ratio and their execution time.
  *
  */
 public class StatRunner {
@@ -21,23 +21,22 @@ public class StatRunner {
         int numbGame = readInt("Please choose how many games you want to run : ");
         System.out.println("-----------------------------------------------");
         System.out.println("Please choose the first AI");
-        System.out.println("the differents types are : Random, Easy, Hard");
-        System.out.println("if you want an AI to play against itself, use a number like this :");
-        String firstAI = readType("Random1 or Hard1 ");
+        String firstAI = readType("the differents types are : Random, Easy, Hard");
         System.out.println("-----------------------------------------------");
         System.out.println("Please choose the second AI");
-        System.out.println("the differents types are : Random, Easy, Hard");
-        System.out.println("if you want an AI to play against itself, use a number like this :");
-        String secondAI = readType("Random2 or Hard2");
+        String secondAI = readType("the differents types are : Random, Easy, Hard");
 
+        String firstAI2 = firstAI + "1"; //used to prevent key value stack
+        String secondAI2 = secondAI + "2"; //used to prevent key value stack
         Hashtable<String, Integer> winTable = new Hashtable<String, Integer>();
-        winTable.put(firstAI,0);
-        winTable.put(secondAI,0);
+        winTable.put(firstAI2,0);
+        winTable.put(secondAI2,0);
 
         Hashtable<String, Long> timeTable = new Hashtable<>();
-        timeTable.put(firstAI, (long) 0);
-        timeTable.put(secondAI, (long) 0);
+        timeTable.put(firstAI2, (long) 0);
+        timeTable.put(secondAI2, (long) 0);
         System.out.println("Start running games");
+        //TODO author of the progress bar code : https://github.com/ctongfei/progressbar
         try (ProgressBar progressBar = new ProgressBar("Game played", numbGame, ProgressBarStyle.ASCII)) {
             for (int i=0; i<numbGame; i++) {
                 Game game = new Game(firstAI, secondAI);
@@ -46,15 +45,15 @@ public class StatRunner {
             }
         }
 
-        double ratioAI1 = winTable.get(firstAI).floatValue() / numbGame;
-        double ratioAI2 = winTable.get(secondAI).floatValue() / numbGame;
+        double ratioAI1 = winTable.get(firstAI2).floatValue() / numbGame;
+        double ratioAI2 = winTable.get(secondAI2).floatValue() / numbGame;
 
-        long timeRatioAI1 = timeTable.get(firstAI) / numbGame;
-        long timeRatioAI2 = timeTable.get(secondAI) / numbGame;
-        System.out.println(firstAI + " ratio : " + ratioAI1);
+        long timeRatioAI1 = timeTable.get(firstAI2) / numbGame;
+        long timeRatioAI2 = timeTable.get(secondAI2) / numbGame;
+        System.out.println("1 : " + firstAI + " ratio : " + ratioAI1);
         System.out.println("Average turn time (in ms) : " + timeRatioAI1);
         System.out.println("---------------------------");
-        System.out.println(secondAI + " ratio : " + ratioAI2);
+        System.out.println("2 : " + secondAI + " ratio : " + ratioAI2);
         System.out.println("Average turn time (in ms) : " + timeRatioAI2);
 
     }
@@ -87,14 +86,8 @@ public class StatRunner {
             String type = scanner.next();
             switch (type) {
                 case "Random":
-                case "Random1":
-                case "Random2":
                 case "Easy":
-                case "Easy1":
-                case "Easy2":
                 case "Hard":
-                case "Hard1":
-                case "Hard2":
                     return type;
                 default:
                     throw new InputMismatchException("Invalid type");
