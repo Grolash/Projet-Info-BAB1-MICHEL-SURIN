@@ -57,6 +57,10 @@ public class PawnController extends Controller {
         numbWall += x;
     }
 
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
 
     //NOTE ABOUT ACTIONS : THESE METHODS DO NOT TEST THE VALIDATION OF THE ACTION !
     //validation is handled by the Rules class and nothing else

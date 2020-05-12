@@ -91,6 +91,7 @@ public class Action implements Serializable {
         for (Coord coord : reachableCell) {
             if (coord.isIn(pathArray)) {
                 ctrl.getDependency().setCoord(coord);
+                ctrl.getBoard().movePawnCoord(ctrl.getPlayerNumber(), coord);
             }
         }
     }
@@ -375,157 +376,11 @@ public class Action implements Serializable {
         Coord currentCell = ctrl.getDependency().getCoord();
 
         if (action == 0){ //Tries and moves.
-            Coord direction;
-            int randint;
-
-            do {
-                randint = randomizeDirection();
-                direction = getDirection(randint); //Choose a random direction
-            }
-            while (!(Rules.canMove(ctrl, direction))); //Does so until it can move.
-
-            Coord forwardCell = Coord.add(ctrl.getDependency().getCoord(), direction);
-            //Coordinates of the intended move cell
-
-            if (ctrl.getBoard().getCell(forwardCell).hasPawn()) {
-                //If there is a pawn in "front" of itself, tries to bypass it.
-
-                if (!(Rules.canMove(ctrl, direction, forwardCell)) || ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()) {
-                    //If it can not go behind, tries to move diagonally
-                    // actually it makes moves forward then on the chosen side).
-                    int tries = 0; //The number of tried moves.
-                    //Coordinates of the would-be cell it will use to move "diagonally".
-                    int choice = random.nextInt(1); //choose random diagonal option.
-                    Coord directionBis;
-
-                    if (choice == 0) {
-                        //Choose the non-clockwise option.
-                        int randintBis;
-                        //Changes its direction accordingly taking in account the bounds of the array.
-                        if (randint == 0)
-                            randintBis = 3;
-                        else
-                            randintBis = randint - 1;
-                        directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardCell) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(1))).hasPawn()){
-                            ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(directionBis); //moves to the side not to end in the wall
-                        } else {
-                            if (tries == 0) {
-                                //The chosen option (non-clockwise) was not possible, changes choice.
-                                choice = 1;
-                                tries += 1;
-                            } else action = 1;
-                        }
-                        //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND IT HALF-HANDLED.
-                    } else if (choice == 1) {
-                        //Choose the clockwise option
-                        int randintBis;
-                        //Changes its direction accordingly taking in account the bounds of the array.
-                        randintBis = randint + 1;
-                        if (randintBis == 4)
-                            randintBis = 0;
-                        directionBis = getDirection(randintBis);
-                        if (Rules.canMove(ctrl, directionBis, forwardCell) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(1))).hasPawn()){
-                            ctrl.move(direction); //moves on the same cell as the other pawn
-                            ctrl.move(directionBis); //moves to the side not to end in the wall
-                        }
-
-                        else {
-
-                            //The chosen option (non-clockwise) was not possible either, tries to move side or back
-                            if (Rules.canMove(ctrl,getDirection(randint - 1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(randint - 1))).hasPawn()) {
-                                ctrl.move(getDirection(randint - 1));
-                            }
-                            else if (Rules.canMove(ctrl, getDirection(randint + 1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(randint + 1))).hasPawn()){
-                                ctrl.move(getDirection(randint + 1));
-                            }
-                            else {
-                                if(randint == 0 && Rules.canMove(ctrl, getDirection(2)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(2))).hasPawn()){
-                                    randint = 2;
-                                    ctrl.move(getDirection(randint));
-                                }
-                                else if (randint == 1 && Rules.canMove(ctrl, getDirection(3)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(3))).hasPawn()){
-                                    randint = 3;
-                                    ctrl.move(getDirection(randint));
-                                }
-                                else if (randint == 2 && Rules.canMove(ctrl, getDirection(0)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(0))).hasPawn()){
-                                    randint = 0;
-                                    ctrl.move(getDirection(randint));
-                                }
-                                else if (randint == 3 && Rules.canMove(ctrl, getDirection(1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(1))).hasPawn()){
-                                    randint = 1;
-                                    ctrl.move(getDirection(randint));
-                                }
-                                else {
-                                    while (ctrl.getBoard().getCell(forwardCell).hasPawn()){
-                                        if(ctrl.getBoard().getCell(Coord.add(forwardCell, direction)).hasPawn()){
-                                            forwardCell = Coord.add(forwardCell, direction);
-                                        }
-                                        else if (!Rules.canMove(ctrl, direction, forwardCell)){
-                                            switch (randint){
-                                                case 0:
-                                                    randint = 2;
-                                                    break;
-                                                case 1:
-                                                    randint = 3;
-                                                    break;
-                                                case 2:
-                                                    randint = 0;
-                                                    break;
-                                                case 3:
-                                                    randint = 1;
-                                                    break;
-                                                default:
-                                                    break;
-                                            }
-                                        }
-                                        if (Rules.canMove(ctrl,getDirection(randint - 1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(randint - 1))).hasPawn()) {
-                                            ctrl.move(getDirection(randint - 1));
-                                        }
-                                        else if (Rules.canMove(ctrl, getDirection(randint + 1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(randint + 1))).hasPawn()){
-                                            ctrl.move(getDirection(randint + 1));
-                                        }
-                                        else {
-                                            if (randint == 0 && Rules.canMove(ctrl, getDirection(2)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(2))).hasPawn()) {
-                                                randint = 2;
-                                                ctrl.move(getDirection(randint));
-                                            } else if (randint == 1 && Rules.canMove(ctrl, getDirection(3)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(3))).hasPawn()) {
-                                                randint = 3;
-                                                ctrl.move(getDirection(randint));
-                                            } else if (randint == 2 && Rules.canMove(ctrl, getDirection(0)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(0))).hasPawn()) {
-                                                randint = 0;
-                                                ctrl.move(getDirection(randint));
-                                            } else if (randint == 3 && Rules.canMove(ctrl, getDirection(1)) && !ctrl.getBoard().getCell(Coord.add(currentCell, getDirection(1))).hasPawn()) {
-                                                randint = 1;
-                                                ctrl.move(getDirection(randint));
-                                            }
-                                            else {
-                                                if (tries == 0) {
-                                                    //The chosen option (non-clockwise) was not possible, changes choice.
-                                                    choice = 0;
-                                                    tries += 1;
-                                                } else action = 1;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                        }
-
-                        //CASE IN WHICH THERE IS A PAWN IN FRONT AND A WALL BEHIND HANDLED.
-                    }
-                } else {
-                    //If it can go behind.
-                    ctrl.move(direction); //moves on the same cell as the other pawn
-                    ctrl.move(direction); //moves on the cell behind the other pawn
-                }
-            } else {
-                //If there is no special condition like a pawn in front of itself
-                ctrl.move(direction);
-            }
-
+            Coord[] reachableCell = whereCanIGo(ctrl);
+            int index = random.nextInt(reachableCell.length);
+            Coord nextCoord = reachableCell[index];
+            ctrl.getDependency().setCoord(nextCoord);
+            ctrl.getBoard().movePawnCoord(ctrl.getPlayerNumber(), nextCoord);
 
         } else if (action == 1){ //Tries and place a wall
 
