@@ -123,7 +123,7 @@ class Smart(AI):
         travelled = abs(PawnController.dependency.start[0] - PawnController.dependency.coord[0])
 
     def AIMove(self):
-        pass #calculate a move based on pathfinding
+        pass #calculate a move based on pathfinding; see AIAdvancedMove(ctrl) in final project (java).
 
     def AIPlaceWall(self):
         """

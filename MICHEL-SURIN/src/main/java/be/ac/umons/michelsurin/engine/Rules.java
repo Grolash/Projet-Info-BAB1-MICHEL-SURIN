@@ -69,7 +69,7 @@ public class Rules {
      */
     public static boolean canPlaceWall(PawnController[] playerArray, PawnController ctrl, Coord origin, Coord direction) {
         //if the wall stacks up on an other wall or is OOB, return false
-        if ( !( validPlacement(origin, direction, ctrl.getBoard()) ) ) {
+        if ( !validPlacement(origin, direction, ctrl.getBoard()) ) {
             return false;
 
         //the wall does not stacks up, cut or is OOB, checks if there is still a path for each player(controller)
@@ -115,58 +115,54 @@ public class Rules {
      */
     public static boolean validPlacement(Coord coord, Coord direction, Board board) {
         Cell originCell = board.getCell(coord);
+        if (coord.getY() == 0 || coord.getX() == board.getSize()-1) {
+            return false;
+        }
         if (direction == Game.directions.get("UP") ) {
-            //checks if the wall will be Out Of Bounds (OOB)
-            if (coord.getY() == 0) {
-                return false;
             //checks potential collisions with existing walls
+
+            //nextCoord will be used to check if there is already a wall at the place we want to place a wall
+            Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
+
+            //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
+            Cell secondCell = board.getCell(nextCoord);
+            Coord[] possibleWall = new Coord[2];
+            possibleWall[0] = coord; //the origin's coordinates
+            Coord nextToOrigin = Coord.add(coord, Game.directions.get("RIGHT")); //the right cell's coordinates
+            possibleWall[1] = nextToOrigin;
+            Cell nextToOriginCell = board.getCell(nextToOrigin);
+
+            //now the check
+            if (originCell.wallTo(Game.directions.get("RIGHT"))
+                    || secondCell.wallTo(Game.directions.get("RIGHT"))
+                    || board.InWallList(possibleWall)) {
+                    return false;
             } else {
-                //nextCoord will be used to check if there is already a wall at the place we want to place a wall
-                Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
+                return true;
 
-                //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
-                Cell secondCell = board.getCell(nextCoord);
-                Coord[] possibleWall = new Coord[2];
-                possibleWall[0] = coord; //the origin's coordinates
-                Coord nextToOrigin = Coord.add(coord, Game.directions.get("RIGHT")); //the right cell's coordinates
-                possibleWall[1] = nextToOrigin;
-                Cell nextToOriginCell = board.getCell(nextToOrigin);
-
-                //now the check
-                if (originCell.wallTo(Game.directions.get("RIGHT"))
-                        || secondCell.wallTo(Game.directions.get("RIGHT"))
-                        || board.InWallList(possibleWall)) {
-                        return false;
-                } else {
-                    return true;
-                }
             }
         } else if (direction == Game.directions.get("RIGHT")) {
-            //checks OOB
-            if (coord.getX() == board.getSize()-1) {
+            //nextCoord will be used to check if there is already a wall at the place we want to place a wall
+            Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
+
+            //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
+            Cell secondCell = board.getCell(nextCoord);
+            Coord[] possibleWall = new Coord[2];
+            possibleWall[0] = coord; //the origin's coordinates
+            Coord tempCoord = new Coord(coord.getY()-1,coord.getX()); //the top cell's coordinates
+            possibleWall[1] = tempCoord;
+
+            Coord aboveOrigin = Coord.add(coord, Game.directions.get("UP"));
+            Cell aboveOriginCell = board.getCell(aboveOrigin);
+            //now the check
+            if (originCell.wallTo(Game.directions.get("UP"))
+                    || secondCell.wallTo(Game.directions.get("UP"))
+                    || (board.InWallList(possibleWall))) {
                 return false;
             } else {
-                //nextCoord will be used to check if there is already a wall at the place we want to place a wall
-                Coord nextCoord = Coord.add(coord, direction); //go to the cell coordinates above the originCell's coordinates
-
-                //possible wall will be used to check if the wall we want to place is "cutting" an existing wall
-                Cell secondCell = board.getCell(nextCoord);
-                Coord[] possibleWall = new Coord[2];
-                possibleWall[0] = coord; //the origin's coordinates
-                Coord tempCoord = new Coord(coord.getY()-1,coord.getX()); //the top cell's coordinates
-                possibleWall[1] = tempCoord;
-
-                Coord aboveOrigin = Coord.add(coord, Game.directions.get("UP"));
-                Cell aboveOriginCell = board.getCell(aboveOrigin);
-                //now the check
-                if (originCell.wallTo(Game.directions.get("UP"))
-                        || secondCell.wallTo(Game.directions.get("UP"))
-                        || (board.InWallList(possibleWall))) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return true;
             }
+
         }
         return false; //will never happen
 

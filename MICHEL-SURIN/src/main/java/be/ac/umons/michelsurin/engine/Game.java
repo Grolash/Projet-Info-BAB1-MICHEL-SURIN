@@ -74,28 +74,30 @@ public class Game implements Serializable {
             Coord[] startCoordArray = new Coord[playerNumber];
             int[] goalArray = new int[playerNumber];
 
+            int half = size/2;
+
             if (playerNumber == 2) {
                 //create the two basics starting coordinates for a 2 player game
                 //and the associated goalRow
-                startCoordArray[0] = new Coord(0,4);
+                startCoordArray[0] = new Coord(0, half);
                 goalArray[0] = size-1;
-                startCoordArray[1] = new Coord(size-1,4);
+                startCoordArray[1] = new Coord(size-1, half);
                 goalArray[1] = 0;
             }
             else {
                 if (playerNumber == 4) {
                     //set up for 4 player
                     //player 0
-                    startCoordArray[0] = new Coord(0,4);
+                    startCoordArray[0] = new Coord(0, half);
                     goalArray[0] = size-1;
                     //player 1
-                    startCoordArray[1] = new Coord(size-1,4);
+                    startCoordArray[1] = new Coord(size-1, half);
                     goalArray[1] = 0;
                     //player 2
-                    startCoordArray[2] = new Coord(4,0);
+                    startCoordArray[2] = new Coord(half,0);
                     goalArray[2] = size-1;
                     //player 3
-                    startCoordArray[3] = new Coord(4,size-1);
+                    startCoordArray[3] = new Coord(half,size-1);
                     goalArray[3] = 0;
 
                 }

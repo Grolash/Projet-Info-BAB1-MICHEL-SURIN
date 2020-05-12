@@ -10,6 +10,7 @@ import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
 
 import java.security.InvalidParameterException;
+import java.util.Random;
 
 /**
  * a type of controller designed to control a Pawn instance. It is a player.
@@ -19,6 +20,9 @@ public class PawnController extends Controller {
     public static final long serialVersionUID = 3234993869872838826L;
     private int playerNumber;
     private int numbWall;
+
+    private Random random = new Random();
+    private int smartedActionChangelog = random.nextInt(2);
 
     /**
      * @param type define the type of the controller. Used to determined it's action.
@@ -118,6 +122,11 @@ public class PawnController extends Controller {
         }
     }
 
+    public int getSmartedActionChangelog() {
+        return smartedActionChangelog;
+    }
 
-
+    public void setSmartedActionChangelog(int smartedActionChangelog) {
+        this.smartedActionChangelog = smartedActionChangelog;
+    }
 }

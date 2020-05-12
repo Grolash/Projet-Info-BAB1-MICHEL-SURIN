@@ -173,19 +173,22 @@ public class GameUI {
 
         this.mainPane = new BorderPane();
         mainPane.setBackground(Background.EMPTY);
-        mainPane.setMinSize(600, 600);
+        mainPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                            , Vspace*game.getBoard().getSize()+Vspace);
 
         this.victoryPane = new VBox();
         victoryPane.setBackground(Background.EMPTY);
-        victoryPane.setMinSize(600, 600);
+        victoryPane.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                , Vspace*game.getBoard().getSize()+Vspace);
 
         this.gameContent = new Group();
 
         this.pauseMenu = new VBox();
         pauseMenu.setAlignment(Pos.CENTER);
-        pauseMenu.setMinSize(600, 600);
         pauseMenu.setBackground(Background.EMPTY);
         pauseMenu.setSpacing(15);
+        pauseMenu.setMinSize(Hspace*game.getBoard().getSize()+Hspace
+                            , Vspace*game.getBoard().getSize()+Vspace);
 
         this.gameScene = new Scene(mainPane);
         this.victoryScene = new Scene(victoryPane);
@@ -223,8 +226,10 @@ public class GameUI {
         backToMenuInGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO confirm box for save
-                appStage.setScene(menuScene);
+                ConfirmBox.Display("Confirmation", "Are you sure ? All unsaved changed will be lost.");
+                if (ConfirmBox.answer) {
+                    appStage.setScene(menuScene);
+                }
             }
         });
         pauseMenu.getChildren().addAll(saveButton, backToGameButton, backToMenuInGameButton);
@@ -294,7 +299,7 @@ public class GameUI {
                 ImageView ghostWall = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
 
                 if (dragActive[0] && event.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                    //we are left-clicking on a ghost wall, we need to place it
+                    //we are left-clicking on a ghost wall, we need to place it if
                     resetGlowing(); //if cells are glowing the need to be reset
                     if (clickedCell.compareTo(wantedWallCoord[0]) == 0) {
                         //it's a click on a ghost wall, it means that we want it to be placed
@@ -313,6 +318,9 @@ public class GameUI {
                             updateWall();
                             currentPlayer = (currentPlayer + 1) % playerTotal;
                             game.setCurrentPlayer(currentPlayer);
+                        } else {
+                            //the wall we want to place is blocking someone so we don't place it and make it disappear
+                            ghostWall.setImage(empty);
                         }
                     } else {
                         //click somewhere else, we reset the ghost wall
@@ -325,10 +333,10 @@ public class GameUI {
                             && ctrl.getType().equals("Human")) {
                         //click is on the current player
                         ImageView clickedCellImage = (ImageView) gameContent.getChildren().get(clickedCell.getX() + boardSize * clickedCell.getY());
-                        if (playerCoord.compareTo(clickedCell) == 0) {
+                        if (playerCoord.compareTo(clickedCell) == 0 ) {
                             //click on pawn --> we make the reachable cell glowing
                             for (Coord coord : possibleCell) {
-                                gameContent.getChildren().get(coord.getX() + (9 * coord.getY())).setEffect(colorCell);
+                                gameContent.getChildren().get(coord.getX() + (boardSize * coord.getY())).setEffect(colorCell);
                             }
                         } else if (clickedCell.isIn(possibleCell)
                                 && clickedCellImage.getEffect().equals(colorCell)) {
@@ -380,19 +388,17 @@ public class GameUI {
                     //if upper -> Hwall, if lower -> Vwall
                     if (event.getY() > currentCellCoord.getY()*(Vspace)
                             && event.getY() < (currentCellCoord.getY()*(Vspace))+(Vspace/2)
-                            && Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
-                            currentCellCoord, Game.directions.get("RIGHT"))) {
+                            && Rules.validPlacement(currentCellCoord, Game.directions.get("RIGHT"), board)) {
                         //if we can place a Hwall, we display a ghost Hwall, waiting for click release
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallHImg);
                         wallHighlight.setY(currentCellCoord.getY() * Vspace - 18);
-                        wallHighlight.setX(currentCellCoord.getX() * Hspace - 9);
-                    } else if (Rules.canPlaceWall(playerArray, playerArray[currentPlayer],
-                            currentCellCoord, Game.directions.get("UP"))){
+                        wallHighlight.setX(currentCellCoord.getX() * Hspace );
+                    } else if (Rules.validPlacement(currentCellCoord, Game.directions.get("UP"), board)){
                         //if we can place a Vwall, we display a ghost Vwall, waiting for click release
                         ImageView wallHighlight = (ImageView) gameContent.getChildren().get((boardSize*boardSize) + playerTotal);
                         wallHighlight.setImage(wallVImg);
-                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 54);
+                        wallHighlight.setY(currentCellCoord.getY() * Vspace - 50);
                         wallHighlight.setX(currentCellCoord.getX() * Hspace + 33);
                     } else {
                         wallHighlight.setImage(empty);
@@ -469,13 +475,13 @@ public class GameUI {
             if (wallCoord[0].getY() == wallCoord[1].getY()) {
                 //horizontal wall
                 wall.setImage(wallHImg);
-                wall.setX(wallCoord[0].getX() * Hspace - 9);
+                wall.setX(wallCoord[0].getX() * Hspace );
                 wall.setY(wallCoord[0].getY() * Vspace - 18);
             } else {
                 //vertical wall
                 wall.setImage(wallVImg);
                 wall.setX(wallCoord[0].getX() * Hspace + 33);
-                wall.setY(wallCoord[0].getY() * Vspace - 54);
+                wall.setY(wallCoord[0].getY() * Vspace - 50);
             }
             gameContent.getChildren().add(wall);
         }

@@ -104,4 +104,7 @@ public class Cell implements Serializable {
         this.pawn = pawn;
     }
 
+    public Coord getCoord() {
+        return coord;
+    }
 }

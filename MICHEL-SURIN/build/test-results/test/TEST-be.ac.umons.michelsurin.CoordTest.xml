@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="be.ac.umons.michelsurin.CoordTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-05-09T15:29:16" hostname="DESKTOP-D7RGT2P" time="0.001">
+<testsuite name="be.ac.umons.michelsurin.CoordTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-05-12T13:25:11" hostname="DESKTOP-D7RGT2P" time="0.003">
   <properties/>
   <testcase name="addition()" classname="be.ac.umons.michelsurin.CoordTest" time="0.001"/>
+  <testcase name="compareTest()" classname="be.ac.umons.michelsurin.CoordTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

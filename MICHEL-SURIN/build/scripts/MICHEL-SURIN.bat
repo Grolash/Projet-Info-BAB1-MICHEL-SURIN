@@ -82,7 +82,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\MICHEL-SURIN.jar;%APP_HOME%\lib\javafx-controls-13-win.jar;%APP_HOME%\lib\javafx-graphics-13-win.jar;%APP_HOME%\lib\javafx-graphics-13.jar;%APP_HOME%\lib\javafx-base-13-win.jar;%APP_HOME%\lib\javafx-base-13.jar
+set CLASSPATH=%APP_HOME%\lib\MICHEL-SURIN.jar;%APP_HOME%\lib\progressbar-0.8.1.jar;%APP_HOME%\lib\javafx-controls-13-win.jar;%APP_HOME%\lib\javafx-graphics-13-win.jar;%APP_HOME%\lib\javafx-graphics-13.jar;%APP_HOME%\lib\javafx-base-13-win.jar;%APP_HOME%\lib\javafx-base-13.jar;%APP_HOME%\lib\jline-3.13.3.jar;%APP_HOME%\lib\jline-terminal-jansi-3.13.3.jar;%APP_HOME%\lib\jansi-1.18.jar;%APP_HOME%\lib\jline-terminal-3.13.3.jar
 
 @rem Execute MICHEL-SURIN
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MICHEL_SURIN_OPTS%  -classpath "%CLASSPATH%" be.ac.umons.michelsurin.gui.Menu %CMD_LINE_ARGS%

@@ -35,7 +35,6 @@ public class pathfindingTest {
         pawnCoord[0] = p1.getStart();
         Board board = new Board(9, pawnCoord);
 
-
         //set-up
         Coord[] wall1 = new Coord[2];
         wall1[0] = new Coord(1,1);
