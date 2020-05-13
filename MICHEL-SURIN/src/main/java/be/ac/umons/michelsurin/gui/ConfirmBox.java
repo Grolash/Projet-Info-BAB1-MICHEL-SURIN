@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 
 /**
- * A small window to demand confirmation.
+ * A small window to demand confirmation. Returns boolean.
  */
 public class ConfirmBox {
 
@@ -25,7 +25,7 @@ public class ConfirmBox {
     public static boolean Display(String title, String question){
         Stage window = new Stage();
 
-        window.initModality(Modality.APPLICATION_MODAL); //Prevent interactions events with the called until taken care of.
+        window.initModality(Modality.APPLICATION_MODAL); //Prevent interactions events with the caller until taken care of.
         window.setTitle(title);
         window.setMinWidth(400);
         window.setMinHeight(250);

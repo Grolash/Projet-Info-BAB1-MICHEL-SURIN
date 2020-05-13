@@ -6,11 +6,14 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+/**
+ * An AlertBox to display an alert message.
+ */
 public class AlertBox {
     public static void Display(String title, String message){
         Stage window = new Stage();
 
-        window.initModality(Modality.APPLICATION_MODAL);
+        window.initModality(Modality.APPLICATION_MODAL); //Blocs events towards the caller.
         window.setTitle(title);
         window.setMinWidth(250);
         window.setMinHeight(250);

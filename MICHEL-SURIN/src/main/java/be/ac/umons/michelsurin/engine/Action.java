@@ -2,13 +2,9 @@ package be.ac.umons.michelsurin.engine;
 
 
 import be.ac.umons.michelsurin.controller.PawnController;
-import be.ac.umons.michelsurin.engine.Game;
-import be.ac.umons.michelsurin.engine.Rules;
-import be.ac.umons.michelsurin.gui.ConfirmBox;
 import be.ac.umons.michelsurin.items.Pawn;
 import be.ac.umons.michelsurin.tools.Coord;
 import be.ac.umons.michelsurin.world.Board;
-import be.ac.umons.michelsurin.world.Cell;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -197,7 +193,6 @@ public class Action implements Serializable {
                         placeCoord = new Coord(ordinate, absciss);
                         placeDir = getDirection(intDir);
 
-                        prev = next;
                         next = newNext;
 
                     } while ( !Rules.canPlaceWall(playerArray, ctrl, placeCoord, placeDir) && targetPath.size() > 1);
@@ -216,7 +211,7 @@ public class Action implements Serializable {
 
 
     /**
-     * Determinist "Smart" AI based on pathfinding to be more efficient than any random resolution algorithm.
+     * "Smart" AI based on pathfinding to be more efficient than any random resolution algorithm.
      *
      * Smart first determines which player is the closest to victory. If smart is not that player, it will try to move to
      * close the gap if the other player (the closest to victory) has not a path smaller than half the board size.
@@ -290,7 +285,7 @@ public class Action implements Serializable {
      */
     private static void smartedActionHandler(PawnController[] playerArray, PawnController ctrl) throws IllegalArgumentException {
 
-        if (ctrl.getSmartedActionChangelog() > 1) { //See above the method.
+        if (ctrl.getSmartedActionChangelog() > 1) {
             ctrl.setSmartedActionChangelog(0); //Just a reinitialisation.
         }
 
@@ -373,7 +368,6 @@ public class Action implements Serializable {
     private static void debilusActionHandler(PawnController[] playerArray, PawnController ctrl) {
 
         int action = random.nextInt(2); //Choose randomly between moving and placing a wall.
-        Coord currentCell = ctrl.getDependency().getCoord();
 
         if (action == 0){ //Tries and moves.
             Coord[] reachableCell = whereCanIGo(ctrl);
@@ -447,15 +441,6 @@ public class Action implements Serializable {
         }
     }
 
-    /**
-     * Use the Random module to generate a random integer (see usage in getDirection() method).
-     * @return an integer between 0 and 3 both included.
-     */
-    protected static int randomizeDirection(){
-        float randfloat = random.nextInt(4);
-        return Math.round(randfloat);
-
-    }
 
     /**
      * given a player (PawnController). It will check all the cell around its position and return an array

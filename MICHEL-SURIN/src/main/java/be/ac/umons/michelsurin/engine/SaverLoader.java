@@ -3,7 +3,6 @@ package be.ac.umons.michelsurin.engine;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import me.tongfei.progressbar.*;
 
 /**
  * Save and load games, has path in memory
